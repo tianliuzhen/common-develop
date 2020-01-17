@@ -32,7 +32,7 @@ import java.util.List;
 @Api(tags = "mybatis-plus 文档测试接口")
 //@Transactional(rollbackFor = Exception.class)
 @Slf4j
-public class TestController {
+public class TestCrudController {
     @Autowired
     private UserMapper userMapper;
 

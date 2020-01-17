@@ -1,6 +1,7 @@
 package com.aaa.mybatisplus.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.Getter;
 
 /**
  * description: 声明通用枚举属性
@@ -10,6 +11,7 @@ import com.baomidou.mybatisplus.annotation.EnumValue;
  * @version 1.0
  * @date 2019/12/20
  */
+@Getter
 public enum  GenderEnum {
 
     MALE(0, "男"),
