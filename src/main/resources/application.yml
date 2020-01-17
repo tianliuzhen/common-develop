@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: hikariCP
+  #热部署工具配置：实际应该放到开发环境
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      #spring boot devtool 热部署后出现访问404问题
+      poll-interval: 3000ms
+      quiet-period: 2999ms
+#mybatis-plus配置控制台打印完整带参数SQL语句
+mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    typeEnumsPackage: com.aaa.mybatisplus.enums
+    mapper-locations: classpath*:/mapper/**Mapper.xml
+    global-config:
+      db-config:
+        # 这里的自定义的字段是 数据库映射的实体类映射 eg： is_del =>  isDel
+        #但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。 即先查找注解再查找全局，都没有则此表没有逻辑删除。
+        logic-delete-field: isDel  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+        logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+        logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+server:
+  worker-id: 5
+  data-center-id: 6
+  port: 7070
+

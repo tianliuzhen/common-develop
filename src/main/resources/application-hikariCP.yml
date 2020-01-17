@@ -1,0 +1,34 @@
+spring:
+  datasource:
+    dynamic:
+      hikari:  # 全局hikariCP参数，所有值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
+        catalog:
+         #等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+        connection-timeout: 30000
+        #个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+        idle-timeout: 3000
+        #用来设置连接被占用的超时时间 单位为毫秒，默认为0,表示禁用连接泄露检测。
+        leak-detection-threshold: 0
+        #一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，
+        #建议设置比数据库超时时长少30秒，参考MySQL    wait_timeout参数（show variables like '%timeout%';
+        max-lifetime: 1500000
+        #连接池中允许的最大连接数。缺省值：10；推荐的公式：((core_count * 2) + effective_spindle_count)
+        max-pool-size: 8
+        pool-name: SpringBootHikariCP
+      datasource:
+        master:
+          username: root
+          password: 123456
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://47.98.253.2:3306/master?characterEncoding=utf8&useSSL=false
+          hikari: # 以下参数针对每个库可以重新设置hikari参数
+            max-pool-size:
+            idle-timeout:
+        #           ......
+        slave:
+          username: root
+          password: 123456
+          url: jdbc:mysql://47.98.253.2:3306/slave?characterEncoding=utf8&useSSL=false
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          druid:
+            initial-size: 6
