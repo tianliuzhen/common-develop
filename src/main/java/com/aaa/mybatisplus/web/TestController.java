@@ -30,7 +30,7 @@ import java.util.List;
 
 @RestController
 @Api(tags = "mybatis-plus 文档测试接口")
-@Transactional(rollbackFor = Exception.class)
+//@Transactional(rollbackFor = Exception.class)
 @Slf4j
 public class TestController {
     @Autowired
