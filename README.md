@@ -1,5 +1,5 @@
 # mybatis-plus
-   ## 全局配置
+   ## <b>全局配置</b>
 1、整理了 动态数据源 可切换 hikariCP和druid<br/>
 2、配置了 controller 层异常输出<br/>
 3、配置了 controller 统一状态码返回<br/>
