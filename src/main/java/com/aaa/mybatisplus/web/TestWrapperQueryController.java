@@ -12,9 +12,7 @@ import com.baomidou.mybatisplus.extension.api.Assert;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -95,8 +93,8 @@ public class TestWrapperQueryController {
             list.forEach(System.out::println);
         }
     }
-    @GetMapping("/getWrapper2")
-    public void  getWrapper2(){
+    @PostMapping("/getWrapper2")
+    public void  getWrapper2(@RequestBody User user){
         /**
          * 全部查询,拼接一个where过滤条件
          */

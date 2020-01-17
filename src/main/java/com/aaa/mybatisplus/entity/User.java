@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.Version;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -18,7 +19,10 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@JSONType(serializeEnumAsJavaBean = true)
+//1.枚举类如何转为json（在一个类的属性中，这个枚举类属性如何直接使用在接收参数和向数据库传递参数时需要自动转化）
+//新的版本其实这两个注解不加也可以的
+//@JSONType(serializeEnumAsJavaBean = true)
+//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 //@KeySequence(value = "mybatisKeyGenerator", clazz = String.class)
 @TableName("user")
 public class User {
