@@ -28,7 +28,7 @@ public class User {
      * CREATE TABLE `user` (
      *   `id` varchar(50) DEFAULT NULL,
      *   `name` varchar(50) DEFAULT NULL,
-     *   `age` tinyint(1) DEFAULT NULL,
+     *   `age` int(1) DEFAULT NULL,
      *   `email` varchar(50) DEFAULT NULL,
      *   `status` tinyint(1) NOT NULL DEFAULT '0',
      *   `manager_id` tinyint(1) DEFAULT NULL,
