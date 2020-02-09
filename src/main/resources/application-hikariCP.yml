@@ -12,7 +12,7 @@ spring:
       datasource:
         master:
           username: root
-          password: 123456
+          password: Tlz19970905
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
           url: jdbc:p6spy:mysql://47.98.253.2:3306/master?characterEncoding=utf8&useSSL=false
           hikari: # 以下参数针对每个库可以重新设置hikari参数
@@ -21,7 +21,7 @@ spring:
         #           ......
         slave:
           username: root
-          password: 123456
+          password: Tlz19970905
           url: jdbc:mysql://47.98.253.2:3306/slave?characterEncoding=utf8&useSSL=false
           driver-class-name: com.mysql.cj.jdbc.Driver
           druid:
