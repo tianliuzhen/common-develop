@@ -13,6 +13,7 @@ import lombok.Data;
 @Data
 class A{
     private int code = Constants.DEFAULT_OK;
+    //test...
     public A() {
         System.out.println("A的无参数构造器");
     }
