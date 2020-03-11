@@ -42,6 +42,7 @@ public class RequestLoggingAspect  {
         final Object proceed = joinPoint.proceed();
         // 当响应完成时, 打印完整的'request & response'信息
         requestLog.setResponseTime(OffsetDateTime.now());
+        // LOGGER.debug  则控制台不输出
         LOGGER.info("RequestLoggingAspect#\r\nREQUEST->\r\n{}\r\nRESPONSE->\r\n {}", requestLog, ResponseDetailsLogger.with(proceed));
         // 放行
         return proceed;
