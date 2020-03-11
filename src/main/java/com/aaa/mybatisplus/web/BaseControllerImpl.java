@@ -1,5 +1,7 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
+import com.aaa.mybatisplus.config.configRespone.RestfulResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,10 +22,10 @@ public class BaseControllerImpl  {
 
 
     @PostMapping ("/testStr")
-    public String testStr() {
+    public ObjectResultResponse<String> testStr() {
             Map map=new HashMap();
             map.put("key","val");
-            return "字符串";
+            return  new ObjectResultResponse<>("字符串");
 
     }
     //不打印响应日志

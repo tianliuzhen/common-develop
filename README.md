@@ -1,4 +1,7 @@
 # mybatis-plus
+### 这里对接远程仓库
+https://github.com/tianliuzhen/dynamic_dataSource/tree/master/mybatis-plus <br/>
+延续子模块 mybatis-plus 继续完善 <br/>
    ## <b>全局配置</b>
 1、整理了 `动态数据源` 可切换 hikariCP和druid<br/>
 2、配置了 controller 层异常输出<br/>
