@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
 import com.aaa.mybatisplus.config.configRespone.RestfulResponse;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class BaseControllerImpl  {
     //不打印响应日志
 //    @LessLog(type = LogType.RESPONSE)
     @PostMapping ("/testInt")
+    @SysLog
     public int testInt(@Valid @RequestParam("i") int i) {
         Map map=new HashMap();
         map.put("key","val");

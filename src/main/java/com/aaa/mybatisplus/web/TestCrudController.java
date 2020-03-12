@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
 import com.aaa.mybatisplus.entity.PageDto;
 import com.aaa.mybatisplus.entity.User;
@@ -32,6 +33,7 @@ import java.util.List;
 @Api(tags = "mybatis-plus 文档测试接口")
 //@Transactional(rollbackFor = Exception.class)
 @Slf4j
+@SysLog
 public class TestCrudController {
     @Autowired
     private UserMapper userMapper;
