@@ -24,7 +24,6 @@ import java.util.Arrays;
 @Slf4j
 @Aspect
 @Component
-@SysLog
 public class SysLogAspect {
 
     /**
