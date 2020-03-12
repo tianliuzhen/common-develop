@@ -25,7 +25,7 @@ public class BaseControllerImpl  {
 
     private static   String  str = "default";
 
-    private static UserDto userDto;
+    public static UserDto userDto;
 
     @PostMapping ("/testStr")
     public ObjectResultResponse<String> testStr() {
@@ -43,19 +43,16 @@ public class BaseControllerImpl  {
         Map map=new HashMap();
         map.put("key","val");
         System.out.println(str);
-        System.out.println(userDto.toString());
+        System.out.println(userDto);
         return i;
 
     }
-
+    @Assignment
     @PostMapping ("/testMap")
     public Map testMap() {
         Map map=new HashMap();
-
-
         map.put("key","val");
-        System.out.println("Shift.fatal(DiyResultCode.INVALID_PARAM);");
-
+        System.out.println(userDto);
         return map;
 
     }

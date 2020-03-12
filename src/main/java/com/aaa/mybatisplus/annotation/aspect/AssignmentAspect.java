@@ -1,7 +1,8 @@
 package com.aaa.mybatisplus.annotation.aspect;
 
-import com.aaa.mybatisplus.annotation.SysLog;
+import com.aaa.mybatisplus.util.ReflectUtils;
 import com.aaa.mybatisplus.entity.UserDto;
+import com.aaa.mybatisplus.web.BaseControllerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -9,6 +10,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /**
  * description: 描述
@@ -20,7 +22,7 @@ import java.lang.reflect.Field;
 @Slf4j
 @Aspect
 @Component
-public class AssignmentAspect {
+public class  AssignmentAspect {
 
     @Around("@annotation(com.aaa.mybatisplus.annotation.Assignment)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -35,14 +37,13 @@ public class AssignmentAspect {
         field.set(object,"new_str");
         System.out.println(field.get(object));
 
+        String methodName = joinPoint.getSignature().getName();
+        if(methodName.equals("testInt")){
+            BaseControllerImpl.userDto = new UserDto("name","man");
+        }else{
+            BaseControllerImpl.userDto = new UserDto("name2","woman");
+        }
 
-        //获取 对象 字段
-        Class<?> aClass = Class.forName("com.aaa.mybatisplus.entity.UserDto");
-        Object aObject = aClass.newInstance();
-        Field field1 = aClass.getDeclaredField("name");
-        field1.setAccessible(true);
-        field1.set(aObject,"new_name");
-        System.out.println(field1.get(aObject));
 
         Object result = joinPoint.proceed();
         return result;

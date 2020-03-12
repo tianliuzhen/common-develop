@@ -22,4 +22,9 @@ public class UserDto {
      * */
     @Check(paramValues = {"man", "woman"})
     private String sex;
+
+    public UserDto(String name, String sex) {
+        this.name = name;
+        this.sex = sex;
+    }
 }
