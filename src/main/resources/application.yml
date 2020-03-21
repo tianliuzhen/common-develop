@@ -9,6 +9,8 @@ spring:
       #spring boot devtool 热部署后出现访问404问题
       poll-interval: 3000ms
       quiet-period: 2999ms
+  application:
+    name: mybatis-plus
 #mybatis-plus配置控制台打印完整带参数SQL语句
 mybatis-plus:
 #  configuration:
