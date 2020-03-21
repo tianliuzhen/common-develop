@@ -25,5 +25,5 @@ mybatis-plus:
 server:
   worker-id: 5
   data-center-id: 6
-  port: 7070
+  port: 8070
 
