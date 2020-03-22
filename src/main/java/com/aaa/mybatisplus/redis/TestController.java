@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * description: 描述
  *
@@ -25,8 +29,8 @@ public class TestController {
     @Autowired
     RedisUtil redisUtil;
 
-    @PostMapping("/testredis")
-    public void testredis(){
+    @PostMapping("/testRedis")
+    public void testRedis(){
         redisTemplate.opsForList().leftPush("test-tlz1", JSONObject.toJSON(new AdReadMonitorDTO(1L,1L)));
         redisTemplate.opsForList().leftPush("test-tlz2", JSONObject.toJSON(new AdReadMonitorDTO(2L,2L)));
         redisTemplate.opsForList().leftPush("test-tlz", JSONObject.toJSON(new AdReadMonitorDTO(3L,3L)));
@@ -36,5 +40,8 @@ public class TestController {
          System.out.println(adReadMonitorDTO.toString());
             str=   redisTemplate.opsForList().leftPop("test-tlz");
      }
+
+
     }
+
 }
