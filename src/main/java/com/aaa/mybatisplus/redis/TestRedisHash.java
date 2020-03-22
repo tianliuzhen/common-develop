@@ -1,9 +1,12 @@
 package com.aaa.mybatisplus.redis;
 
+import com.aaa.mybatisplus.entity.User;
 import com.aaa.mybatisplus.entity.UserDto;
+import com.aaa.mybatisplus.enums.GenderEnum;
 import com.aaa.mybatisplus.util.RedisUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.HashOperations;
@@ -43,11 +46,26 @@ public class TestRedisHash {
         // 将map 转实体
         UserDto userDto2 = JSONObject.parseObject(JSONObject.toJSONString(userDto1), UserDto.class);
         System.out.println(userDto2.toString());
-
+        //测试枚举转换
+        testString();
         //测试事物
         testMulti();
     }
+    public void testString() {
+        List<User> list = new ArrayList<>();
+        User user = new User();
+        user.setId("1");
+        user.setAge(GenderEnum.FEMALE);
+        User user2 = new User();
+        user2.setId("2");
+        user2.setAge(GenderEnum.MALE);
+        list.add(user);
+        list.add(user2);
+        String string = JSONObject.toJSONString(list);
+        List<User> users = JSON.parseObject(string, new TypeReference<List<User>>() {
+        });
 
+    }
     public void testMulti(){
         //开启事务支持，在同一个 Connection 中执行命令
         redisTemplate.setEnableTransactionSupport(true);
