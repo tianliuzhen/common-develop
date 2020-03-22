@@ -3,6 +3,7 @@ package com.aaa.mybatisplus.redis;
 import com.aaa.mybatisplus.entity.UserDto;
 import com.aaa.mybatisplus.util.RedisUtil;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.HashOperations;
@@ -37,10 +38,11 @@ public class TestRedisHash {
         map.put("name", "tom");
         map.put("sex", "man");
         // hash 存入一个对象
-        redisTemplate.opsForHash().put("h:z","userDto",JSON.toJSONString(map));
+        redisTemplate.opsForHash().put("h:z","userDto",map);
         Object userDto1 = redisTemplate.opsForHash().get("h:z", "userDto");
-        UserDto userDto = JSON.parseObject(userDto1.toString(), UserDto.class);
-        System.out.println(userDto.toString());
+        // 将map 转实体
+        UserDto userDto2 = JSONObject.parseObject(JSONObject.toJSONString(userDto1), UserDto.class);
+        System.out.println(userDto2.toString());
 
         //测试事物
         testMulti();
