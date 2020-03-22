@@ -48,9 +48,29 @@ public class TestRedisHash {
         System.out.println(userDto2.toString());
         //测试枚举转换
         testString();
-        //测试事物
+        //测试事物写法一
         testMulti();
+        //测试事物写法二
+        testMultiV2();
     }
+
+    private void testMultiV2() {
+        SessionCallback sessionCallback = new SessionCallback() {
+            @Override
+            public Object execute(RedisOperations redisOperations) throws DataAccessException {
+                redisOperations.multi();
+                redisTemplate.opsForValue().set("test",123);
+                if (true){
+                    //测试发生异常，是否回滚
+                   // throw new IllegalArgumentException("");
+                }
+                return redisOperations.exec();
+            }
+        };
+
+        redisTemplate.execute(sessionCallback);
+    }
+
     public void testString() {
         List<User> list = new ArrayList<>();
         User user = new User();
@@ -70,7 +90,6 @@ public class TestRedisHash {
         //开启事务支持，在同一个 Connection 中执行命令
         redisTemplate.setEnableTransactionSupport(true);
         redisTemplate.execute(new SessionCallback<Object>(){
-
             @Override
             public <K, V> Object execute(RedisOperations<K, V> operations) throws DataAccessException {
                 //开启事务
@@ -83,8 +102,6 @@ public class TestRedisHash {
                     //测试事物异常是否会提交
 //                    throw new IllegalArgumentException("测试");
                 }
-
-
                 //执行事务
                 operations.exec();
                 return null;
