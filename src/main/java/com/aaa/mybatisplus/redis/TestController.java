@@ -27,8 +27,8 @@ public class TestController {
 
     @PostMapping("/testredis")
     public void testredis(){
-        redisTemplate.opsForList().leftPush("test-tlz", JSONObject.toJSON(new AdReadMonitorDTO(1L,1L)));
-        redisTemplate.opsForList().leftPush("test-tlz", JSONObject.toJSON(new AdReadMonitorDTO(2L,2L)));
+        redisTemplate.opsForList().leftPush("test-tlz1", JSONObject.toJSON(new AdReadMonitorDTO(1L,1L)));
+        redisTemplate.opsForList().leftPush("test-tlz2", JSONObject.toJSON(new AdReadMonitorDTO(2L,2L)));
         redisTemplate.opsForList().leftPush("test-tlz", JSONObject.toJSON(new AdReadMonitorDTO(3L,3L)));
         Object str=redisTemplate.opsForList().leftPop("test-tlz");;
         while (str!=null){
