@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.redis;
+package com.aaa.mybatisplus.redis.mq2;
 
 import com.aaa.mybatisplus.redis.mq.RedisMessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;

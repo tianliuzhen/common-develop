@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.redis;
+package com.aaa.mybatisplus.redis.mq2;
 
 /**
  * description: 描述
