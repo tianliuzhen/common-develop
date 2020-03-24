@@ -1,9 +1,14 @@
 package com.aaa.mybatisplus.config.redis;
 
 import com.aaa.mybatisplus.redis.MessageReceiver;
+import com.aaa.mybatisplus.redis.mq.RedisMessagePublisher;
+import com.aaa.mybatisplus.redis.mq.RedisMessageSubscriber;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
@@ -18,6 +23,10 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 @Configuration
 public class RedisMQConfig {
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+
     /**
      * 注入消息监听容器
      * @param connectionFactory 连接工厂
@@ -28,7 +37,8 @@ public class RedisMQConfig {
     @Bean
     RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory,
                                             MessageListenerAdapter listenerAdapter,
-                                            MessageListenerAdapter listenerAdapter2) {
+                                            MessageListenerAdapter listenerAdapter2,
+                                            MessageListenerAdapter listenerAdapter3) {
 
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
@@ -37,6 +47,7 @@ public class RedisMQConfig {
         //订阅一个叫mq_02 的信道
         container.addMessageListener(listenerAdapter2, new PatternTopic("mq_02"));
         //这个container 可以添加多个 messageListener
+        container.addMessageListener(listenerAdapter3, topic());
         return container;
     }
 
@@ -63,4 +74,31 @@ public class RedisMQConfig {
         //receiveMessage：接收消息的方法名称
         return new MessageListenerAdapter(receiver, "receiveMessage2");
     }
+
+    /**
+     * 消息监听处理器3
+     *  处理器类, 采用  implements MessageListener   的自带的
+     *                 @Override
+     *                onMessage  {
+     *
+     *                }
+     * @return
+     */
+
+    @Bean
+    MessageListenerAdapter listenerAdapter3() {
+        return new MessageListenerAdapter(new RedisMessageSubscriber());
+    }
+
+
+    @Bean
+    RedisMessagePublisher redisPublisher() {
+        return new RedisMessagePublisher(redisTemplate, topic());
+    }
+
+    @Bean
+    ChannelTopic topic() {
+        return new ChannelTopic("messageQueue");
+    }
+
 }

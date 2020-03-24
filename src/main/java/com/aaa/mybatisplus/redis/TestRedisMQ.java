@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.redis;
 
+import com.aaa.mybatisplus.redis.mq.RedisMessagePublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,17 @@ public class TestRedisMQ {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    RedisMessagePublisher redisMessagePublisher;
+
     @GetMapping(value = "testRedisSendMessageQ")
     public void sendMessage(){
-        redisTemplate.convertAndSend("mq_01", "asdasd");
+        // 实现方法一
+        redisTemplate.convertAndSend("mq_01", "test");
 
-        redisTemplate.convertAndSend("mq_02", "asdas2");
+        redisTemplate.convertAndSend("mq_02", "test2");
 
+        // 实现方法二
+        redisMessagePublisher.publish("test3");
     }
 }
