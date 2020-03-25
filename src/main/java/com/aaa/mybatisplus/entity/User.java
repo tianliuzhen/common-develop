@@ -66,5 +66,6 @@ public class User {
      *     如果配置了 全局逻辑删除 该注解可以不加
      */
     private Integer isDel;
+
 }
 

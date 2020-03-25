@@ -1,8 +1,8 @@
 package com.aaa.mybatisplus.config.redis;
 
-import com.aaa.mybatisplus.redis.MessageReceiver;
 import com.aaa.mybatisplus.redis.mq.RedisMessagePublisher;
 import com.aaa.mybatisplus.redis.mq.RedisMessageSubscriber;
+import com.aaa.mybatisplus.redis.mq2.MessageReceiver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
