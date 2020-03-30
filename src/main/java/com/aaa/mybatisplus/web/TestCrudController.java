@@ -154,5 +154,18 @@ public class TestCrudController {
           return new B<>("我是字符串");
     }
 
+    @ApiOperation(value = "测试多数据源事物")
+    @PostMapping ("/updateBy")
+    @Transactional(rollbackFor = Exception.class)
+    public void update() throws IllegalAccessException {
+        User byId = userService.getById("1242815762603823105");
+        byId.setName("tom80");
+        userService.updateById(byId);
+        User byId1 = user2Service.getById("1242815762603823105");
+        byId1.setName("tom88");
+        user2Service.updateById(byId1);
+        throw new IllegalAccessException("异常测试");
+
+    }
 
 }
