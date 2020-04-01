@@ -2,6 +2,8 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.config.configGlobalException.common.StatusCode;
 import com.aaa.mybatisplus.config.configGlobalException.exception.Shift;
+import com.aaa.mybatisplus.enums.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,5 +28,14 @@ public class UserController {
         }
 
         return  id;
+    }
+
+    @Autowired
+    Test test;
+
+    @GetMapping("/testProperties")
+    public String testProperties( ){
+
+        return test.toString();
     }
 }
