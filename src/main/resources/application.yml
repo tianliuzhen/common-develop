@@ -29,5 +29,3 @@ server:
   data-center-id: 6
   port: 8070
 
-test:
-  

@@ -2,6 +2,8 @@ package com.aaa.mybatisplus.enums;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +25,13 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "test")
 public class Test {
     String name;
+    String oldName;
     String age;
+
+
+    @Description("该字段已经废弃")
+    @DeprecatedConfigurationProperty(reason = "new name",replacement = "替换说明")
+    public String getOldName() {
+        return oldName;
+    }
 }
