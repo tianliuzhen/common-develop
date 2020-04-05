@@ -1,7 +1,7 @@
 package com.aaa.mybatisplus;
 
-import com.aaa.mybatisplus.entity.User;
-import com.aaa.mybatisplus.mapper.UserMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,4 +32,6 @@ public class TestStringRedis {
         List list = redisTemplate.opsForValue().multiGet(new ArrayList(Arrays.asList("a", "b")));
         list.forEach(System.out::println);
     }
+
+
 }
