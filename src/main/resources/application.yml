@@ -28,4 +28,3 @@ server:
   worker-id: 5
   data-center-id: 6
   port: 8070
-

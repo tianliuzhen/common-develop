@@ -2,9 +2,6 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.config.configGlobalException.common.StatusCode;
 import com.aaa.mybatisplus.config.configGlobalException.exception.Shift;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
 
     @GetMapping("/findById")
     public int findById(@RequestParam("id") int id ){
@@ -30,6 +26,15 @@ public class UserController {
         }
 
         return  id;
+    }
+
+    @Autowired
+    Test test;
+
+    @GetMapping("/testProperties")
+    public String testProperties( ){
+
+        return test.toString();
     }
 
     @GetMapping("/testObjectMapper")

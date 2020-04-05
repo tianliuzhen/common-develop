@@ -1,0 +1,33 @@
+{
+  "groups": [
+    {
+      "name": "test",
+      "type": "com.aaa.mybatisplus.enums.Test",
+      "sourceType": "com.aaa.mybatisplus.enums.Test"
+    }
+  ],
+  "properties": [
+    {
+      "name": "test.age",
+      "type": "java.lang.String",
+      "description":"年龄",
+      "sourceType": "com.aaa.mybatisplus.enums.Test"
+    },
+    {
+      "name": "test.name",
+      "type": "java.lang.String",
+      "sourceType": "com.aaa.mybatisplus.enums.Test"
+    },
+    {
+      "name": "test.old-name",
+      "type": "java.lang.String",
+      "sourceType": "com.aaa.mybatisplus.enums.Test",
+      "deprecated": true,
+      "deprecation": {
+        "reason": "new name",
+        "replacement": "替换说明"
+      }
+    }
+  ],
+  "hints": []
+}
