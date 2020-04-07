@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.test;
+package com.aaa.mybatisplus.test.extendsAndSuper;
 
 /**
  * description: 描述

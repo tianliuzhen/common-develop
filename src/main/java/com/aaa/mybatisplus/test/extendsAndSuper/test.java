@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.test;
+package com.aaa.mybatisplus.test.extendsAndSuper;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,13 +16,16 @@ import java.util.stream.Collectors;
     }
 
     public test(Object result) {
-
+        // super 关键字 执行父类
+        //默认是 无参构造
         super(result);
     }
 
     public static void main(String[] args) {
-
-        test1();
+        //测试有参构造
+        //  new test(new Object());
+        // 测试无参构造
+        new test();
     }
     public static void test1() {
         List<Stu> list = new ArrayList<>();

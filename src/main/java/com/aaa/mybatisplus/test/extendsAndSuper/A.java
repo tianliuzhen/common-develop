@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.test;
+package com.aaa.mybatisplus.test.extendsAndSuper;
 
 import com.aaa.mybatisplus.config.configRespone.Constants;
 import lombok.Data;

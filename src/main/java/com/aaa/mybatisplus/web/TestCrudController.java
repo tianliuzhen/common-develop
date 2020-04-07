@@ -8,7 +8,7 @@ import com.aaa.mybatisplus.enums.GenderEnum;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.User2Service;
 import com.aaa.mybatisplus.service.UserService;
-import com.aaa.mybatisplus.test.B;
+import com.aaa.mybatisplus.test.extendsAndSuper.B;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
