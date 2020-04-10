@@ -16,15 +16,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class TestConfig {
     @Autowired
-    private People people;
+    private People people3;
 
     @Autowired
-    private People people1;
+    private People people4;
+
+
+    @Autowired
+    private People people;
+
     @Test
     public void newInstance(){
         System.out.println("= = = = = = = = = = = = = ");
-        System.out.println("people = " + people);
+        System.out.println("people = " + people3);
         System.out.println("= = = = = = = = = = = = = ");
-        System.out.println("people = " + people1);
+        System.out.println("people = " + people4);
+        System.out.println("= = = = = = = = = = = = = ");
+        System.out.println("people = " + people);
+
     }
 }
