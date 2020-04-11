@@ -30,4 +30,7 @@ server:
   port: 8070
 
 #测试自定义属性 映射到yml
-
+dept:
+  dept-name: '部门旧名字'
+test:
+  oldName: '旧名字'
