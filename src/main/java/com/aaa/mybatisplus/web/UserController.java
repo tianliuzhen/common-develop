@@ -1,7 +1,8 @@
 package com.aaa.mybatisplus.web;
 
-import com.aaa.mybatisplus.config.configGlobalException.common.StatusCode;
-import com.aaa.mybatisplus.config.configGlobalException.exception.Shift;
+import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
+import com.aaa.mybatisplus.enums.ResultCode;
+import com.aaa.mybatisplus.enums.common.StatusCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,8 @@ public class UserController {
                 id = id /0;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            Shift.fatal(StatusCode.INVALID_MODEL_FIELDS,e.getMessage());
+            throw new RuntimeException("自定义异常");
+//            Shift.fatal(ResultCode.SYSTEM_ERROR);
         }
 
         return  id;

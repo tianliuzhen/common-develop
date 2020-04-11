@@ -1,5 +1,5 @@
 
-package com.aaa.mybatisplus.config.configGlobalException.common;
+package com.aaa.mybatisplus.enums.common;
 
 import com.google.common.collect.ImmutableMap;
 

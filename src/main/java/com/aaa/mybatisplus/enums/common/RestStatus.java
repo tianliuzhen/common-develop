@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.config.configGlobalException.common;
+package com.aaa.mybatisplus.enums.common;
 
 /**
  * @author soul
