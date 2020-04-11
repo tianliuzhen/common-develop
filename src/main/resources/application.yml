@@ -28,3 +28,6 @@ server:
   worker-id: 5
   data-center-id: 6
   port: 8070
+
+#测试自定义属性 映射到yml
+

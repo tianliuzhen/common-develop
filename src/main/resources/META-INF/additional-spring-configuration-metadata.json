@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "test",
-      "type": "com.aaa.mybatisplus.enums.Test",
-      "sourceType": "com.aaa.mybatisplus.enums.Test"
+      "type": "com.aaa.mybatisplus.config.TestProperties",
+      "sourceType": "com.aaa.mybatisplus.config.TestProperties"
     }
   ],
   "properties": [
@@ -11,17 +11,18 @@
       "name": "test.age",
       "type": "java.lang.String",
       "description":"年龄",
-      "sourceType": "com.aaa.mybatisplus.enums.Test"
+      "sourceType": "com.aaa.mybatisplus.config.TestProperties"
     },
     {
       "name": "test.name",
       "type": "java.lang.String",
-      "sourceType": "com.aaa.mybatisplus.enums.Test"
+      "description":"名字",
+      "sourceType": "com.aaa.mybatisplus.config.TestProperties"
     },
     {
-      "name": "test.old-name",
+      "name": "test.oldName",
       "type": "java.lang.String",
-      "sourceType": "com.aaa.mybatisplus.enums.Test",
+      "sourceType": "com.aaa.mybatisplus.config.TestProperties",
       "deprecated": true,
       "deprecation": {
         "reason": "new name",

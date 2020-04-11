@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.enums;
+package com.aaa.mybatisplus.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -21,17 +21,17 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Data
-@PropertySource(value = "classpath:test.properties",ignoreResourceNotFound = false, encoding = "GBK", name = "test.properties")
+@PropertySource(value = "classpath:test.properties",ignoreResourceNotFound = false, encoding = "UTF-8", name = "test.properties")
 @ConfigurationProperties(prefix = "test")
-public class Test {
+public class TestProperties {
     String name;
     String oldName;
     String age;
-
 
     @Description("该字段已经废弃")
     @DeprecatedConfigurationProperty(reason = "new name",replacement = "替换说明")
     public String getOldName() {
         return oldName;
     }
+
 }
