@@ -3,12 +3,12 @@ spring:
     dynamic:
       hikari:  # 全局hikariCP参数，所有值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
         catalog:
-        connection-timeout:
-        validation-timeout:
-        idle-timeout:
-        leak-detection-threshold:
-        max-lifetime:
-        max-pool-size:
+        max-lifetime: 1500000
+        connection-timeout: 30000
+        idle-timeout: 30000
+        pool-name: SpringBootHikariCP
+        min-idle: 3
+        max-pool-size: 8
       datasource:
         master:
           username: root
