@@ -6,9 +6,13 @@ import com.aaa.mybatisplus.entity.People;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 
 /**
  * description: 测试：注解--@ConditionalOnBean、@ConditionalOnClass
@@ -19,9 +23,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Slf4j
 @Configuration
+@ConditionalOnClass(name = "hunter2")
+@Order(11)
 public class Config {
 
-    @Bean
+    @Bean("c")
     public City city() {
         City city = new City();
         city.setCityName("千岛湖");
@@ -37,20 +43,19 @@ public class Config {
      * 这里加了ConditionalOnBean注解，就代表如果city存在才实例化people
      */
 
-    @Bean
-    @ConditionalOnMissingBean(name = "city")
-    //@Autowired那就默认代表当前Bean一定是已经存在的，如果为null，会报错。所以这里要修改下。
+    @Bean(name={  "people3","people4"})
+    @ConditionalOnBean(name = "c")
     public People people(City city) {
-        //这里如果city实体没有成功注入 这里就会报空指针
+        //这里如果city实体成功注入 这里就会执行
 //        city.setCityCode(301701);
         return new People("小小1", 1, city);
     }
 
-    @Bean
-    @ConditionalOnMissingBean(name = "city2")
-    //@Autowired那就默认代表当前Bean一定是已经存在的，如果为null，会报错。所以这里要修改下。
+    @Bean(name = "people")
+    @ConditionalOnMissingBean(name = "city")
     public People people2(City city) {
-        //这里如果city实体没有成功注入 这里就会报空指针
+
+        //这里如果city实体没有成功注入 这里就会执行
 //        city.setCityCode(301701);
         return new People("小小2", 2, city);
     }

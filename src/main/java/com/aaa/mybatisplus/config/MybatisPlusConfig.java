@@ -30,7 +30,7 @@ import java.util.List;
  */
 @EnableTransactionManagement
 @Configuration
-@MapperScan("com.baomidou.cloud.service.*.mapper*")
+@MapperScan("com.aaa.mybatisplus.mapper*")
 @Slf4j
 public class MybatisPlusConfig {
 
