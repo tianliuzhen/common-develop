@@ -4,6 +4,7 @@ import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -13,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
@@ -42,6 +44,8 @@ public class CacheConfig extends CachingConfigurerSupport {
         this.timeToLive = timeToLive;
     }
 
+    @Autowired
+    private RedisDbMany redisDbMany;
     /***
      * 定义缓存数据 key 生成策略的bean
      *包名+类名+方法名+第一个参数
@@ -116,7 +120,10 @@ public class CacheConfig extends CachingConfigurerSupport {
  * @return
  */
     @Bean
-    public CacheManager cacheManager(RedisConnectionFactory factory) {
+    public CacheManager cacheManager(LettuceConnectionFactory factory) {
+
+        factory=  redisDbMany.getLettuceConnectionFactoryByIndex(7);
+
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
         // 可以切换 fastjson 进行序列化
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
