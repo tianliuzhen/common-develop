@@ -34,3 +34,29 @@ dept:
   dept-name: '部门旧名字'
 test:
   oldName: '旧名字'
+
+#测试 springboot-yml内list、map组合写法
+# list 和 map 均有两种写法，不可同时存在，否则无法解析
+my-props:
+  varmaplist:
+    key11:
+      - t1
+      - t2
+      - t3
+    key22:
+      - t11
+      - t22
+      - t33
+  list:
+  #list 写法 1 （行内写法）
+  #    [topic1,topic2,topic3]
+  #list 写法 2
+    - topic1
+    - topic2
+    - topic3
+  maps:
+  #maps 写法 1 （行内写法）
+      #{key1: 'value1', key2: 'value2'}
+  #maps 写法 2
+    key3: value3
+    key4: value4
