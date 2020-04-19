@@ -69,7 +69,7 @@ public class RedisDbMany {
 
      这里定义的方法 createLettuceConnectionFactory，方便快速使用
      */
-    private LettuceConnectionFactory createLettuceConnectionFactory(
+    public LettuceConnectionFactory createLettuceConnectionFactory(
             int dbIndex, String hostName, int port, String password,
             int maxIdle,int minIdle,int maxActive,
             Long maxWait, Long timeOut,Long shutdownTimeOut){
@@ -138,5 +138,11 @@ public class RedisDbMany {
         return template;
     }
 
+    public LettuceConnectionFactory getLettuceConnectionFactoryByIndex(int databaseIndex){
+        LettuceConnectionFactory lettuceConnectionFactory =
+                createLettuceConnectionFactory
+                        (databaseIndex, hostName, port, password, maxIdle, minIdle, maxActive, maxWait, timeOut, shutdownTimeOut);
+        return lettuceConnectionFactory;
+    }
 
 }
