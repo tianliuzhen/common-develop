@@ -1,10 +1,12 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysLog;
+import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
 import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
 import com.aaa.mybatisplus.entity.PageDto;
 import com.aaa.mybatisplus.entity.User;
 import com.aaa.mybatisplus.enums.GenderEnum;
+import com.aaa.mybatisplus.enums.ResultCode;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.User2Service;
 import com.aaa.mybatisplus.service.UserService;
@@ -14,16 +16,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,15 +45,11 @@ public class TestCrudController {
     @ApiImplicitParam(name = "page", value = "分页参数", required = true)
     @PostMapping("/testSelectPage")
     public ObjectResultResponse<?> testSelectPage(@RequestBody PageDto pageDto ) {
-
-
-
         Page page=new Page();
         System.out.println("分页测试：：：");
         if(page==null){
              page = new Page();
         }
-
         // 每页数量、当前页
         page.setSize(pageDto.getSize()).setCurrent(pageDto.getCurrent());
         // 当 total 为小于 0 或者设置 setSearchCount(false) 分页插件不会进行 count 查询
@@ -64,8 +57,6 @@ public class TestCrudController {
         List<User> users=iPage.getRecords();
         users.forEach(System.out::println);
         log.info("1211");
-
-
         return new ObjectResultResponse(page);
     }
 
@@ -170,5 +161,31 @@ public class TestCrudController {
         // throw new IllegalAccessException("异常测试");
 
     }
+    @ApiImplicitParams({
+       @ApiImplicitParam(name="name",value="用户名",dataType="string", paramType = "query",example="allen"),
+       @ApiImplicitParam(name="id",value="用户id",dataType="string", paramType = "query")
+    })
+    @ApiOperation(value = "测试swagger注解 =》ApiImplicitParams ")
+    @PostMapping(value = "testApiImplicitParams")
+    public String testApiImplicitParams(@RequestParam("name") String name,@RequestParam("id") String id){
+        return "name:"+name+"  id"+id;
+    }
+    @ApiOperation(value = "测试swagger注解 =》ApiParam ")
+    @GetMapping("/testApiParam")
+    public String testApiParam( @ApiParam(name="id",value="普通的参数id说明",required=true) @RequestParam("id") String id ){
+        return  "id:"+id;
+    }
 
+    @ApiOperation(value = "测试swagger注解 =》ApiResponses ",notes = "多个参数，多种的查询参数类型")
+    @ApiResponses({
+            @ApiResponse(code=400,message="请求参数没填好"),
+            @ApiResponse(code=404,message="请求路径没有或页面跳转路径不对"),
+            @ApiResponse(code=500,message="服务器异常")
+    })
+    @GetMapping("/testApiResponses")
+    public void testApiResponses(@RequestParam("id") int id){
+        if(id>10){
+            Shift.fatal(ResultCode.SYSTEM_ERROR);
+        }
+    }
 }

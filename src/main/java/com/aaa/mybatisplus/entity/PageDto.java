@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -11,6 +12,8 @@ import lombok.Data;
  */
 @Data
 public class PageDto {
+
+    @ApiModelProperty(name="current",value="当前页",required=true)
     private Integer current;
     private Integer size;
 
