@@ -15,7 +15,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * description: Swagger配置
- * 美化后的ui：http://localhost:8123/swagger-ui.html
+ * 美化后的ui：http://localhost:8070/swagger-ui.html
  * 原生的ui：http://localhost:8070/doc.html
  * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
