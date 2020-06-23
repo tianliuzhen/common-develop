@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.ParameterInfo;
 import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
 import com.aaa.mybatisplus.enums.ResultCode;
 import com.aaa.mybatisplus.enums.common.StatusCode;
@@ -53,5 +54,9 @@ public class UserController {
         return "accountCache";
     }
 
+    @GetMapping(value = "/testParameterInfo")
+    public String testParameterInfo(@ParameterInfo String id ){
+        return  id;
+    }
 
 }
