@@ -14,11 +14,6 @@
     <springProperty scope="context" name="logAppName" source="spring.application.name" defaultValue="localhost.log"/>
     <!-- 勿用${LOG_FILE}相对路径 生成目录 -->
     <property name="LOG_HOME" value="/opt/logs/"/>
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
-        </encoder>
-    </appender>
     <appender name="TIME_FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
 
@@ -78,8 +73,6 @@
     <root level="INFO">
         <appender-ref ref="ASYNC"/>
         <appender-ref ref="TIME_FILE"/>
-        <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_ERROR" />
     </root>
 </configuration>
