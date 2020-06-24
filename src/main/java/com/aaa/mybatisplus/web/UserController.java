@@ -65,9 +65,25 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("/findByIdAndAdd10")
-    public int findByIdAndAdd10(@RequestParam("id") @ArgsInfo int id){
+    @GetMapping("/aopAdd10")
+    public int aopAdd10(@RequestParam("id") @ArgsInfo int id){
         System.out.println(id);
         return  id;
+    }
+
+    /**
+     * 测试 aop 拦截方法修改其返回值
+     * @param id
+     * @return
+     */
+    @GetMapping("/aopChangeReturn")
+    public String aopChangeReturn(@RequestParam("id") @ArgsInfo String id){
+        changeReturn(id);
+        return  id;
+    }
+
+    public String changeReturn(String id) {
+
+        return id;
     }
 }
