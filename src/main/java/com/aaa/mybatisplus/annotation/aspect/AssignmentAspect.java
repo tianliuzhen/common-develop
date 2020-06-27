@@ -24,6 +24,12 @@ import java.lang.reflect.Method;
 @Component
 public class  AssignmentAspect {
 
+    /**
+     * 反射
+     * @param joinPoint
+     * @return
+     * @throws Throwable
+     */
     @Around("@annotation(com.aaa.mybatisplus.annotation.Assignment)")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
 
