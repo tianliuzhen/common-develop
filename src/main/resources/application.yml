@@ -60,3 +60,8 @@ my-props:
   #maps 写法 2
     key3: value3
     key4: value4
+
+#加密参数(加盐)
+jasypt:
+  encryptor:
+    password: 123
