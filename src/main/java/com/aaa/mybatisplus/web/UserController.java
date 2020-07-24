@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
 import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
 import com.aaa.mybatisplus.enums.ResultCode;
@@ -59,4 +60,30 @@ public class UserController {
         return  id;
     }
 
+    /**
+     * 测试 aop 拦截方法修改其参数值
+     * @param id
+     * @return
+     */
+    @GetMapping("/aopAdd10")
+    public int aopAdd10(@RequestParam("id") @ArgsInfo int id){
+        System.out.println(id);
+        return  id;
+    }
+
+    /**
+     * 测试 aop 拦截方法修改其返回值
+     * @param id
+     * @return
+     */
+    @GetMapping("/aopChangeReturn")
+    public String aopChangeReturn(@RequestParam("id") @ArgsInfo String id){
+        changeReturn(id);
+        return  id;
+    }
+
+    public String changeReturn(String id) {
+
+        return id;
+    }
 }
