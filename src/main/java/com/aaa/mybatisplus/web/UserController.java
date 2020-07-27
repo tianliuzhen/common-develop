@@ -3,6 +3,7 @@ package com.aaa.mybatisplus.web;
 import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
 import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
+import com.aaa.mybatisplus.entity.BaseMain;
 import com.aaa.mybatisplus.enums.ResultCode;
 import com.aaa.mybatisplus.enums.common.StatusCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -13,6 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * Created by Ares on 2018/7/5.
@@ -85,5 +89,20 @@ public class UserController {
     public String changeReturn(String id) {
 
         return id;
+    }
+
+    /**
+     * 测试返回两种时间格式
+     * Date
+     * DateTime
+     * @return
+     */
+    @GetMapping("/objectResponseDate")
+    public Object response(){
+        BaseMain baseMain = new BaseMain();
+        baseMain.setDate(new Date());
+        baseMain.setLocalDateTime(LocalDateTime.now());
+
+        return baseMain;
     }
 }
