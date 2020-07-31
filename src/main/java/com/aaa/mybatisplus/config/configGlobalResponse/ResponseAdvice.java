@@ -53,6 +53,8 @@ import java.io.IOException;
 @ControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
+    public static final String HTTP_RESULT = "com.aaa.mybatisplus.config.configGlobalResponse.HttpResult";
+
     @Autowired
     HttpServletRequest httpServletRequest;
 
@@ -66,7 +68,8 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> aClass) {
         final String returnName = returnType.getParameterType().getName();
 
-        return !"com.aaa.mybatisplus.config.configGlobalResponse.HttpResult".equals(returnName)
+        // returnName 运行中报错返回的是  HTTP_RESULT，此时直接返回false 结束
+        return !HTTP_RESULT.equals(returnName)
                 && !"org.springframework.http.ResponseEntity".equals(returnName);
     }
 
