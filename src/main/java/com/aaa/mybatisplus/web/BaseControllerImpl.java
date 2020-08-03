@@ -2,6 +2,7 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.Assignment;
 import com.aaa.mybatisplus.annotation.SysLog;
+import com.aaa.mybatisplus.annotation.SysTimeLog;
 import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
 import com.aaa.mybatisplus.config.configRespone.RestfulResponse;
 import com.aaa.mybatisplus.entity.UserDto;
@@ -49,6 +50,7 @@ public class BaseControllerImpl  {
     }
     @Assignment
     @PostMapping ("/testMap")
+    @SysTimeLog
     public Map testMap() {
         Map map=new HashMap();
         map.put("key","val");
