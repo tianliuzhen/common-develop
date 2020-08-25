@@ -15,4 +15,5 @@ https://github.com/tianliuzhen/dynamic_dataSource/tree/master/mybatis-plus <br/>
 6、配置乐观锁<br/>
 7、配置多租户sql解析器<br/>
 8、配置条件构造器<br/>
+9、redis  多数据库配置<br/>
 ......
