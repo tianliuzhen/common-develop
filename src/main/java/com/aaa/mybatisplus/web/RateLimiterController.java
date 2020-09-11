@@ -1,24 +1,30 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.LessLog;
+import com.aaa.mybatisplus.annotation.Limit;
 import com.aaa.mybatisplus.enums.LogType;
+import com.aaa.mybatisplus.enums.LtTypeEnum;
 import com.google.common.util.concurrent.RateLimiter;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 限流测试
  * @author liuzhen.tian
  * @version 1.0 GuavaLimitRateLimterController.java  2020/9/11 10:31
  */
+@Slf4j
 @RestController
-public class GuavaLimitRateLimiterController {
-    private static final Logger logger = LoggerFactory.getLogger(GuavaLimitRateLimiterController.class);
+@RequestMapping(value = "/LimitRateTest")
+public class RateLimiterController {
+
+
     //创建一个限流器，参数代表每秒生成的令牌数(用户限流频率设置 每秒中限制1个请求)
     private RateLimiter rateLimiter = RateLimiter.create(1);
 
@@ -33,4 +39,23 @@ public class GuavaLimitRateLimiterController {
         }
         return "抢购排队中...";
     }
+
+    //模拟两个计数
+    private static final AtomicInteger ATOMIC__1 = new AtomicInteger();
+    private static final AtomicInteger ATOMIC__2 = new AtomicInteger();
+
+    @Limit(keys = "currentTest1", period = 10, counts= 3)
+    @GetMapping("/currentTest1")
+    public int testLimiter1() {
+
+        return ATOMIC__1.incrementAndGet();
+    }
+
+
+    @Limit(keys = "customer_limit_test", period = 10, counts = 2, LtType = LtTypeEnum.IP)
+    @GetMapping("/currentTest2")
+    public int testLimiter2() {
+        return ATOMIC__2.incrementAndGet();
+    }
+
 }

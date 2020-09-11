@@ -36,6 +36,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.ValidationException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -166,6 +168,15 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     private HttpResult serviceExceptionHandler(DemoException exception) {
         logErrorRequest(exception);
         return HttpResult.fail(exception.getErrorCode(), exception.getErrorMsg());
+    }
+
+    @ExceptionHandler(LimitException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public @ResponseBody Map limitExceptionHandler() {
+        Map<String, Object> result = new HashMap();
+        result.put("code", "500");
+        result.put("msg", "请求次数已经到设置限流次数！");
+        return result;
     }
 
 }
