@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.AccessLimit;
 import com.aaa.mybatisplus.annotation.LessLog;
 import com.aaa.mybatisplus.annotation.Limit;
 import com.aaa.mybatisplus.enums.LogType;
@@ -58,4 +59,12 @@ public class RateLimiterController {
         return ATOMIC__2.incrementAndGet();
     }
 
+    /**
+     * 防止刷接口 seconds=5 秒内，允许请求  maxCount=5
+     */
+    @AccessLimit(seconds=5, maxCount=5, needLogin=true)
+    @GetMapping("/testAccessLimit")
+    public void  testAccessLimit(){
+
+    }
 }

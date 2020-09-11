@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.annotation.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -19,13 +20,26 @@ import java.util.List;
  */
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private AccessLimitInterceptor accessLimitInterceptor;
+    @Autowired
+    private ParameterInfoInterceptor parameterInfoInterceptor;
+
     /**
      * 添加自定义的拦截器
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
-        argumentResolvers.add(new ParameterInfoResolver());
+        argumentResolvers.add(parameterInfoInterceptor);
     }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(accessLimitInterceptor);
+    }
+
+
     /**
      * 中文乱码问题
      * @return

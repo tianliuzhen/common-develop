@@ -2,6 +2,7 @@ package com.aaa.mybatisplus.annotation.config;
 
 import com.aaa.mybatisplus.annotation.ParameterInfo;
 import org.springframework.core.MethodParameter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -12,7 +13,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  * @author liuzhen.tian
  * @version 1.0 2020/6/23 20:49
  */
-public class ParameterInfoResolver implements HandlerMethodArgumentResolver {
+@Component
+public class ParameterInfoInterceptor implements HandlerMethodArgumentResolver {
     //使用自定义的注解
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
