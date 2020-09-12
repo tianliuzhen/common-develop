@@ -16,13 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DemoException  extends RuntimeException {
     private String errorMsg;
-
     private int errorCode;
 }
 
 
-                /**
-                 *  spring  利用 @ResponseAdvice  和 ResponseBodyAdvice
-                 *  处理返回值和异常
-                 *  在 dev-1.0.0 分支
-                 */

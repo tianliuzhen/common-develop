@@ -3,8 +3,7 @@ package com.aaa.mybatisplus.web;
 import com.aaa.mybatisplus.annotation.Assignment;
 import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.annotation.SysTimeLog;
-import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
-import com.aaa.mybatisplus.config.configRespone.RestfulResponse;
+import com.aaa.mybatisplus.config.configRespone.type.ResultResponse;
 import com.aaa.mybatisplus.entity.UserDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,10 +28,10 @@ public class BaseControllerImpl  {
     public static UserDto userDto;
 
     @PostMapping ("/testStr")
-    public ObjectResultResponse<String> testStr() {
+    public ResultResponse<String> testStr() {
             Map map=new HashMap();
             map.put("key","val");
-            return  new ObjectResultResponse<>("字符串");
+            return  new ResultResponse<>("字符串");
 
     }
     //不打印响应日志

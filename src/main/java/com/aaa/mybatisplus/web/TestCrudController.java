@@ -2,7 +2,7 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
-import com.aaa.mybatisplus.config.configRespone.ObjectResultResponse;
+import com.aaa.mybatisplus.config.configRespone.type.ResultResponse;
 import com.aaa.mybatisplus.entity.PageDto;
 import com.aaa.mybatisplus.entity.User;
 import com.aaa.mybatisplus.enums.GenderEnum;
@@ -44,7 +44,7 @@ public class TestCrudController {
     @ApiOperation(value = "分页测试", notes = "插件测试")
     @ApiImplicitParam(name = "page", value = "分页参数", required = true)
     @PostMapping("/testSelectPage")
-    public ObjectResultResponse<?> testSelectPage(@RequestBody PageDto pageDto ) {
+    public ResultResponse<?> testSelectPage(@RequestBody PageDto pageDto ) {
         Page page=new Page();
         System.out.println("分页测试：：：");
         if(page==null){
@@ -57,7 +57,7 @@ public class TestCrudController {
         List<User> users=iPage.getRecords();
         users.forEach(System.out::println);
         log.info("1211");
-        return new ObjectResultResponse(page);
+        return  ResultResponse.success(page);
     }
 
 

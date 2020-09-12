@@ -2,24 +2,16 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
-import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
+import com.aaa.mybatisplus.config.configRespone.Result;
 import com.aaa.mybatisplus.entity.BaseMain;
 import com.aaa.mybatisplus.entity.City;
-import com.aaa.mybatisplus.entity.People;
-import com.aaa.mybatisplus.entity.User;
-import com.aaa.mybatisplus.enums.ResultCode;
-import com.aaa.mybatisplus.enums.common.StatusCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
-
-import javax.annotation.PostConstruct;
-import javax.jws.Oneway;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Created by Ares on 2018/7/5.
@@ -29,7 +21,7 @@ import java.util.Map;
 public class UserController {
 
     @GetMapping("/findById")
-    public int findById(@RequestParam("id") int id ){
+    public Result<Integer> findById(@RequestParam("id") int id ){
         try {
             if (id>10){
                 id = id /0;
@@ -39,7 +31,7 @@ public class UserController {
 //            Shift.fatal(ResultCode.SYSTEM_ERROR);
         }
         getAccountByName("accountCache");
-        return  id;
+        return  Result.success(id);
     }
 
     @PostMapping("/findByMap")

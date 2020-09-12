@@ -11,31 +11,25 @@ package com.aaa.mybatisplus.config.configGlobalResponse;
  */
 
 
+import com.aaa.mybatisplus.config.configRespone.Response;
 import com.aaa.mybatisplus.enums.ResultCode;
 import com.alibaba.fastjson.JSON;
-import com.mysql.cj.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.ValidationException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,8 +37,6 @@ import java.util.Map;
 /**
  * description:
  * 统一异常处理及返回对象封装
- * 但是有个缺点，就是默认会给正确或则错误的 自动附加参数。不够精确
- * 这里先注释掉
  * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
  * @date 2019/12/18
@@ -65,7 +57,6 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
      这个方法表示对于哪些请求要执行beforeBodyWrite，返回true执行，返回false不执行
      过滤是否是json的数据
      */
-
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> aClass) {
         final String returnName = returnType.getParameterType().getName();
@@ -85,13 +76,23 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
 
+
         /**
-         *  基本基本数据类型也可以直接返回，唯独String 类型
-         * 如果检测到是字符串直接返回字符串，否则会报错
-         * 具体原因是，内部没有做判断，字符串还是走的 对象的转换接口，所以就会异常
+         * 有些接口可能想要的返回值。有的是  result或者有的是 content 等等
+         * 防止重复包裹的问题出现
+         * 这里的 Response 指的是 com.aaa.mybatisplus.config.configRespone.Response
+         * 是我们手动设置的返回值。
          */
+        if (body instanceof Response){
+            return body;
+        }
 
         if(body instanceof String) {
+            /**
+             *  基本基本数据类型也可以直接返回，唯独String 类型
+             * 如果检测到是字符串直接返回字符串，否则会报错
+             * 具体原因是，内部没有做判断，字符串还是走的 对象的转换接口，所以就会异常
+             */
             return JSON.toJSONString(HttpResult.ok(body));
         }else{
             //返回对象封装
@@ -101,7 +102,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
 
 
-/**
+   /**
      * 异常日志记录
      */
 
@@ -111,7 +112,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
 
-/**
+   /**
      * 参数未通过@Valid验证异常，
      */
 
@@ -123,7 +124,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
 
-/**
+   /**
      * 参数格式有误
      */
 
@@ -147,7 +148,7 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
 
-/**
+   /**
      * 不支持的请求类型
      */
 
@@ -159,10 +160,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
     }
 
 
-       /**
+    /**
      * 业务层异常
      */
-
     @ExceptionHandler(DemoException.class)
     @ResponseBody
     private HttpResult serviceExceptionHandler(DemoException exception) {
@@ -170,6 +170,9 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
         return HttpResult.fail(exception.getErrorCode(), exception.getErrorMsg());
     }
 
+    /**
+     * 限流异常
+     */
     @ExceptionHandler(LimitException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody Map limitExceptionHandler() {
