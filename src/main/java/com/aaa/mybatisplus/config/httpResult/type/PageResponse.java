@@ -1,6 +1,6 @@
-package com.aaa.mybatisplus.config.configRespone.type;
+package com.aaa.mybatisplus.config.httpResult.type;
 
-import com.aaa.mybatisplus.config.configRespone.RestfulResponse;
+import com.aaa.mybatisplus.config.httpResult.RestfulResponse;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

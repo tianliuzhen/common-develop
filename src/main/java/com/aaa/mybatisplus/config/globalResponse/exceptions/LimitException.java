@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.config.configGlobalResponse;
+package com.aaa.mybatisplus.config.globalResponse.exceptions;
 
 /**
  * @author liuzhen.tian

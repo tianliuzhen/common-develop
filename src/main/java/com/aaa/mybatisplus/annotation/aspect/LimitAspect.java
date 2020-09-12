@@ -6,7 +6,7 @@ package com.aaa.mybatisplus.annotation.aspect;
  */
 
 import com.aaa.mybatisplus.annotation.Limit;
-import com.aaa.mybatisplus.config.configGlobalResponse.LimitException;
+import com.aaa.mybatisplus.config.globalResponse.exceptions.LimitException;
 import com.aaa.mybatisplus.enums.LtTypeEnum;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.config.configRespone;
+package com.aaa.mybatisplus.config.httpResult;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,10 +18,10 @@ public abstract class RestfulResponse implements Response {
 
     @ApiModelProperty(value = "响应状态码",example = "200")
     @JsonProperty("code")
-    private int code = Constants.DEFAULT_OK;
+    private int code = 200;
 
     @ApiModelProperty(value = "响应消息",example = "success")
     @JsonProperty("message")
-    private String message = Constants.DEFAULT_SUCCESS;
+    private String message = "success~";
 
 }

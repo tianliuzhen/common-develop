@@ -1,5 +1,5 @@
 
-package com.aaa.mybatisplus.config.configGlobalResponse;
+package com.aaa.mybatisplus.config.globalResponse;
 
 
 /**
@@ -11,7 +11,10 @@ package com.aaa.mybatisplus.config.configGlobalResponse;
  */
 
 
-import com.aaa.mybatisplus.config.configRespone.Response;
+import com.aaa.mybatisplus.config.globalResponse.exceptions.DemoException;
+import com.aaa.mybatisplus.config.globalResponse.exceptions.LimitException;
+import com.aaa.mybatisplus.config.httpResult.HttpResult;
+import com.aaa.mybatisplus.config.httpResult.Response;
 import com.aaa.mybatisplus.enums.ResultCode;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +50,7 @@ import java.util.Map;
 @ControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
-    public static final String HTTP_RESULT = "com.aaa.mybatisplus.config.configGlobalResponse.HttpResult";
+    public static final String HTTP_RESULT = "com.aaa.mybatisplus.config.configRespone.HttpResult";
 
     @Autowired
     HttpServletRequest httpServletRequest;

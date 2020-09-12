@@ -1,5 +1,5 @@
 
-package com.aaa.mybatisplus.config.configGlobalResponse;
+package com.aaa.mybatisplus.config.httpResult;
 
 import com.aaa.mybatisplus.enums.ResultCode;
 import lombok.Data;

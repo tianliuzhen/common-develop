@@ -1,6 +1,5 @@
 package com.aaa.mybatisplus.test.extendsAndSuper;
 
-import com.aaa.mybatisplus.config.configRespone.Constants;
 import lombok.Data;
 
 /**
@@ -12,7 +11,7 @@ import lombok.Data;
  */
 @Data
 class A{
-    private int code = Constants.DEFAULT_OK;
+    private int code = 200;
     //test...
     public A() {
         System.out.println("A的无参数构造器");

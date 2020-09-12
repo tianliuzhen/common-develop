@@ -3,7 +3,7 @@ package com.aaa.mybatisplus.web;
 import com.aaa.mybatisplus.annotation.Assignment;
 import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.annotation.SysTimeLog;
-import com.aaa.mybatisplus.config.configRespone.type.ResultResponse;
+import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.entity.UserDto;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;

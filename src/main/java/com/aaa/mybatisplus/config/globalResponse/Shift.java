@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.config.configGlobalResponse;
+package com.aaa.mybatisplus.config.globalResponse;
 
 /**
  * description: 描述
@@ -9,6 +9,7 @@ package com.aaa.mybatisplus.config.configGlobalResponse;
  */
 
 
+import com.aaa.mybatisplus.config.globalResponse.exceptions.DemoException;
 import com.aaa.mybatisplus.enums.ResultCode;
 
 /**

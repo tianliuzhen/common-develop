@@ -2,7 +2,8 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
-import com.aaa.mybatisplus.config.configRespone.Result;
+import com.aaa.mybatisplus.config.httpResult.type.DataResponse;
+import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.entity.BaseMain;
 import com.aaa.mybatisplus.entity.City;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,17 +22,17 @@ import java.util.Date;
 public class UserController {
 
     @GetMapping("/findById")
-    public Result<Integer> findById(@RequestParam("id") int id ){
+    public ResultResponse<Integer> findById(@RequestParam("id") int id ){
         try {
             if (id>10){
                 id = id /0;
             }
         } catch (Exception e) {
             throw new RuntimeException("自定义异常");
-//            Shift.fatal(ResultCode.SYSTEM_ERROR);
+           // Shift.fatal(ResultCode.SYSTEM_ERROR);
         }
         getAccountByName("accountCache");
-        return  Result.success(id);
+        return  ResultResponse.success(id);
     }
 
     @PostMapping("/findByMap")

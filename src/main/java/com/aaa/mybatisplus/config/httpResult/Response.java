@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.config.configRespone;
+package com.aaa.mybatisplus.config.httpResult;
 
 import java.io.Serializable;
 

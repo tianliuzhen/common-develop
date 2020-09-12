@@ -1,8 +1,8 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysLog;
-import com.aaa.mybatisplus.config.configGlobalResponse.Shift;
-import com.aaa.mybatisplus.config.configRespone.type.ResultResponse;
+import com.aaa.mybatisplus.config.globalResponse.Shift;
+import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.entity.PageDto;
 import com.aaa.mybatisplus.entity.User;
 import com.aaa.mybatisplus.enums.GenderEnum;
@@ -19,7 +19,6 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
