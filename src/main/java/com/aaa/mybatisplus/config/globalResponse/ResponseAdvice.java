@@ -11,41 +11,26 @@ package com.aaa.mybatisplus.config.globalResponse;
  */
 
 
-import com.aaa.mybatisplus.config.globalResponse.exceptions.DemoException;
-import com.aaa.mybatisplus.config.globalResponse.exceptions.LimitException;
 import com.aaa.mybatisplus.config.httpResult.HttpResult;
-import com.aaa.mybatisplus.config.httpResult.Response;
-import com.aaa.mybatisplus.enums.ResultCode;
+import com.aaa.mybatisplus.config.httpResult.RestfulResponse;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 
 /**
- * description:
  * 统一异常处理及返回对象封装
- * @author 田留振(liuzhen.tian @ haoxiaec.com)
- * @version 1.0
- * @date 2019/12/18
+ * @author liuzhen.tian
+ * @version 1.0 MyExceptionHandler.java  2020/9/14 10:36
  */
-
-
 @Slf4j
 @ControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
@@ -81,109 +66,42 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
 
         /**
+         * case：1
          * 有些接口可能想要的返回值。有的是  result或者有的是 content 等等
          * 防止重复包裹的问题出现
          * 这里的 Response 指的是 com.aaa.mybatisplus.config.configRespone.Response
          * 是我们手动设置的返回值。
          */
-        if (body instanceof Response){
+        if (body instanceof RestfulResponse){
             return body;
         }
-
+        /**
+         * case：2
+         * 基本基本数据类型也可以直接返回，唯独String 类型
+         * 如果检测到是字符串直接返回字符串，否则会报错
+         * 具体原因是：内部没有做判断，字符串还是走的 对象的转换接口，所以就会异常
+         */
         if(body instanceof String) {
-            /**
-             *  基本基本数据类型也可以直接返回，唯独String 类型
-             * 如果检测到是字符串直接返回字符串，否则会报错
-             * 具体原因是，内部没有做判断，字符串还是走的 对象的转换接口，所以就会异常
-             */
             return JSON.toJSONString(HttpResult.ok(body));
-        }else{
-            //返回对象封装
+        }
+        /**
+         * case：3
+         * body = HttpResult  直接返回，一般是异常
+         */
+        if (body instanceof  HttpResult){
+            return body;
+        }else {
+        /**
+         * case：4
+         * 正常返回，返回对象封装
+         */
             return HttpResult.ok(body);
         }
     }
 
 
 
-   /**
-     * 异常日志记录
-     */
 
-    private void logErrorRequest(Exception e) {
-        log.error("报错API URL:{}", httpServletRequest.getRequestURL().toString());
-        log.error("异常:{}", e.getMessage());
-    }
-
-
-   /**
-     * 参数未通过@Valid验证异常，
-     */
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
-    private HttpResult methodArgumentNotValid(MethodArgumentNotValidException exception) {
-        logErrorRequest(exception);
-        return HttpResult.fail(ResultCode.INVALID_PARAM);
-    }
-
-
-   /**
-     * 参数格式有误
-     */
-
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
-    @ResponseBody
-    private HttpResult typeMismatch(Exception exception) {
-        logErrorRequest(exception);
-        return HttpResult.fail(ResultCode.MISTYPE_PARAM);
-    }
-
-
-    /**
-     * 缺少参数
-     */
-
-    @ExceptionHandler(MissingServletRequestParameterException.class)
-    @ResponseBody
-    private HttpResult missingServletRequestParameter(MissingServletRequestParameterException exception) {
-        logErrorRequest(exception);
-        return HttpResult.fail(ResultCode.MISSING_PARAM);
-    }
-
-
-   /**
-     * 不支持的请求类型
-     */
-
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    @ResponseBody
-    private HttpResult httpRequestMethodNotSupported(HttpRequestMethodNotSupportedException exception) {
-        logErrorRequest(exception);
-        return HttpResult.fail(ResultCode.UNSUPPORTED_METHOD);
-    }
-
-
-    /**
-     * 业务层异常
-     */
-    @ExceptionHandler(DemoException.class)
-    @ResponseBody
-    private HttpResult serviceExceptionHandler(DemoException exception) {
-        logErrorRequest(exception);
-        return HttpResult.fail(exception.getErrorCode(), exception.getErrorMsg());
-    }
-
-    /**
-     * 限流异常
-     */
-    @ExceptionHandler(LimitException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody Map limitExceptionHandler() {
-        Map<String, Object> result = new HashMap();
-        result.put("code", "500");
-        result.put("msg", "请求次数已经到设置限流次数！");
-        return result;
-    }
 
 }
 
