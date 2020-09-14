@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redisTemplate 基于 lua  实现分布式锁
@@ -52,7 +53,10 @@ public class RedisLuaLock {
         keyList.add(key);
         keyList.add(time);
         keyList.add(value);
-        Boolean result= (Boolean)redisTemplate.execute(lockScript, keyList);
+        // Boolean result= (Boolean)redisTemplate.execute(lockScript, keyList);
+
+        // 使用下面的好像也可以
+        Boolean result = redisTemplate.opsForValue().setIfAbsent(key, value, Long.parseLong(time), TimeUnit.SECONDS);
         log.info("redis set result："+result);
         return result;
     }
