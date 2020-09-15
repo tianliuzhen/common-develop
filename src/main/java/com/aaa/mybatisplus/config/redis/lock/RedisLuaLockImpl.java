@@ -2,8 +2,10 @@ package com.aaa.mybatisplus.config.redis.lock;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -37,11 +39,11 @@ public class RedisLuaLockImpl implements RedisLuaLock{
     @PostConstruct
     public void initLUA() {
         tryLockScript = new DefaultRedisScript();
-        tryLockScript.setScriptText(LUA_LOCK_SCRIPT);
+        tryLockScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("luascript/lock.lua")));
         tryLockScript.setResultType(Boolean.class);
 
         releaseLockScript = new DefaultRedisScript();
-        releaseLockScript.setScriptText(LUA_RELEASE_LOCK_SCRIPT);
+        releaseLockScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("luascript/unlock.lua")));
         releaseLockScript.setResultType(Boolean.class);
     }
 
@@ -86,33 +88,6 @@ public class RedisLuaLockImpl implements RedisLuaLock{
         Boolean result = (Boolean) redisTemplate.execute(releaseLockScript, keyList);
         return result;
     }
-    /***
-     *  Lua 加锁脚本
-     */
-    private final static String LUA_LOCK_SCRIPT =
-            "local  lockKey   = KEYS[1]\n" +
-            "local  lockTime  = KEYS[2]\n" +
-            "local  lockValue = KEYS[3]\n" +
-            "local result_1 = redis.call('SETNX', lockKey, lockValue)\n" +
-            "if result_1 == 1 \n" +
-            "then\n" +
-            "local result_2 = redis.call('expire', lockKey,lockTime)\n" +
-            "return result_2 \n" +
-            "else\n" +
-            "return false\n" +
-            "end";
-    /***
-     *  Lua 释放锁脚本
-     */
-    private final static String LUA_RELEASE_LOCK_SCRIPT =
-            "local lockKey   = KEYS[1]\n" +
-            "local lockValue = KEYS[2]\n" +
-            "local result_1  = redis.call('get', lockKey)\n" +
-            "if result_1 == lockValue\n" +
-            "then\n" +
-            "local result_2 = redis.call('del', lockKey)\n" +
-            "return result_2\n" +
-            "else\n" +
-            "return false\n" +
-            "end";
+
+
 }

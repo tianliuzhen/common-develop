@@ -26,11 +26,10 @@ public interface RedisLuaLock {
 
     /**
      * 释放锁操作
-     *
      * @param key
      * @param value
      * @return
      */
-    public Boolean releaseLock(String key, String value);
+    Boolean releaseLock(String key, String value);
 
 }

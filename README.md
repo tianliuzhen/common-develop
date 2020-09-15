@@ -16,13 +16,15 @@ https://github.com/tianliuzhen/dynamic_dataSource/tree/master/mybatis-plus <br/>
 7、配置多租户sql解析器<br/>
 8、配置条件构造器<br/>
    ##  <b>redis配置</b>
-1、redisTemplate 常用接口测试
+1、redisTemplate 常用接口测试<br/>
 2、redis  多数据库配置、采用fastjson 序列化、redis注解设置<br/>
 3、redisTemplate + lua 分布式锁设计<br/>
    ##  <b>自定义注解配置</b>
-1、@SysLog 统计执行时间
-2、@ParameterInfo 通过 ParameterInfoInterceptor 自定义参数拦截器
-3、@Limit 接口限流 通过 LimitAspect 基于 aop 和 redis +lua 实现接口限流
-4、@AccessLimit 通过AccessLimitInterceptor 实现防止 API 接口防刷和IP拦截
+1、@SysLog 统计执行时间<br/>
+2、@ParameterInfo 通过 ParameterInfoInterceptor 自定义参数拦截器<br/>
+3、@Limit 接口限流 通过 LimitAspect 基于 aop 和 redis +lua 实现接口限流<br/>
+4、@AccessLimit 通过AccessLimitInterceptor 实现防止 API 接口防刷和IP拦截<br/>
+   ##  <b>测试部分</b>
+1、基于 CountDownLatch和Semaphore及线程池实现并发测试。
 
 ......

@@ -4,7 +4,6 @@ import com.aaa.mybatisplus.service.LuaScriptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Service;
@@ -34,11 +33,11 @@ public class LuaScriptServiceImpl implements LuaScriptService {
         getRedisScript = new DefaultRedisScript<List>();
         getRedisScript.setResultType(List.class);
         getRedisScript.setScriptSource(
-                new ResourceScriptSource(new ClassPathResource("luascript/LimitLoadTimes.lua")));
+                new ResourceScriptSource(new ClassPathResource("luascript/test/LimitLoadTimes.lua")));
 
         lockScript = new DefaultRedisScript<Boolean>();
         lockScript.setScriptSource(
-                new ResourceScriptSource(new ClassPathResource("luascript/add.lua")));
+                new ResourceScriptSource(new ClassPathResource("luascript/test/add.lua")));
         lockScript.setResultType(Boolean.class);
 
     }
