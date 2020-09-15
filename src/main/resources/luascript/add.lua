@@ -8,7 +8,7 @@ if result_1 == 1
 then
 local result_2 = redis.call('SETEX', lockKey,lockTime, lockValue)
 local ok = "OK"
-return ok == cjson.encode((result_2)
+return ok == result_2
 else
 return 1
 end

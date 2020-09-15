@@ -23,7 +23,7 @@ public class main {
     RedisLuaLock redisLuaLock;
 
     // 总的请求个数
-    public static final int requestTotal = 100;
+    public static final int requestTotal = 10;
 
     // 同一时刻最大的并发线程的个数
     public static final int concurrentThreadNum = 10;
@@ -54,7 +54,7 @@ public class main {
     private  String testRequestUri() {
         String value = UUID.randomUUID().toString();
         try {
-            Boolean aaa = redisLuaLock.tryLock("aaa", value, "20");
+            Boolean aaa = redisLuaLock.tryLock("aaa", value, 20);
             if (!aaa) {
                 System.out.println("已经加锁，请等待！");
             }else {
