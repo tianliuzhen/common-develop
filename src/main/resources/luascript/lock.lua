@@ -9,5 +9,5 @@ then
 local result_2 = redis.call('expire', lockKey,lockTime)
 return result_2
 else
-return false
+return 0
 end;

@@ -4,14 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ *  redisTemplate 基于 lua  实现分布式锁 版本二
  * @author liuzhen.tian
  * @version 1.0 RedisLock.java  2020/9/15 19:54
  */
@@ -44,8 +43,8 @@ public class RedisLuaLockImplV2 implements RedisLuaLock   {
      */
     @PostConstruct
     public void init() {
-        argsSerializer = new StringRedisSerializer();
-        resultSerializer = new StringRedisSerializer();
+        argsSerializer = RedisSerializer.string();
+        resultSerializer = RedisSerializer.string();
 
         lockRedisScript = RedisScript.of(LOCK_LUA, String.class);
         unLockRedisScript = RedisScript.of(UNLOCK_LUA, String.class);

@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * redisTemplate 基于 lua  实现分布式锁
+ * redisTemplate 基于 lua  实现分布式锁 版本一
  * 缺陷
- *   1、仅redis 可用
- *   2、无法续约
+ *   1、无法续约
  * @author liuzhen.tian
  * @version 1.0 RedisTemplateLock.java  2020/9/14 11:21
  */
