@@ -85,10 +85,11 @@ public class main {
         try {
             //1. 获取锁
              lock = redissonClient.getLock("zzz");
-            // type 1 : 阻塞锁 （不释放锁一直等待）
+            // type 1 : 阻塞锁 （不释放锁一直等待），也可设置等待时间，但是既然阻塞了这个时间，也没实际效果，就是分段续约
             // lock.lock(100, TimeUnit.SECONDS);
+            // lock.lock();
             // type 2 : 非阻塞锁
-            // 非阻塞锁
+            // 非阻塞锁，可以设置锁的执行等待时间
             boolean b = lock.tryLock(0, 10, TimeUnit.SECONDS);
             if (b) {
                 System.err.println("首先执行的线程");
