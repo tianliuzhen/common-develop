@@ -1,7 +1,6 @@
 package com.aaa.mybatisplus.annotation.aspect;
 
-import com.aaa.mybatisplus.util.ReflectUtils;
-import com.aaa.mybatisplus.entity.UserDto;
+import com.aaa.mybatisplus.domain.dto.UserDto;
 import com.aaa.mybatisplus.web.BaseControllerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,7 +9,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 
 /**
  * description: 描述

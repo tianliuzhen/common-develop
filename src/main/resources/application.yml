@@ -15,7 +15,7 @@ spring:
 mybatis-plus:
 #  configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    typeEnumsPackage: com.aaa.mybatisplus.enums
+    typeEnumsPackage: com.aaa.mybatisplus.domain.enums
     mapper-locations: classpath*:/mapper/**Mapper.xml
     global-config:
       db-config:

@@ -1,6 +1,6 @@
 package com.aaa.mybatisplus.annotation;
 
-import com.aaa.mybatisplus.enums.LtTypeEnum;
+import com.aaa.mybatisplus.domain.enums.LtTypeEnum;
 
 import java.lang.annotation.*;
 

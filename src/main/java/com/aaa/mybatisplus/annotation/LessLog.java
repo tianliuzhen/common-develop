@@ -1,6 +1,6 @@
 package com.aaa.mybatisplus.annotation;
 
-import com.aaa.mybatisplus.enums.LogType;
+import com.aaa.mybatisplus.domain.enums.LogType;
 
 import java.lang.annotation.*;
 

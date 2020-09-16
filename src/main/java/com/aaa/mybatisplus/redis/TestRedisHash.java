@@ -1,22 +1,19 @@
 package com.aaa.mybatisplus.redis;
 
-import com.aaa.mybatisplus.entity.User;
-import com.aaa.mybatisplus.entity.UserDto;
-import com.aaa.mybatisplus.enums.GenderEnum;
-import com.aaa.mybatisplus.util.RedisUtil;
+import com.aaa.mybatisplus.domain.entity.User;
+import com.aaa.mybatisplus.domain.dto.UserDto;
+import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.*;
 
 /**

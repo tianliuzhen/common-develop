@@ -1,13 +1,12 @@
 package com.aaa.mybatisplus.redis;
 
-import com.aaa.mybatisplus.entity.User;
-import com.aaa.mybatisplus.enums.GenderEnum;
+import com.aaa.mybatisplus.domain.entity.User;
+import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
