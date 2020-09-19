@@ -1,9 +1,11 @@
 package com.aaa.mybatisplus.config;
 
 
-import com.github.xiaoymin.swaggerbootstrapui.annotations.EnableSwaggerBootstrapUI;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -15,8 +17,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * description: Swagger配置
- * 美化后的ui：http://localhost:8070/swagger-ui.html
- * 原生的ui：http://localhost:8070/doc.html
+ * 原生的ui：http://localhost:8070/swagger-ui.html  （新版  knife4j 已经去除原生ui这个接口）
+ * 美化后的ui：http://localhost:8070/doc.html
  * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
  * @date 2019-12-20
@@ -25,7 +27,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //开启swagger2
 @EnableSwagger2
 //开启swagger-bootstrap-ui的增强文档
-@EnableSwaggerBootstrapUI
+@EnableKnife4j
+@Import(BeanValidatorPluginsConfiguration.class)
 public class SwaggerConfig {
     /**
      * 默认扫描包
