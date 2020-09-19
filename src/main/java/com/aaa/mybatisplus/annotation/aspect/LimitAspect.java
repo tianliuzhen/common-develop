@@ -6,8 +6,8 @@ package com.aaa.mybatisplus.annotation.aspect;
  */
 
 import com.aaa.mybatisplus.annotation.Limit;
-import com.aaa.mybatisplus.config.globalResponse.exceptions.LimitException;
-import com.aaa.mybatisplus.enums.LtTypeEnum;
+import com.aaa.mybatisplus.config.global.exceptions.LimitException;
+import com.aaa.mybatisplus.domain.enums.LtTypeEnum;
 import com.google.common.collect.ImmutableList;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

@@ -1,6 +1,6 @@
 package com.aaa.mybatisplus.service.impl;
 
-import com.aaa.mybatisplus.entity.User;
+import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.UserService;
 import com.baomidou.dynamic.datasource.annotation.DS;

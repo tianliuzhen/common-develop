@@ -15,7 +15,7 @@ spring:
 mybatis-plus:
 #  configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    typeEnumsPackage: com.aaa.mybatisplus.enums
+    typeEnumsPackage: com.aaa.mybatisplus.domain.enums
     mapper-locations: classpath*:/mapper/**Mapper.xml
     global-config:
       db-config:
@@ -25,9 +25,12 @@ mybatis-plus:
         logic-delete-value: 1 # 逻辑已删除值(默认为 1)
         logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 server:
-  worker-id: 5
-  data-center-id: 6
   port: 8070
+
+  workerId: 0
+  #雪花算法的数据中心id，在java 启动命令中定义，四台为0，1，2，3
+  datacenterId: 0
+
 
 #测试自定义属性 映射到yml
 dept:

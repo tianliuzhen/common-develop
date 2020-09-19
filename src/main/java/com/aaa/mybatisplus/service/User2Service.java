@@ -1,6 +1,6 @@
 package com.aaa.mybatisplus.service;
 
-import com.aaa.mybatisplus.entity.User;
+import com.aaa.mybatisplus.domain.entity.User;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,7 +21,7 @@ public interface User2Service extends IService<User> {
      * 分页测试
      * @param page
      * @param
-     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.aaa.mybatisplus.entity.User>
+     * @return com.baomidou.mybatisplus.core.metadata.IPage<com.aaa.mybatisplus.domain.entity.User>
      */
      IPage<User> selectUserPage(Page<User> page, String name );
 }

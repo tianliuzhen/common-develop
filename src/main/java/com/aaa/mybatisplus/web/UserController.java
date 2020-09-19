@@ -2,10 +2,9 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
-import com.aaa.mybatisplus.config.httpResult.type.DataResponse;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
-import com.aaa.mybatisplus.entity.BaseMain;
-import com.aaa.mybatisplus.entity.City;
+import com.aaa.mybatisplus.domain.entity.BaseMain;
+import com.aaa.mybatisplus.domain.entity.City;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

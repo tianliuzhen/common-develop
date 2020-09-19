@@ -24,6 +24,8 @@ https://github.com/tianliuzhen/dynamic_dataSource/tree/master/mybatis-plus <br/>
 2、@ParameterInfo 通过 ParameterInfoInterceptor 自定义参数拦截器<br/>
 3、@Limit 接口限流 通过 LimitAspect 基于 aop 和 redis +lua 实现接口限流<br/>
 4、@AccessLimit 通过AccessLimitInterceptor 实现防止 API 接口防刷和IP拦截<br/>
+   ##  <b>swagger 自定义生成接口文档配置</b>
+1、引入 doc 优化原生 swagger ui   
    ##  <b>测试部分</b>
 1、基于 CountDownLatch和Semaphore及线程池实现并发测试。
 

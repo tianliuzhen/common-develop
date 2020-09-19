@@ -1,14 +1,12 @@
 package com.aaa.mybatisplus;
 
 import com.aaa.mybatisplus.config.MybatisPlusConfig;
-import com.aaa.mybatisplus.entity.User;
+import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.mapper.UserMapper;
-import com.aaa.mybatisplus.web.BaseControllerImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.util.List;

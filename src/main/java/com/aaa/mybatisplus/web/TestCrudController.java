@@ -1,16 +1,15 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysLog;
-import com.aaa.mybatisplus.config.globalResponse.Shift;
+import com.aaa.mybatisplus.config.global.Shift;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
-import com.aaa.mybatisplus.entity.PageDto;
-import com.aaa.mybatisplus.entity.User;
-import com.aaa.mybatisplus.enums.GenderEnum;
-import com.aaa.mybatisplus.enums.ResultCode;
+import com.aaa.mybatisplus.domain.dto.PageDto;
+import com.aaa.mybatisplus.domain.entity.User;
+import com.aaa.mybatisplus.domain.enums.GenderEnum;
+import com.aaa.mybatisplus.domain.enums.ResultCode;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.User2Service;
 import com.aaa.mybatisplus.service.UserService;
-import com.aaa.mybatisplus.test.extendsAndSuper.B;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -135,14 +134,6 @@ public class TestCrudController {
 
     }
 
-    @ApiOperation(value = "测试返回值")
-    @GetMapping("/response")
-    public B<?> getB(){
-        System.out.println(new B().num);
-
-
-          return new B<>("我是字符串");
-    }
 
     @ApiOperation(value = "测试多数据源事物")
     @PostMapping ("/updateBy")

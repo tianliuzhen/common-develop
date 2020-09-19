@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.config;
 
+import com.aaa.mybatisplus.config.snowflakeId.SnowflakeIdWorker;
 import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

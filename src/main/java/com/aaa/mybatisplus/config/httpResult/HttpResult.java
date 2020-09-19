@@ -1,7 +1,7 @@
 
 package com.aaa.mybatisplus.config.httpResult;
 
-import com.aaa.mybatisplus.enums.ResultCode;
+import com.aaa.mybatisplus.domain.enums.ResultCode;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
