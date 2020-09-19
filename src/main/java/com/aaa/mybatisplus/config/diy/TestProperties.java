@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.config;
+package com.aaa.mybatisplus.config.diy;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

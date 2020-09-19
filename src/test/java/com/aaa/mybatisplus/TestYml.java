@@ -1,7 +1,7 @@
 package com.aaa.mybatisplus;
 
-import com.aaa.mybatisplus.config.MyProps;
-import com.aaa.mybatisplus.config.TestProperties;
+import com.aaa.mybatisplus.config.diy.MyProps;
+import com.aaa.mybatisplus.config.diy.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

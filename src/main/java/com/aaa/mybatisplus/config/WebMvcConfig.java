@@ -1,9 +1,13 @@
-package com.aaa.mybatisplus.annotation.config;
+package com.aaa.mybatisplus.config;
 
+import com.aaa.mybatisplus.annotation.config.AccessLimitInterceptor;
+import com.aaa.mybatisplus.annotation.config.ParameterInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -11,10 +15,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * 重写WebMvcConfigurationSupport后，springboot默认配置的信息会失效
- * 譬如：utf-8问题（controller 返回值 乱码）、静态资源无法问题。
- * 这里配置 extends WebMvcConfigurationSupport 的作用仅是为了实现自定义的拦截器
- * 项目中还可以通过配置 aop 的形式去修改参数值
+ * 参考：https://blog.csdn.net/weixin_41556963/article/details/103089534
+ * 注： 这里实现 WebMvcConfigurationSupport 是单纯为了解决  parameterInfoInterceptor 的问题，但是会影响springBoot 默认配置
+ *      因为 extends WebMvcConfigurationSupport 导致 WebMvcAutoConfiguration  不生效
+ * 缺陷：
+ *     重写WebMvcConfigurationSupport后，springboot默认配置的信息会失效
+ *     譬如：utf-8问题（controller 返回值 乱码）、静态资源无法问题。
+ * 其他
+ *     项目中还可以通过配置 aop 的形式去修改参数值
  *
  * @author liuzhen.tian  time: 2020/6/23 20:57
  */
@@ -25,6 +33,11 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     private AccessLimitInterceptor accessLimitInterceptor;
     @Autowired
     private ParameterInfoInterceptor parameterInfoInterceptor;
+
+    @Autowired
+    private StringHttpMessageConverter stringHttpMessageConverter;
+    @Autowired
+    private MappingJackson2HttpMessageConverter httpMessageConverter;
 
     /**
      * 添加自定义的拦截器
@@ -46,10 +59,16 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      */
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-        // 解决controller返回字符串中文乱码问题
-        for (HttpMessageConverter<?> converter : converters) {
-            if (converter instanceof StringHttpMessageConverter) {
-                ((StringHttpMessageConverter)converter).setDefaultCharset(StandardCharsets.UTF_8);
+
+        for (int i = 0; i < converters.size(); i++) {
+            // 继承 WebMvcConfigurationSupport 默认编码是 ISO 这里修改为 UTF_8
+            if (converters.get(i) instanceof StringHttpMessageConverter){
+                stringHttpMessageConverter.setDefaultCharset(StandardCharsets.UTF_8);
+                converters.set(i, stringHttpMessageConverter);
+            }
+            // 继承 WebMvcConfigurationSupport 序列化字符串问题
+            if (converters.get(i) instanceof MappingJackson2HttpMessageConverter) {
+                converters.set(i, httpMessageConverter);
             }
         }
     }
