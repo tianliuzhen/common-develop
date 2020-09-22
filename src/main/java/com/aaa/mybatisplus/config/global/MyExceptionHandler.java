@@ -45,13 +45,14 @@ public class MyExceptionHandler {
 
 
     /**
+     * 默认的全局异常拦截
      * RuntimeException
      */
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody
     HttpResult RuntimeExceptionHandler() {
-        return HttpResult.fail(ResultCode.INVALID_PARAM);
+        return HttpResult.fail(ResultCode.SYSTEM_ERROR);
     }
 
     /**

@@ -22,6 +22,6 @@ public abstract class RestfulResponse implements Response {
 
     @ApiModelProperty(value = "响应消息",example = "success")
     @JsonProperty("message")
-    private String message = "success~";
+    private String message = "success";
 
 }

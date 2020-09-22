@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class ResponseAdvice implements ResponseBodyAdvice<Object> {
 
-    public static final String HTTP_RESULT = "com.aaa.mybatisplus.config.configRespone.HttpResult";
+    public static final String HTTP_RESULT = "com.aaa.mybatisplus.config.httpResult.HttpResult";
 
     @Autowired
     HttpServletRequest httpServletRequest;
