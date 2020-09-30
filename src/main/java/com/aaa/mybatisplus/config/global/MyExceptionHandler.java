@@ -50,8 +50,9 @@ public class MyExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    HttpResult RuntimeExceptionHandler() {
+    @ResponseBody
+    public HttpResult RuntimeExceptionHandler(RuntimeException exception) {
+        exception.printStackTrace();
         return HttpResult.fail(ResultCode.SYSTEM_ERROR);
     }
 

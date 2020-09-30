@@ -5,9 +5,14 @@ import com.aaa.mybatisplus.util.RedisUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * description: 描述
@@ -24,8 +29,14 @@ public class TestController {
     @Autowired
     RedisUtil redisUtil;
 
+    ValueOperations<String, AdReadMonitorDTO> listOperations;
+
+    public TestController(RedisTemplate redisTemplate ) {
+        this.listOperations = redisTemplate.opsForValue();;
+    }
+
     @PostMapping("/testRedis")
-    public void testRedis(){
+    public void testRedisPushAndPop(){
         redisTemplate.opsForList().leftPush("test-tlz1", JSONObject.toJSON(new AdReadMonitorDTO(1L,1L)));
         redisTemplate.opsForList().leftPush("test-tlz2", JSONObject.toJSON(new AdReadMonitorDTO(2L,2L)));
         redisTemplate.opsForList().leftPush("test-tlz", JSONObject.toJSON(new AdReadMonitorDTO(3L,3L)));
@@ -36,7 +47,13 @@ public class TestController {
             str=   redisTemplate.opsForList().leftPop("test-tlz");
      }
 
+    }
 
+    @GetMapping("/testRedisOperations")
+    public void testRedisOperations(){
+        listOperations.set("asd",new AdReadMonitorDTO(3L,3L));
+        AdReadMonitorDTO asd = listOperations.get("asd");
+        System.out.println(asd.toString());
     }
 
 }
