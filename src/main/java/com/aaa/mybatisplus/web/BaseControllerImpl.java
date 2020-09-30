@@ -31,7 +31,7 @@ public class BaseControllerImpl  {
     public static UserDto userDto;
 
     @PostMapping ("/testStr")
-    public ResultResponse<String> testStr(@Validated @RequestBody PageDto pageDto) {
+    public ResultResponse<String> testStr(@Valid @RequestBody PageDto pageDto) {
             Map map=new HashMap();
             map.put("key","val");
             return  new ResultResponse<>("字符串");

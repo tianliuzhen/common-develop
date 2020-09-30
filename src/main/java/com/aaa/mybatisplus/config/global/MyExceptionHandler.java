@@ -63,7 +63,8 @@ public class MyExceptionHandler {
     @ResponseBody
     private HttpResult methodArgumentNotValid(MethodArgumentNotValidException exception) {
         logErrorRequest(exception);
-        return HttpResult.fail(ResultCode.INVALID_PARAM);
+        String message = exception.getBindingResult().getFieldError().getDefaultMessage();
+        return HttpResult.fail(ResultCode.INVALID_PARAM.getCode(), message);
     }
 
 

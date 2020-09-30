@@ -18,7 +18,7 @@ public class PageDto {
     @ApiModelProperty(name="current",value="当前页",required=true)
     private Integer current;
 
-    @NotNull
+    @NotNull(message = "size not null !")
     private Integer size;
 
 }
