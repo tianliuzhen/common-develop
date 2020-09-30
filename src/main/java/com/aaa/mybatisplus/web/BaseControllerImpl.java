@@ -4,8 +4,11 @@ import com.aaa.mybatisplus.annotation.Assignment;
 import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.annotation.SysTimeLog;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
+import com.aaa.mybatisplus.domain.dto.PageDto;
 import com.aaa.mybatisplus.domain.dto.UserDto;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +31,7 @@ public class BaseControllerImpl  {
     public static UserDto userDto;
 
     @PostMapping ("/testStr")
-    public ResultResponse<String> testStr() {
+    public ResultResponse<String> testStr(@Validated @RequestBody PageDto pageDto) {
             Map map=new HashMap();
             map.put("key","val");
             return  new ResultResponse<>("字符串");
