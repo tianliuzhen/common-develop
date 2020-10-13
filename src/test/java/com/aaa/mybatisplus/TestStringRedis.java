@@ -13,19 +13,23 @@ import java.util.List;
 
 /**
  * description: 描述
- *
+ * 在单个泛型代码上添加@SuppressWarnings("rawtypes")
+ * 可以跳过泛型检查，但是需要注意： 还需要在方法上添加 @SuppressWarnings("unchecked")注释
  * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
  * @date 2020/3/22
  */
 @SpringBootTest
+@SuppressWarnings("unchecked")
 public class TestStringRedis {
 
     @Autowired
+    @SuppressWarnings("rawtypes")
     RedisTemplate redisTemplate;
 
 
     @Test
+    @SuppressWarnings("rawtypes")
     public void testString() {
         redisTemplate.opsForValue().set("a","b");
         redisTemplate.opsForValue().set("b","c");
