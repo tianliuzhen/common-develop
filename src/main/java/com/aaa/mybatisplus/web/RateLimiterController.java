@@ -1,8 +1,6 @@
 package com.aaa.mybatisplus.web;
 
-import com.aaa.mybatisplus.annotation.AccessLimit;
-import com.aaa.mybatisplus.annotation.LessLog;
-import com.aaa.mybatisplus.annotation.Limit;
+import com.aaa.mybatisplus.annotation.*;
 import com.aaa.mybatisplus.domain.enums.LogType;
 import com.aaa.mybatisplus.domain.enums.LtTypeEnum;
 import com.google.common.util.concurrent.RateLimiter;
@@ -32,6 +30,7 @@ public class RateLimiterController {
 
     @LessLog(type = LogType.ALL)
     @GetMapping("/GuavaLimitRateLimiterTest")
+    @SwaggerApi1   //Swagger 用于分组1
     public String test(HttpServletRequest request){
         //设置等待超时时间的方式获取令牌，如果超timeout为0，则代表非阻塞，获取不到立即返回
         boolean tryAcquire = rateLimiter.tryAcquire(0, TimeUnit.SECONDS);

@@ -1,12 +1,10 @@
 package com.aaa.mybatisplus.config.swagger;
 
 
+import com.aaa.mybatisplus.annotation.SwaggerApi1;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,17 +48,85 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("全部接口")
                 .apiInfo(apiInfo())
                 .select()
+                /*RequestHandlerSelectors有几种扫描方式：
+                   1.basePackage：指定包扫描
+                       示例：.apis(RequestHandlerSelectors.basePackage("com.example.swagger.controller"))
+                   2.any:扫描该项目的所有请求链接
+                       示例：.apis(RequestHandlerSelectors.any())
+                   3.none：所有请求链接都不扫描
+                       示例：.apis(RequestHandlerSelectors.none())
+                   4.withClassAnnotation:通过类的注解扫描,就是类名上面的注释
+                     可以是Controller，RestController,RequestMapping,GetMapping ,PostMapping等等
+                       示例：.apis(withClassAnnotation.)
+                   5.withMethodAnnotation:通过方法的注解扫描，也就是方法上面的注解
+                     可以是RequestMapping ,GetMapping ,PostMapping等等
+                       示例：.apis(RequestHandlerSelectors.withMethodAnnotation(RequestMapping.class))
+                   一般推荐第一种，其他作为了解即可
+                */
                 //扫描包路径
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
                 .paths(PathSelectors.any())
                 .build()
+                //全局权限验证
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts());
-
         return docket;
+    }
 
+    /**
+     * 1. 根据包进行分组  这里的包是：com.aaa.mybatisplus.redis
+     */
+    @Bean
+    public Docket createApi1() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("分组接口一: 指定包名分组")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.aaa.mybatisplus.redis"))
+                .paths(PathSelectors.any())
+                .build()
+                //全局权限验证
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                ;
+    }
+    /**
+     * 2. 根据注解分组
+     */
+    @Bean
+    public Docket createApi2() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("分组接口二: 自定义注解分组")
+                .apiInfo(apiInfo())
+                .select()
+                // 注意：这里的注解要在方法上才有效果
+                .apis(RequestHandlerSelectors.withMethodAnnotation(SwaggerApi1.class))
+                .paths(PathSelectors.any())
+                .build()
+                //全局权限验证
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                ;
+    }
+    /**
+     * 3. 根据 路径 进行分组
+     */
+    @Bean
+    public Docket createApi3() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("分组接口三：路径拦截分组")
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.any())
+                .paths(PathSelectors.ant("/user/**"))
+                .build()
+                //全局权限验证
+                .securitySchemes(securitySchemes())
+                .securityContexts(securityContexts())
+                ;
     }
 
     /**
