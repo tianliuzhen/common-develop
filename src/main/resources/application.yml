@@ -1,5 +1,7 @@
 server:
   port: 8070
+  servlet:
+    context-path: /api
 spring:
   profiles:
     active: dev

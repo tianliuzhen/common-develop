@@ -7,6 +7,7 @@ import com.google.common.base.Predicates;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -36,9 +37,11 @@ import java.util.List;
 @Configuration
 //开启swagger2
 @EnableSwagger2
-//开启swagger-bootstrap-ui的增强文档
+//开启EnableKnife4j 优化swagger
 @EnableKnife4j
 @Import(BeanValidatorPluginsConfiguration.class)
+// prod: swagger.enabled=true  线上环境关闭 swagger
+@ConditionalOnProperty(name = "swagger.enabled", havingValue = "true")
 public class SwaggerConfig {
 
     @Autowired

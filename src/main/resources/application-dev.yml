@@ -101,6 +101,7 @@ swagger:
   description: 以mybatis-plus为主题整理企业级常用组件
   base-package: com.aaa
   version: 1.0.0
+  termsOfServiceUrl: http://tlzallen.top/
   contact:
     name: liuzhen.tian
     url:   http://lalala.com
