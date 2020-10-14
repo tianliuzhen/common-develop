@@ -1,70 +1,22 @@
-spring:
-  profiles:
-    active: hikariCP
-  #热部署工具配置：实际应该放到开发环境
-  devtools:
-    restart:
-      enabled: true
-      additional-paths: src/main/java
-      #spring boot devtool 热部署后出现访问404问题
-      poll-interval: 3000ms
-      quiet-period: 2999ms
-  application:
-    name: mybatis-plus
-#mybatis-plus配置控制台打印完整带参数SQL语句
-mybatis-plus:
-#  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-    typeEnumsPackage: com.aaa.mybatisplus.domain.enums
-    mapper-locations: classpath*:/mapper/**Mapper.xml
-    global-config:
-      db-config:
-        # 这里的自定义的字段是 数据库映射的实体类映射 eg： is_del =>  isDel
-        #但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。 即先查找注解再查找全局，都没有则此表没有逻辑删除。
-        logic-delete-field: isDel  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
-        logic-delete-value: 1 # 逻辑已删除值(默认为 1)
-        logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 server:
   port: 8070
+spring:
+  profiles:
+    active: dev
+  application:
+    name: mybatis-plus
 
-  workerId: 0
-  #雪花算法的数据中心id，在java 启动命令中定义，四台为0，1，2，3
-  datacenterId: 0
 
-
-#测试自定义属性 映射到yml
-dept:
-  dept-name: '部门旧名字'
-test:
-  oldName: '旧名字'
-
-#测试 springboot-yml内list、map组合写法
-# list 和 map 均有两种写法，不可同时存在，否则无法解析
-my-props:
-  varmaplist:
-    key11:
-      - t1
-      - t2
-      - t3
-    key22:
-      - t11
-      - t22
-      - t33
-  list:
-  #list 写法 1 （行内写法）
-  #    [topic1,topic2,topic3]
-  #list 写法 2
-    - topic1
-    - topic2
-    - topic3
-  maps:
-  #maps 写法 1 （行内写法）
-      #{key1: 'value1', key2: 'value2'}
-  #maps 写法 2
-    key3: value3
-    key4: value4
-
-#加密参数(加盐)
-jasypt:
-  encryptor:
-    password: 123
+#mybatis-plus配置控制台打印完整带参数SQL语句
+mybatis-plus:
+  #  configuration:
+  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  typeEnumsPackage: com.aaa.mybatisplus.domain.enums
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+  global-config:
+    db-config:
+      # 这里的自定义的字段是 数据库映射的实体类映射 eg： is_del =>  isDel
+      #但如果实体类上有 @TableLogic 则以实体上的为准，忽略全局。 即先查找注解再查找全局，都没有则此表没有逻辑删除。
+      logic-delete-field: isDel  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)

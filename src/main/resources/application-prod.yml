@@ -53,3 +53,5 @@ spring:
     mode: single
 
 
+swagger:
+  enabled: false
