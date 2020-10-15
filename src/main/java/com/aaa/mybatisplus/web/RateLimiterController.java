@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @RestController
 @RequestMapping(value = "/LimitRateTest")
+@SwaggerApi1   //Swagger 用于分组1
 public class RateLimiterController {
 
 
@@ -30,7 +31,6 @@ public class RateLimiterController {
 
     @LessLog(type = LogType.ALL)
     @GetMapping("/GuavaLimitRateLimiterTest")
-    @SwaggerApi1   //Swagger 用于分组1
     public String test(HttpServletRequest request){
         //设置等待超时时间的方式获取令牌，如果超timeout为0，则代表非阻塞，获取不到立即返回
         boolean tryAcquire = rateLimiter.tryAcquire(0, TimeUnit.SECONDS);

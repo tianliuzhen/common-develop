@@ -3,6 +3,8 @@ package com.aaa.mybatisplus.config.swagger;
 
 import com.aaa.mybatisplus.annotation.SwaggerApi1;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -20,9 +22,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * description: Swagger配置
@@ -102,8 +102,8 @@ public class SwaggerConfig {
                 .groupName("分组接口二: 自定义注解分组")
                 .apiInfo(apiInfo())
                 .select()
-                // 注意：这里的注解要在方法上才有效果
-                .apis(RequestHandlerSelectors.withMethodAnnotation(SwaggerApi1.class))
+                // 注意：这里的注解 区分方法注解和类注解
+                .apis(RequestHandlerSelectors.withClassAnnotation(SwaggerApi1.class))
                 .paths(PathSelectors.any())
                 .build()
                 //全局权限验证
@@ -113,15 +113,28 @@ public class SwaggerConfig {
     }
     /**
      * 3. 根据 路径 进行分组
+     *      简单拦截配置：   .paths(PathSelectors.ant("/user/**"))
+     *      复杂拦截配置如下：
      */
     @Bean
     public Docket createApi3() {
+
+
+        Set<Predicate<String>> excludePath = new HashSet<>();
+        excludePath.add(PathSelectors.ant("/user/findById"));
+
+        Set<Predicate<String>> basePath = new HashSet<>();
+        basePath.add(PathSelectors.ant("/user/**"));
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("分组接口三：路径拦截分组")
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.ant("/user/**"))
+                .paths(
+                        Predicates.and(
+                                Predicates.not(Predicates.or(excludePath)),
+                                Predicates.and(basePath)
+                ))
                 .build()
                 //全局权限验证
                 .securitySchemes(securitySchemes())
