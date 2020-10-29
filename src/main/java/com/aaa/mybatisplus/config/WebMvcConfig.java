@@ -37,7 +37,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Autowired
     private StringHttpMessageConverter stringHttpMessageConverter;
     @Autowired
-    private MappingJackson2HttpMessageConverter httpMessageConverter;
+    private JacksonHttpMessageConverter jacksonHttpMessageConverter;
 
     /**
      * 添加自定义的拦截器
@@ -68,7 +68,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
             }
             // 继承 WebMvcConfigurationSupport 序列化字符串问题
             if (converters.get(i) instanceof MappingJackson2HttpMessageConverter) {
-                converters.set(i, httpMessageConverter);
+                converters.set(i, jacksonHttpMessageConverter);
             }
         }
     }
@@ -96,4 +96,5 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
         super.addResourceHandlers(registry);
     }
+
 }

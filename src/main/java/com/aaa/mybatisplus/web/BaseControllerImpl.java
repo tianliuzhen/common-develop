@@ -7,6 +7,7 @@ import com.aaa.mybatisplus.annotation.SysTimeLog;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.domain.dto.PageDto;
 import com.aaa.mybatisplus.domain.dto.UserDto;
+import com.aaa.mybatisplus.domain.entity.People;
 import com.aaa.mybatisplus.domain.enums.LogType;
 import com.aaa.mybatisplus.util.CommonUtils;
 import com.aaa.mybatisplus.util.HttpContextUtils;
@@ -50,12 +51,14 @@ public class BaseControllerImpl  {
     @PostMapping ("/testInt")
     @SysLog
     @Assignment
-    public int testInt(@Valid @RequestParam("i") int i) {
+    public People testInt(@Valid @RequestParam("i") int i) {
         Map map=new HashMap();
         map.put("key","val");
         System.out.println(str);
         System.out.println(userDto);
-        return i;
+        People people = new People();
+        people.setAge(11);
+        return people;
 
     }
     @Assignment
