@@ -41,24 +41,29 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
     }
     public class NullStringJsonSerializer extends JsonSerializer<Object> {
         @Override
-        public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-            jsonGenerator.writeString(StringUtils.EMPTY);
+        public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+            jgen.writeString(StringUtils.EMPTY);
         }
     }
 
-    public class NullNumberJsonSerializer extends JsonSerializer<Object> {
+    public class NullPrimitiveSerializer extends JsonSerializer<Object> {
 
         @Override
-        public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-            jsonGenerator.writeNumber(0);
+        public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+            if (value==null) {
+                jgen.writeNull();
+            }
         }
     }
 
-    public class NullBooleanJsonSerializer extends JsonSerializer<Object> {
+    public class NullObjectJsonSerializer extends JsonSerializer<Object> {
 
         @Override
-        public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
-            jsonGenerator.writeBoolean(false);
+        public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+            if (value == null) {
+                jgen.writeStartObject();
+                jgen.writeEndObject();
+            }
         }
     }
 
@@ -73,10 +78,10 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
                 if (isArrayType(writer)) {
                     //给writer注册一个自己的nullSerializer
                     writer.assignNullSerializer(new NullArrayJsonSerializer());
-                } else if (isNumberType(writer)) {
-                    writer.assignNullSerializer(new NullNumberJsonSerializer());
-                } else if (isBooleanType(writer)) {
-                    writer.assignNullSerializer(new NullBooleanJsonSerializer());
+                } else if (isPrimitiveType(writer)) {
+                    writer.assignNullSerializer(new NullPrimitiveSerializer());
+                } else if (isObjectType(writer)) {
+                    writer.assignNullSerializer(new NullObjectJsonSerializer());
                 } else if (isStringType(writer)) {
                     writer.assignNullSerializer(new NullStringJsonSerializer());
                 }
@@ -92,20 +97,29 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
             return clazz.isArray() || Collection.class.isAssignableFrom(clazz);
         }
 
+        /**
+         * 是否是String
+         */
         private boolean isStringType(BeanPropertyWriter writer) {
             Class<?> clazz = writer.getType().getRawClass();
-            return CharSequence.class.isAssignableFrom(clazz) || Character.class.isAssignableFrom(clazz);
+            return CharSequence.class.isAssignableFrom(clazz) || clazz == String.class;
+        }
+        /**
+         * 是否是 八种基本类型 包装类
+         */
+        private boolean isPrimitiveType(BeanPropertyWriter writer) {
+            Class<?> clazz = writer.getType().getRawClass();
+            return clazz.isPrimitive();
+        }
+        /**
+         * 判断是否是对象类型
+         */
+        private boolean isObjectType(BeanPropertyWriter writer) {
+            Class<?> clazz = writer.getType().getRawClass();
+            return !clazz.isPrimitive() && !clazz.equals(String.class) && clazz.isAssignableFrom(Object.class);
         }
 
-        private boolean isNumberType(BeanPropertyWriter writer) {
-            Class<?> clazz = writer.getType().getRawClass();
-            return Number.class.isAssignableFrom(clazz);
-        }
 
-        private boolean isBooleanType(BeanPropertyWriter writer) {
-            Class<?> clazz = writer.getType().getRawClass();
-            return clazz.equals(Boolean.class);
-        }
 
     }
 
