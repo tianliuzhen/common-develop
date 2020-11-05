@@ -1,9 +1,11 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.ArgsInfo;
+import com.aaa.mybatisplus.annotation.PageAoDefault;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
 import com.aaa.mybatisplus.config.global.Shift;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
+import com.aaa.mybatisplus.domain.ao.PageAo;
 import com.aaa.mybatisplus.domain.entity.BaseMain;
 import com.aaa.mybatisplus.domain.entity.City;
 import com.aaa.mybatisplus.domain.enums.ResultCode;
@@ -79,6 +81,14 @@ public class UserController {
     @GetMapping(value = "/testParameterInfo")
     public String testParameterInfo(@ParameterInfo String id ){
         return  id;
+    }
+
+    /**
+     * @PageAoDefault 赋值参数默认值
+     */
+    @GetMapping(value = "/testPageAoDefault")
+    public String testPageAoDefault(@PageAoDefault(orderBy = "createTime") PageAo pageAo ){
+        return  pageAo.toString();
     }
 
     /**

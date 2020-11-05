@@ -1,6 +1,7 @@
 package com.aaa.mybatisplus.config;
 
 import com.aaa.mybatisplus.annotation.config.AccessLimitInterceptor;
+import com.aaa.mybatisplus.annotation.config.PageVoParameterResolver;
 import com.aaa.mybatisplus.annotation.config.ParameterInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -33,6 +34,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     private AccessLimitInterceptor accessLimitInterceptor;
     @Autowired
     private ParameterInfoInterceptor parameterInfoInterceptor;
+    @Autowired
+    private PageVoParameterResolver pageVoParameterResolver;
 
     @Autowired
     private StringHttpMessageConverter stringHttpMessageConverter;
@@ -45,6 +48,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
         argumentResolvers.add(parameterInfoInterceptor);
+        argumentResolvers.add(pageVoParameterResolver);
     }
 
     @Override
