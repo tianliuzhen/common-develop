@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * description: 描述
  *
@@ -28,5 +30,7 @@ public class People {
      */
     private City city;
 
-    private Boolean status;
+    private Boolean sss;
+
+    private List list;
 }

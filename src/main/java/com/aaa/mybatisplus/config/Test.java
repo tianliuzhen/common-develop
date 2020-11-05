@@ -7,6 +7,7 @@ package com.aaa.mybatisplus.config;
 public class Test {
     public static void main(String[] args) {
         Boolean b=false;
-        System.out.println(b.getClass().isPrimitive());
+        Integer a = 1;
+        System.out.println(a instanceof  Integer);
     }
 }

@@ -1,8 +1,10 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.PageAoDefault;
 import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.config.global.Shift;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
+import com.aaa.mybatisplus.domain.ao.PageAo;
 import com.aaa.mybatisplus.domain.dto.PageDto;
 import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
@@ -13,6 +15,7 @@ import com.aaa.mybatisplus.service.UserService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
@@ -21,7 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -43,11 +48,8 @@ public class TestCrudController {
     @ApiImplicitParam(name = "page", value = "分页参数", required = true)
     @PostMapping("/testSelectPage")
     public ResultResponse<?> testSelectPage(@RequestBody PageDto pageDto ) {
-        Page page=new Page();
+        Page<User> page=new Page();
         System.out.println("分页测试：：：");
-        if(page==null){
-             page = new Page();
-        }
         // 每页数量、当前页
         page.setSize(pageDto.getSize()).setCurrent(pageDto.getCurrent());
         // 当 total 为小于 0 或者设置 setSearchCount(false) 分页插件不会进行 count 查询
@@ -56,6 +58,25 @@ public class TestCrudController {
         users.forEach(System.out::println);
         log.info("1211");
         return  ResultResponse.success(page);
+    }
+    /**
+     *简单实现分页，排序、条件筛选
+     {
+     "pageIndex": 1,
+     "pageSize": 1,
+     "orderBy": "id",
+     "direction": "desc",
+     "condition":{"name":"tom1"}
+     }
+     */
+    @PostMapping("/testSelectPageV2")
+    public Page<User> testSelectPageV2(@RequestBody @PageAoDefault(orderBy = "createTime") PageAo pageAo ) {
+
+        Page<User> page = pageAo.getPage();
+        // 默认不忽略是空，如果忽略空加 false 即可
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>().allEq(pageAo.getCondition(), false);
+        Page<User> result = userService.page(page, queryWrapper);
+        return result;
     }
 
 
