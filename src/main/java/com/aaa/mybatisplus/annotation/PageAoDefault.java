@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD, ElementType.TYPE, ElementType.PARAMETER})
 public @interface PageAoDefault {
-    String orderBy() default "";
+    String[] orderBy() default "";
 
     String direction() default "desc";
 

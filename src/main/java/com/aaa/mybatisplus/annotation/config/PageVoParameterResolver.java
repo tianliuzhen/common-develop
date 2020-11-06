@@ -29,14 +29,14 @@ public class PageVoParameterResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         PageAoDefault pageAoDefault = parameter.getParameterAnnotation(PageAoDefault.class);
         if (pageAoDefault != null) {
-            String orderBy = pageAoDefault.orderBy();
+            String[] orderBy = pageAoDefault.orderBy();
             String direction = pageAoDefault.direction();
             int pageIndex = pageAoDefault.pageIndex();
             int pageSize = pageAoDefault.pageSize();
             PageAo pageAo = new PageAo();
             pageAo.setPageIndex(pageIndex);
             pageAo.setPageSize(pageSize);
-            if (StringUtils.isNotBlank(orderBy)) {
+            if (orderBy.length > 0) {
                 pageAo.setOrderBy(orderBy);
             }
             if (StringUtils.isNotBlank(direction)) {

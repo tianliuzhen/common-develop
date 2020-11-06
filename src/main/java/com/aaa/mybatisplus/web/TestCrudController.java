@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,9 +73,11 @@ public class TestCrudController {
     @PostMapping("/testSelectPageV2")
     public Page<User> testSelectPageV2(@RequestBody @PageAoDefault(orderBy = "createTime") PageAo pageAo ) {
 
+        // 1. 分页设置
         Page<User> page = pageAo.getPage();
-        // 默认不忽略是空，如果忽略空加 false 即可
-        QueryWrapper<User> queryWrapper = new QueryWrapper<User>().allEq(pageAo.getCondition(), false);
+        // 2. 查询条件设置
+        QueryWrapper<User> queryWrapper = pageAo.getQueryWrapper();
+
         Page<User> result = userService.page(page, queryWrapper);
         return result;
     }
