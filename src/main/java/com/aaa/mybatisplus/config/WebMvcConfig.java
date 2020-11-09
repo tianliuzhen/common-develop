@@ -28,7 +28,7 @@ import java.util.List;
  * @author liuzhen.tian  time: 2020/6/23 20:57
  */
 @Configuration
-public class WebMvcConfig extends WebMvcConfigurationSupport {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private AccessLimitInterceptor accessLimitInterceptor;
@@ -62,7 +62,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      * @return
      */
     @Override
-    protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 
         for (int i = 0; i < converters.size(); i++) {
             // 继承 WebMvcConfigurationSupport 默认编码是 ISO 这里修改为 UTF_8
@@ -72,7 +72,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
             }
             // 继承 WebMvcConfigurationSupport 序列化字符串问题
             if (converters.get(i) instanceof MappingJackson2HttpMessageConverter) {
-                converters.set(i, jacksonHttpMessageConverter);
+                // converters.set(i, jacksonHttpMessageConverter);
             }
         }
     }
@@ -89,7 +89,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
      * @param registry
      */
     @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
         registry.addResourceHandler("/swagger-ui.html")
@@ -98,7 +98,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
                 .addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
-        super.addResourceHandlers(registry);
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 
 }
