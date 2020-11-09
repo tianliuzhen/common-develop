@@ -30,7 +30,7 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
     /**
      * 处理数组类型的null值
      */
-    public class NullArrayJsonSerializer extends JsonSerializer<Object> {
+    public static class NullArrayJsonSerializer extends JsonSerializer<Object> {
         @Override
         public void serialize(Object value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
             if (value == null) {
@@ -39,14 +39,14 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
             }
         }
     }
-    public class NullStringJsonSerializer extends JsonSerializer<Object> {
+    public static class NullStringJsonSerializer extends JsonSerializer<Object> {
         @Override
         public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
             jgen.writeString(StringUtils.EMPTY);
         }
     }
 
-    public class NullPrimitiveSerializer extends JsonSerializer<Object> {
+    public static class NullPrimitiveSerializer extends JsonSerializer<Object> {
 
         @Override
         public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
@@ -56,18 +56,22 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
         }
     }
 
-    public class NullObjectJsonSerializer extends JsonSerializer<Object> {
+    public static class NullObjectJsonSerializer extends JsonSerializer<Object> {
 
         @Override
         public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
             if (value == null) {
+                jgen.writeNull();
+               /**
+                * => "city": {}
                 jgen.writeStartObject();
                 jgen.writeEndObject();
+                */
             }
         }
     }
 
-    public class MyBeanSerializerModifier extends BeanSerializerModifier {
+    public static class MyBeanSerializerModifier extends BeanSerializerModifier {
 
         @Override
         public List<BeanPropertyWriter> changeProperties(SerializationConfig config, BeanDescription beanDesc, List<BeanPropertyWriter> beanProperties) {
@@ -78,12 +82,12 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
                 if (isArrayType(writer)) {
                     //给writer注册一个自己的nullSerializer
                     writer.assignNullSerializer(new NullArrayJsonSerializer());
+                } else if (isStringType(writer)) {
+                    writer.assignNullSerializer(new NullStringJsonSerializer());
                 } else if (isPrimitiveType(writer)) {
                     writer.assignNullSerializer(new NullPrimitiveSerializer());
                 } else if (isObjectType(writer)) {
                     writer.assignNullSerializer(new NullObjectJsonSerializer());
-                } else if (isStringType(writer)) {
-                    writer.assignNullSerializer(new NullStringJsonSerializer());
                 }
             }
             return beanProperties;
@@ -116,7 +120,8 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
          */
         private boolean isObjectType(BeanPropertyWriter writer) {
             Class<?> clazz = writer.getType().getRawClass();
-            return !clazz.isPrimitive() && !clazz.equals(String.class) && clazz.isAssignableFrom(Object.class);
+
+            return !clazz.isPrimitive() && !clazz.equals(String.class) &&  Object.class.isAssignableFrom(clazz);
         }
 
 
