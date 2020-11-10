@@ -1,18 +1,13 @@
 package com.aaa.mybatisplus.redis.delay;
 
-import com.aaa.mybatisplus.util.RedisDelayingQueue;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Set;
 
 /**
  * @author liuzhen.tian
@@ -20,30 +15,7 @@ import java.util.Set;
  */
 @SpringBootTest
 public class RedisDelayTest  {
-    @Autowired
-    private RedisDelayingQueue<String> redisDelayingQueue;
 
-    @Test
-    public void  test(){
-        Thread producer = new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                redisDelayingQueue.delay("codehole" + i);
-            }
-        });
-
-        Thread consumer = new Thread(() -> {
-            redisDelayingQueue.loop();
-        });
-        producer.start();
-        consumer.start();
-        try {
-            producer.join();
-            Thread.sleep(6000);
-            consumer.interrupt();
-            consumer.join();
-        } catch (InterruptedException e) {
-        }
-    }
 
 
     @Autowired
