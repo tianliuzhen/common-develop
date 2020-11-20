@@ -1,6 +1,5 @@
 package com.aaa.mybatisplus.annotation.aspect;
 
-import com.aaa.mybatisplus.annotation.SysLog;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,8 +7,6 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import sun.reflect.generics.tree.Tree;
-
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 import java.util.Arrays;
