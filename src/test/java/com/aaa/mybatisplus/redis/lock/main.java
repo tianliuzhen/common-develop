@@ -104,4 +104,15 @@ public class main {
 
     }
 
+    @Test
+    public void test(){
+        RLock lock = null;
+        try {
+            //1. 获取锁
+            lock = redissonClient.getLock("zzz:lock");
+            lock.lock();
+        }catch (Exception e){
+
+        }
+    }
 }

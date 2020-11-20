@@ -10,13 +10,13 @@
     {
       "name": "test.age",
       "type": "java.lang.String",
-      "description":"年龄.",
+      "description": "年龄.",
       "sourceType": "com.aaa.mybatisplus.config.diy.TestProperties"
     },
     {
       "name": "test.name",
       "type": "java.lang.String",
-      "description":"名字.",
+      "description": "名字.",
       "sourceType": "com.aaa.mybatisplus.config.diy.TestProperties"
     },
     {
@@ -28,6 +28,11 @@
         "reason": "new name",
         "replacement": "替换说明"
       }
+    },
+    {
+      "name": "swagger.authorization.key-name",
+      "type": "java.lang.String",
+      "description": "Description for swagger.authorization.key-name."
     }
   ],
   "hints": []

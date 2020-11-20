@@ -25,7 +25,7 @@ public class TestLoginByCookie {
 
     @SneakyThrows
     public static void login(){
-        //1. 模拟登录
+        //1. 模拟登录  通过卖家 https://gsp.lazada-seller.cn/ 点击登录分析出 登陆的url
         BasicCookieStore cookieStore = new BasicCookieStore();
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setDefaultRequestConfig(RequestConfig.custom()
@@ -42,7 +42,8 @@ public class TestLoginByCookie {
                 "account=" + account +
                 "&password=" + password +
                 "&country=" + authorizedCountry +
-                "&redirect_url=https%3A%2F%2Fauth.lazada.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Flong201805.vicp.cc%253A9800%252Fcb%252Flazada%252Fcallback%26force_auth%3Dtrue%26client_id%3D" + appId + "%26redirect_auth%3Dtrue" +
+                // "&redirect_url=https%3A%2F%2Fauth.lazada.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Flong201805.vicp.cc%253A9800%252Fcb%252Flazada%252Fcallback%26force_auth%3Dtrue%26client_id%3D" + appId + "%26redirect_auth%3Dtrue" +
+                "&redirect_url=/" +
                 "&from=lazop_auth" +
                 "&callback=__jp1";
         HttpGet authHttp = new HttpGet(authUrl);
