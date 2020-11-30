@@ -124,9 +124,9 @@ public class TestCrudController {
     @GetMapping("/testAdds")
     public void testAdds() {
         List<User> list=new ArrayList<>();
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 1000; i++) {
             User user=new User();
-            user.setName("tom"+i);
+            user.setName("Allen"+i);
             if(i%2==0){
                 user.setAge(GenderEnum.MALE);
             }else {

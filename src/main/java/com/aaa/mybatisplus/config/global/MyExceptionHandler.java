@@ -41,6 +41,7 @@ public class MyExceptionHandler {
     private void logErrorRequest(Exception e) {
         log.error("报错API URL:{}", httpServletRequest.getRequestURL().toString());
         log.error("异常:{}", e.getMessage());
+        log.error(e.getMessage(),e);
     }
 
 
@@ -53,6 +54,8 @@ public class MyExceptionHandler {
     @ResponseBody
     public HttpResult RuntimeExceptionHandler(RuntimeException exception) {
         exception.printStackTrace();
+        //输出报错日志
+        log.error(exception.getMessage(),exception);
         return HttpResult.fail(ResultCode.SYSTEM_ERROR);
     }
 
