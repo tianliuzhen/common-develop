@@ -18,7 +18,7 @@ public class AsyncTask {
     /**
      * 异步调用第三方接口查询
      */
-    @Async
+    @Async("taskExecutor")
     public void queryTask(Entity entity, CountDownLatch countDownLatch){
         // 这里模拟测试接口
         String response = doPost(entity.getRequest());

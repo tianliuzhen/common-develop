@@ -26,7 +26,7 @@ public class AsyncServiceImpl implements AsyncService {
         List<Entity> entityList = getEntityList();
         CountDownLatch countDownLatch = new CountDownLatch(entityList.size());
         for (Entity entity : entityList) {
-            // 异步调用接口修改，增加返回值
+            // 模拟异步调用接口修改，增加返回值
             asyncTask.queryTask(entity,countDownLatch);
         }
         countDownLatch.await();

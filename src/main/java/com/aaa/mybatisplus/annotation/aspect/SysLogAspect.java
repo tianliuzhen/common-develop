@@ -41,10 +41,10 @@ public class SysLogAspect {
         HttpServletRequest request = attributes.getRequest();
 
         //记录请求内容
-        log.info("URL : "+request.getRequestURL().toString());log.info("HTTP_METHOD : " + request.getMethod());
-        log.info("IP : " + request.getRemoteAddr());
-        log.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        log.info("ARGS : " + Arrays.toString(joinPoint.getArgs()));
+        log.info("请求url : "+request.getRequestURL().toString());log.info("HTTP_METHOD : " + request.getMethod());
+        log.info("请求ip : " + request.getRemoteAddr());
+        log.info("请求方法 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        log.info("请求参数 : " + Arrays.toString(joinPoint.getArgs()));
 
     }
 

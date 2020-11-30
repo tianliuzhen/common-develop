@@ -26,11 +26,12 @@ public class SysTimeLogAspect {
 
 
     @Around("logPointCut()")
-    public void doBefore(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object doBefore(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object proceed = null;
         String beginTime = TimeUtil.getNowDateDetail();
         log.info( beginTime+" =============》方法 {}开始执行 ......", joinPoint.getSignature().getName());
         try {
-          joinPoint.proceed();
+             proceed = joinPoint.proceed();
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -38,5 +39,6 @@ public class SysTimeLogAspect {
         log.info( TimeUtil.getNowDateDetail()+" ==================》{}方法 执行结束 ......", joinPoint.getSignature().getName());
         log.info("共计用时："+TimeUtil.getTimeDifference(beginTime,endTime));
 
+        return proceed;
     }
 }

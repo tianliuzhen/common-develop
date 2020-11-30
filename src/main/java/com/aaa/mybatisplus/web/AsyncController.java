@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.annotation.SysTimeLog;
 import com.aaa.mybatisplus.domain.entity.Entity;
 import com.aaa.mybatisplus.service.AsyncService;
@@ -14,12 +15,14 @@ import java.util.List;
  * @version 1.0 AsyncController.java  2020/10/20 23:44
  */
 @RestController
+@SysLog
 public class AsyncController {
 
     @Autowired
     private AsyncService asyncService;
 
     @GetMapping("/testAsync")
+    @SysTimeLog
     public List<Entity> testAsync(){
         return asyncService.queryData();
     }
