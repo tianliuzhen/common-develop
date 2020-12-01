@@ -109,13 +109,13 @@ public class UserController {
      */
     @GetMapping("/aopChangeReturn")
     public String aopChangeReturn(@RequestParam("id") @ArgsInfo String id){
-        changeReturn(id);
-        return  id;
+        String s = changeReturn(id);
+        return  s;
     }
 
     public String changeReturn(String id) {
 
-        return id;
+        return id+"1";
     }
 
 
