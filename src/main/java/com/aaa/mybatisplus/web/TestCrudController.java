@@ -120,6 +120,16 @@ public class TestCrudController {
         System.out.println("---------");
         System.out.println(user2Service.list().size());
     }
+
+    @ApiOperation(value = "普通增加一条", notes = "")
+    @GetMapping("/insertOne")
+    public void insertOne() {
+        User user = new User();
+        // user.setId("123");
+        user.setName("123123123");
+        userMapper.insert(user);
+    }
+
     @ApiOperation(value = "批量添加")
     @GetMapping("/testAdds")
     public void testAdds() {

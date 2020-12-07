@@ -1,13 +1,13 @@
 package com.aaa.mybatisplus.config;
 
 import com.aaa.mybatisplus.config.snowflakeId.SnowflakeIdWorker;
-import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
+import com.baomidou.mybatisplus.core.incrementer.IdentifierGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
- * description: 描述
+ * 如果需要使用自定义自增id ，implements IdentifierGenerator  即可
  *
  * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class MybatisKeyGenerator implements IKeyGenerator {
+public class MybatisKeyGenerator implements IdentifierGenerator {
 
     @Value("${server.worker-id}")
     private long workerId;
@@ -24,10 +24,14 @@ public class MybatisKeyGenerator implements IKeyGenerator {
     private long dataCenterId;
 
     @Override
-    public String executeSql(String incrementerName) {
-        log.info("mybatis plus keyGenerator: " + incrementerName + "(" + workerId + "," + dataCenterId + ")");
+    public Long nextId(Object entity) {
+        //可以将当前传入的class全类名来作为bizKey,或者提取参数来生成bizKey进行分布式Id调用生成.
+        String bizKey = entity.getClass().getName();
+        //根据bizKey调用分布式ID生成
+        // long id = ....;
+        //返回生成的id值即可.
         long uid = new SnowflakeIdWorker(workerId, dataCenterId).nextId();
-        return "select " + uid + " from dual";
+        return uid;
     }
 
 }

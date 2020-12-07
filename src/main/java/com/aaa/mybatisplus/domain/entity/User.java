@@ -1,10 +1,7 @@
 package com.aaa.mybatisplus.domain.entity;
 
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.Version;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -17,11 +14,6 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-//1.枚举类如何转为json（在一个类的属性中，这个枚举类属性如何直接使用在接收参数和向数据库传递参数时需要自动转化）
-//新的版本其实这两个注解不加也可以的
-//@JSONType(serializeEnumAsJavaBean = true)
-//@JsonFormat(shape = JsonFormat.Shape.OBJECT)
-//@KeySequence(value = "mybatisKeyGenerator", clazz = String.class)
 @TableName("user")
 public class User {
 
@@ -38,13 +30,10 @@ public class User {
      * ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
      *
      * */
+
     /**
-     *
-     * 官网说： 只有 type = IdType.INPUT  时 外部自定义的主键生成器才能生效
-     * 其实 只要设置了 @KeySequence(value = "mybatisKeyGenerator", clazz = String.class)
-     * type = IdType.ASSIGN_ID  或者其他的
-     * 外部仍然可以生效
-     * 但是注意：单线程内测试是会重复id的
+     * 官网说： 只有 type = IdType.ASSIGN_ID  时 外部自定义的主键生成器才能生效
+     * 如果不设置：默认使用雪花算法+UUID(不含中划线)，即：默认 type = IdType.ASSIGN_ID
      */
     @TableId(value = "id",type = IdType.ASSIGN_ID)
     private String id;
