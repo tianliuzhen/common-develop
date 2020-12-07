@@ -22,8 +22,8 @@ spring:
         slave:
           username: root
           password: ENC(+eIhct2Lcr7qgoUIlAqgtuR55PYK4VpD1uBXS4Vn1DUko0DG/+OZbgEOYc2kSiew)
-          url: jdbc:mysql://47.98.253.2:3306/slave?characterEncoding=utf8&useSSL=false
-          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:p6spy:mysql://47.98.253.2:3306/slave?characterEncoding=utf8&useSSL=false
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
           druid:
             initial-size: 6
   redis:
@@ -51,10 +51,24 @@ spring:
     clusters: 47.98.253.2:7001,47.98.253.2:7002,47.98.253.2:7003,47.98.253.2:7004,47.98.253.2:7005,47.98.253.2:7006
     #sentinel/cluster/single
     mode: single
-server:
-  workerId: 0
-  #雪花算法的数据中心id，在java 启动命令中定义，四台为0，1，2，3
-  datacenterId: 0
+
+swagger:
+  enabled: true
+  title: mybatis-plus
+  description: 以mybatis-plus为主题整理企业级常用组件
+  base-package: com.aaa
+  version: 1.0.0
+  termsOfServiceUrl: http://tlzallen.top/
+  contact:
+    name: liuzhen.tian
+    url:   http://lalala.com
+    email: tlzAllen163.com
+  authorization:
+    key-name: Authorization
+    name: auth-token
+    auth-regex: ^.*$
+  base-path: /**
+  exclude-path: /error, /ops/**
 
 
 #测试自定义属性 映射到yml
@@ -88,27 +102,3 @@ my-props:
     #maps 写法 2
     key3: value3
     key4: value4
-
-#加密参数(加盐)
-jasypt:
-  encryptor:
-    password: 123
-
-
-swagger:
-  enabled: true
-  title: mybatis-plus
-  description: 以mybatis-plus为主题整理企业级常用组件
-  base-package: com.aaa
-  version: 1.0.0
-  termsOfServiceUrl: http://tlzallen.top/
-  contact:
-    name: liuzhen.tian
-    url:   http://lalala.com
-    email: tlzAllen163.com
-  authorization:
-    key-name: Authorization
-    name: auth-token
-    auth-regex: ^.*$
-  base-path: /**
-  exclude-path: /error, /ops/**
