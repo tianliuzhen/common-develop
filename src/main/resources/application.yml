@@ -11,8 +11,9 @@ spring:
 
 #mybatis-plus配置控制台打印完整带参数SQL语句
 mybatis-plus:
-  #  configuration:
-  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 是否要开启 mp sql输出日志
+# configuration:
+#   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   typeEnumsPackage: com.aaa.mybatisplus.domain.enums
   mapper-locations: classpath*:/mapper/**Mapper.xml
   global-config:
