@@ -12,23 +12,23 @@ spring:
       datasource:
         master:
           username: root
-          password: ENC(+eIhct2Lcr7qgoUIlAqgtuR55PYK4VpD1uBXS4Vn1DUko0DG/+OZbgEOYc2kSiew)
+          password: 123456
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-          url: jdbc:p6spy:mysql://47.98.253.2:3306/master?characterEncoding=utf8&useSSL=false
+          url: jdbc:p6spy:mysql://127.0.0.1:3306/master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
           hikari: # 以下参数针对每个库可以重新设置hikari参数
             max-pool-size:
             idle-timeout:
         #           ......
         slave:
           username: root
-          password: ENC(+eIhct2Lcr7qgoUIlAqgtuR55PYK4VpD1uBXS4Vn1DUko0DG/+OZbgEOYc2kSiew)
-          url: jdbc:p6spy:mysql://47.98.253.2:3306/slave?characterEncoding=utf8&useSSL=false
+          password: 123456
+          url: jdbc:p6spy:mysql://127.0.0.1:3306/slave?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
           druid:
             initial-size: 6
   redis:
     # Redis数据库索引（默认为0）
-    database: 13
+    database: 5
     database1: 1
     host: 127.0.0.1
     port: 6379
