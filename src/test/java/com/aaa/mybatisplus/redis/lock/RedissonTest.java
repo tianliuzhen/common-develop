@@ -9,7 +9,8 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import java.util.UUID;
+
+import java.util.Date;
 import java.util.concurrent.*;
 
 /**
@@ -18,12 +19,7 @@ import java.util.concurrent.*;
  */
 @Slf4j
 @SpringBootTest
-public class main {
-
-    @Autowired
-    // @Qualifier("redisLuaLockImplV2")
-    @Qualifier("redisLuaLockImpl")
-    RedisLuaLock redisLuaLock;
+public class RedissonTest {
 
     // 总的请求个数
     public static final int requestTotal = 20;
@@ -31,10 +27,9 @@ public class main {
     // 同一时刻最大的并发线程的个数
     public static final int concurrentThreadNum = 20;
 
+    @Qualifier("redissonClient")
     @Autowired
     private RedissonClient redissonClient;
-    @Autowired
-    private RedisLockUtil redisLockUtil;
 
     @Test
     public  void mainTest() throws InterruptedException {
@@ -45,9 +40,6 @@ public class main {
             executorService.execute(()->{
                 try {
                     semaphore.acquire();
-                    // test1
-                    // lockLuaTest();
-                    // test2
                     lockRedissonTest();
                     semaphore.release();
                 } catch (InterruptedException e) {
@@ -61,25 +53,6 @@ public class main {
         log.info("请求完成");
     }
 
-    private  void lockLuaTest() {
-        String value = UUID.randomUUID().toString();
-        try {
-            Boolean aaa = redisLuaLock.tryLock("aaa", value, 20);
-            if (!aaa) {
-                System.out.println("已经加锁，请等待！");
-            }else {
-                System.err.println("首先执行的线程");
-            }
-
-        } finally {
-            redisLuaLock.releaseLock("aaa", value);
-        }
-
-        // Boolean aaa = redisLockLua.releaseLock("aaa", UUID.randomUUID().toString());
-        // System.out.println(aaa);
-        // redisLockSet.getDistributedLock("aaa", UUID.randomUUID().toString(), 10);
-    }
-
     private void  lockRedissonTest(){
         RLock lock = null;
         try {
@@ -88,18 +61,36 @@ public class main {
             // type 1 : 阻塞锁 （不释放锁一直等待），也可设置等待时间，但是既然阻塞了这个时间，也没实际效果，就是分段续约
             // lock.lock(100, TimeUnit.SECONDS);
             // lock.lock();
+
             // type 2 : 非阻塞锁
             // 非阻塞锁，可以设置锁的执行等待时间
-            boolean b = lock.tryLock(0, 10, TimeUnit.SECONDS);
+            // 参数1：意思是最大等待时间， 参数2：
+            // 尝试加锁，最多等待3秒，上锁以后3秒自动解锁
+            boolean b = lock.tryLock(3,3, TimeUnit.SECONDS);
             if (b) {
+                System.err.println(Thread.currentThread().getId()+"true: " + new Date());
+                Thread.sleep(1000*5);
                 System.err.println("首先执行的线程");
+                try {
+                    //处理
+                    log.info("tryLock thread---{}, lock:{}", Thread.currentThread().getId(), lock);
+                } catch (Exception e) {
+                } finally {
+                    //解锁
+                    lock.unlock();
+                }
+                System.err.println(Thread.currentThread().getId()+"true: " + new Date());
+
             }else {
+                System.out.println("false: " + new Date());
                 System.out.println("已经加锁，请等待！");
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-            // lock.unlock();
+            //处理
+            //保留中断发生的证据，以便调用栈中更高层的代码能知道中断，并对中断作出响应
+            Thread.currentThread().interrupt();
         }
 
     }

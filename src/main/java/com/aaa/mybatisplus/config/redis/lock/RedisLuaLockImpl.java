@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.config.redis.lock;
 
+import com.aaa.mybatisplus.config.redis.PostponeTask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -60,6 +61,13 @@ public class RedisLuaLockImpl implements RedisLuaLock{
      */
     @Override
     public Boolean tryLock(String key,String value,Integer  time) {
+
+        // 加锁成功, 启动一个延时线程, 防止业务逻辑未执行完毕就因锁超时而使锁释放
+        PostponeTask postponeTask = new PostponeTask(key, value, time, this);
+        Thread thread = new Thread(postponeTask);
+        thread.setDaemon(Boolean.TRUE);
+        thread.start();
+
         // 封装参数
         List<String> keyList = new ArrayList();
         keyList.add(key);

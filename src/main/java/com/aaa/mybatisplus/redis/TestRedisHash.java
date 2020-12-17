@@ -49,6 +49,7 @@ public class TestRedisHash {
         testMulti();
         //测试事物写法二
         testMultiV2();
+        HashSet<Object> objects = new HashSet<>();
     }
 
     private void testMultiV2() {
