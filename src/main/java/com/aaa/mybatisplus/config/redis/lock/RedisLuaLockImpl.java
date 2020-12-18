@@ -1,6 +1,6 @@
 package com.aaa.mybatisplus.config.redis.lock;
 
-import com.aaa.mybatisplus.config.redis.PostponeTask;
+import com.aaa.mybatisplus.config.redis.DelayTask;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -10,7 +10,9 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,6 +33,8 @@ public class RedisLuaLockImpl implements RedisLuaLock{
 
     private DefaultRedisScript<Boolean> releaseLockScript;
 
+    private DefaultRedisScript<Boolean> delayScript;
+
     /**
      *默认加锁时间 10s
      */
@@ -45,6 +49,10 @@ public class RedisLuaLockImpl implements RedisLuaLock{
         releaseLockScript = new DefaultRedisScript();
         releaseLockScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("luascript/unlock.lua")));
         releaseLockScript.setResultType(Boolean.class);
+
+        delayScript = new DefaultRedisScript();
+        delayScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("luascript/delay.lua")));
+        delayScript.setResultType(Boolean.class);
     }
 
     @Override
@@ -62,21 +70,18 @@ public class RedisLuaLockImpl implements RedisLuaLock{
     @Override
     public Boolean tryLock(String key,String value,Integer  time) {
 
-        // 加锁成功, 启动一个延时线程, 防止业务逻辑未执行完毕就因锁超时而使锁释放
-        PostponeTask postponeTask = new PostponeTask(key, value, time, this);
-        Thread thread = new Thread(postponeTask);
-        thread.setDaemon(Boolean.TRUE);
-        thread.start();
-
         // 封装参数
-        List<String> keyList = new ArrayList();
-        keyList.add(key);
-        keyList.add(String.valueOf(time));
-        keyList.add(value);
+        List<String> keyList = Arrays.asList(key,String.valueOf(time),value);
         Boolean result= (Boolean)redisTemplate.execute(tryLockScript, keyList);
         // 使用下面的也可以，下面这个是基于 事务也能保证原子性，出于效率问题，还是使用lua 进行加锁。
         // Boolean result = redisTemplate.opsForValue().setIfAbsent(key, value, Long.parseLong(time), TimeUnit.SECONDS);
         log.info("redis set result："+result);
+        if (result) {
+            // 加锁成功, 启动一个延时线程, 防止业务逻辑未执行完毕就因锁超时而使锁释放
+            Thread thread = new Thread(new DelayTask(key, value, time,this));
+            thread.setDaemon(Boolean.TRUE);
+            thread.start();
+        }
         return result;
     }
 
@@ -96,5 +101,10 @@ public class RedisLuaLockImpl implements RedisLuaLock{
         return result;
     }
 
-
+    @Override
+    public Boolean delayTask(String key, String value, Integer time) {
+        List<String> keyList = Arrays.asList(key,String.valueOf(time),value);
+        Boolean result= (Boolean)redisTemplate.execute(delayScript, keyList);
+        return result;
+    }
 }

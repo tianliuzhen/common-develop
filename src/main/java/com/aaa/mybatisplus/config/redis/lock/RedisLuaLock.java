@@ -32,4 +32,13 @@ public interface RedisLuaLock {
      */
     Boolean releaseLock(String key, String value);
 
+    /**
+     * 这个操作是给业务超时的时候，续约时间。
+     * @param key   key
+     * @param value 值用于解锁时判断
+     * @param time  默认单位是 秒
+     * @return Boolean
+     */
+    Boolean delayTask(String key, String value, Integer time);
+
 }

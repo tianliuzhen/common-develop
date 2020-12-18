@@ -1,5 +1,8 @@
 package com.aaa.mybatisplus.redis;
 
+import com.aaa.mybatisplus.config.redis.DelayTask;
+import com.aaa.mybatisplus.config.redis.lock.RedisLuaLock;
+import com.aaa.mybatisplus.config.redis.lock.RedisLuaLockImplV2;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.RedissonLock;
 import org.redisson.api.RBloomFilter;
@@ -9,14 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.lang.annotation.Repeatable;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,6 +38,11 @@ public class TestRedisZLock {
 
     @Autowired
     private RedisTemplate redisTemplate;
+
+
+    @Autowired
+    @Qualifier("redisLuaLockImpl")
+    RedisLuaLock redisLuaLock;
 
 
     /**
@@ -89,6 +94,27 @@ public class TestRedisZLock {
         }
     }
 
+    @GetMapping(value = "/lockByRedisLua")
+    public String lockByRedisLua() {
+        String value = UUID.randomUUID().toString();
+        String key = "key-lockByRedisLua";
+        int time = 20;
+        if (redisLuaLock.tryLock(key, value, time)) {
+            try {
+                // 模拟业务超时时间
+                TimeUnit.SECONDS.sleep(2900);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } finally {
+                redisLuaLock.releaseLock("key-lockByRedisLua", value);
+            }
+
+            return "获取锁成功";
+        }else {
+            return "获取锁失败";
+        }
+    }
+
     /**
      * 缓存击穿指的是，
      * redis 缓存的key 在某一个瞬间失效，成千上万的请求过来，在从redis 里面没查到的情况下，
@@ -133,4 +159,6 @@ public class TestRedisZLock {
             return phone+" :不存在";
         }
     }
+
+
 }
