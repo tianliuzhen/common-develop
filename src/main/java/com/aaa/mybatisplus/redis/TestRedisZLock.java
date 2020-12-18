@@ -35,10 +35,6 @@ public class TestRedisZLock {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    /**
-     * volatile 是多线程之间，共享变量变的可见
-     */
-    private volatile List<Integer> keyList;
 
     /**
      * 测试 redisson
@@ -100,8 +96,11 @@ public class TestRedisZLock {
     @GetMapping(value = "/redisBreakdown")
     public List<Integer> redisBreakdown(){
         // keyList 采用 volatile 修饰
+        List<Integer> keyList = (List<Integer>)redisTemplate.opsForValue().get("key");
         if (keyList == null) {
             synchronized (this){
+             //双重检测锁,假使同时有5个请求进入了上一个if(null == keyList),加了锁之后one by one 的访问,
+              // 这里再次对缓存进行检测,尽一切可能防止缓存穿透的产生,但是性能会有所损失
                 keyList = (List<Integer>)redisTemplate.opsForValue().get("key");
                 if (keyList == null) {
                     //这里的 list 模拟从数据库查找的数据
@@ -109,6 +108,9 @@ public class TestRedisZLock {
                     log.info("查找数据库");
                     redisTemplate.opsForValue().set("key",list,60*12,TimeUnit.SECONDS);
                     keyList = list;
+                    System.out.println("请求的数据库。。。。。。");
+                }else {
+                    //System.out.println("请求的缓存。。。。。。");
                 }
             }
         }
