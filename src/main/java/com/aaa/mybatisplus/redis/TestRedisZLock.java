@@ -2,14 +2,18 @@ package com.aaa.mybatisplus.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.RedissonLock;
+import org.redisson.api.RBloomFilter;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.annotation.Repeatable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -115,5 +119,18 @@ public class TestRedisZLock {
             }
         }
         return keyList;
+    }
+
+    @GetMapping(value = "/bloomFilter")
+    public String redisBreakdown(@RequestParam(value = "") String phone){
+        RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter("phoneList");
+        //初始化布隆过滤器：预计元素为100000000L,误差率为3%
+        bloomFilter.tryInit(100000000L, 0.03);
+        if (bloomFilter.contains(phone)) {
+            return phone+" :已经存在";
+        }else {
+            bloomFilter.add(phone);
+            return phone+" :不存在";
+        }
     }
 }
