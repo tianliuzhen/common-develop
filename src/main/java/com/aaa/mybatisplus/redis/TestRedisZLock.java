@@ -55,11 +55,13 @@ public class TestRedisZLock {
          * case1.
          *      lock()
          *      这个是java 自带的 lock，未抢到锁直接阻塞，业务业务超时一直阻塞。
+         *      看门狗机制，30秒自动续约，默认可修改
          * case2.
          *      lock(5,TimeUnit.SECONDS);
          *      阻塞5秒内如果没获取锁，新的线程过来直接过来往下走。
+         *      因为这里设置了leaseTime，看门狗机制失效了，不会自动续约
          */
-        System.out.println("==========lock()=============tryLock()======================");
+        //  ==========lock()=============tryLock()======================
         /**
          *  tryLock 方法测试
          * 下面都是经过 jmeter 压测分析的
@@ -68,21 +70,23 @@ public class TestRedisZLock {
          *      这个是java 自带的 lock，这里未抢到锁，直接返回false
          * case2.
          *      tryLock(5, TimeUnit.SECONDS);
+         *      tryLock(long waitTime, TimeUnit unit)
          *      指定的时间内尝试获取锁，如这里5秒内新过来的线程会处于一个阻塞的状态,
          *      如果5秒还没抢到锁，直接返回 false。
-         *      tryLock(5, TimeUnit.SECONDS);
+         *      这个 waitTime 不影响看门狗自动续约，只是一个线程等待时间而已
          * case3.
          *      tryLock(5,5, TimeUnit.SECONDS);
+         *      tryLock(long waitTime, long leaseTime, TimeUnit unit)
          *      和case2. 区别 多了一个参数，第二个参数是 5秒内强制释放锁，但是5秒内仍是阻塞的状态
-         *      意思是 尝试加锁，最多等待3秒，上锁以后3秒自动解锁
+         *      意思是 尝试加锁，最多等待3秒，上锁以后3秒自动解锁,
+         *      这里设置了 leaseTime ，会导致看门狗机制失效。
          */
         RLock stock = redissonClient.getLock("stock");
-        stock.lock(5,TimeUnit.SECONDS);
-        if (true) {
+        if ( stock.tryLock(5,5,TimeUnit.SECONDS)) {
             try {
                 log.info("线程 id: " + Thread.currentThread().getId() + " 获得锁");
                 //模型业务执行时间
-                TimeUnit.SECONDS.sleep(10);
+                TimeUnit.SECONDS.sleep(40);
             }finally {
                 stock.unlock();
                 log.info("线程 id: " + Thread.currentThread().getId() + " 执行成功，执行解锁");
