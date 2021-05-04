@@ -197,6 +197,8 @@ public class TestCrudController {
     @ApiOperation(value = "测试swagger注解 =》ApiParam ")
     @GetMapping("/testApiParam")
     public String testApiParam( @ApiParam(name="id",value="普通的参数id说明",required=true) @RequestParam("id") String id ){
+        log.info("info:{}",id);
+        log.debug("debug:{}",id);
         return  "id:"+id;
     }
 

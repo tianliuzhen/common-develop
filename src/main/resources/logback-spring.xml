@@ -13,10 +13,10 @@
     <!-- 读取spring.application.name中的属性来生成日志文件名 -->
     <springProperty scope="context" name="logAppName" source="spring.application.name" defaultValue="localhost.log"/>
     <!-- 勿用${LOG_FILE}相对路径 生成目录 -->
-    <property name="LOG_HOME" value="/opt/logs/"/>
-    <appender name="TIME_FILE"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <property name="LOG_HOME" value="./logs"/>
 
+    <!--  默认的按天回滚的日志  -->
+    <appender name="FILE_DEFAULT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS}[%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
@@ -48,31 +48,38 @@
         </filter>
     </appender>
 
+
+    <!-- 配置不同环境日志级别 -->
+    <springProfile name="dev">
+        <logger name="com.aaa.mybatisplus" level="DEBUG"/>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="com.aaa.mybatisplus" level="INFO"/>
+    </springProfile>
+
+    <!-- 配置异步日志，每一个配置的 appender 需要单独的去配置异步文件-->
     <!-- 异步输出 -->
-    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <appender name="FILE_DEFAULT_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
         <discardingThreshold>0</discardingThreshold>
         <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
         <queueSize>512</queueSize>
         <!-- 添加附加的appender,最多只能添加一个 -->
-        <appender-ref ref="TIME_FILE"/>
+        <appender-ref ref="FILE_DEFAULT"/>
+    </appender>
+    <appender name="FILE_ERROR_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->
+        <queueSize>512</queueSize>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="FILE_ERROR"/>
     </appender>
 
-    <springProfile name="default">
-        <logger name="com.haoxiaec.wechat" level="DEBUG"/>
-    </springProfile>
-    <springProfile name="dev">
-        <logger name="com.haoxiaec.wechat" level="DEBUG"/>
-    </springProfile>
-    <springProfile name="pre">
-        <logger name="com.haoxiaec.wechat" level="DEBUG"/>
-    </springProfile>
-    <springProfile name="prod">
-        <logger name="com.haoxiaec.wechat" level="INFO"/>
-    </springProfile>
+    <!-- 设置日志级别 -->
     <root level="INFO">
-        <appender-ref ref="ASYNC"/>
-        <appender-ref ref="TIME_FILE"/>
-        <appender-ref ref="FILE_ERROR" />
+        <appender-ref ref="FILE_DEFAULT_ASYNC"/>
+        <appender-ref ref="FILE_ERROR_ASYNC" />
     </root>
+
 </configuration>
