@@ -53,9 +53,9 @@ public class TestWrapperQueryController {
          *    WHERE is_del = 0 AND (age IN (SELECT id FROM sax WHERE id = 1)) AND user.manager_id = 0
          */
         List<User> plainUsers1 = userMapper.selectList(new QueryWrapper<User>()
-                .inSql("age", "select id from sax where id=1 "));
+                .inSql("age", "select id from user where id=1 "));
         List<User> lambdaUsers1 = userMapper.selectList(new QueryWrapper<User>().lambda()
-                .inSql(User::getAge, "select id from sax where id=1  "));
+                .inSql(User::getAge, "select id from user where id=1  "));
 
         /**
          * 3、带嵌套查询
