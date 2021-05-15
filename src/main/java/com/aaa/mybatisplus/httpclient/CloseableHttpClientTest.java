@@ -77,4 +77,23 @@ public class CloseableHttpClientTest {
 
     }
 
+    @SneakyThrows
+    public static void doPost2() {
+        BasicCookieStore basicCookieStore = new BasicCookieStore();
+        CloseableHttpClient client = HttpClientBuilder.create().build();
+        HttpPost post = new HttpPost("https://www.thepaper.cn/www/commentPraise.msp");
+
+        // json传参
+        post.setHeader("Content-Type", "application/json;charset=UTF-8");
+        String js = "{\"scene\":\"id=1\"}";
+        StringEntity se = new StringEntity(js);
+        post.setEntity(se);
+
+        HttpResponse response = client.execute(post);
+        String res = EntityUtils.toString(response.getEntity());
+        System.out.println(res);
+        client.close();
+
+    }
+
 }
