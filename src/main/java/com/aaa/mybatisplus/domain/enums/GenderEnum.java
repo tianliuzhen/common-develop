@@ -1,6 +1,7 @@
 package com.aaa.mybatisplus.domain.enums;
 
 import com.baomidou.mybatisplus.annotation.EnumValue;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 /**
@@ -17,6 +18,10 @@ public enum  GenderEnum {
     MALE(0, "男"),
     FEMALE(1, "女"),;
 
+    /**
+     * 标记响应json值
+     */
+    @JsonValue
     private final String desc;
 
     /**

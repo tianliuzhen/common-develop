@@ -127,6 +127,7 @@ public class TestCrudController {
         User user = new User();
         // user.setId("123");
         user.setName("123123123");
+        user.setAge(GenderEnum.FEMALE);
         userMapper.insert(user);
     }
 
