@@ -44,8 +44,10 @@ public class TestWrapperQueryController {
          * 1、普通查询
          * eg:  SELECT id, name, age, email, status, manager_id, is_del FROM user WHERE is_del = 0 AND (name = 'tom20') AND user.manager_id = 0
          */
-        List<User> plainUsers = userMapper.selectList(new QueryWrapper<User>().eq("name", "tom20"));
-        List<User> lambdaUsers = userMapper.selectList(new QueryWrapper<User>().lambda().eq(User::getName,"tom21"));
+        QueryWrapper<User> wrapper = new QueryWrapper<User>().like("name", "Allen");
+        wrapper.ne("name", "Allen1");
+        List<User> plainUsers = userMapper.selectList(wrapper);
+        List<User> lambdaUsers = userMapper.selectList(new QueryWrapper<User>().lambda().eq(User::getName,"Allen1"));
         /**
          * 2、带子查询(sql注入)
          * eg:

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,4 +34,14 @@ public class People {
     private Boolean sss;
 
     private List list;
+
+    private Date date;
+
+    public People(String name, Integer age, City city, Boolean sss, List list) {
+        this.name = name;
+        this.age = age;
+        this.city = city;
+        this.sss = sss;
+        this.list = list;
+    }
 }

@@ -27,14 +27,29 @@ class UserServiceTestSpec extends Specification {
                 ))
 
         expect:
-        def result= userService.selectUserPage(input1,input2)
+        def result = userService.selectUserPage(input1, input2)
         result.getSize() == 10
-        result.records.size() ==2
+        result.records.size() == 2
 
         where:
         input1 = new Page<User>(size: 10, current: 1)
         input2 = "小三"
 
+    }
+
+    def "测试 异常"() {
+        given:
+        //准备数据
+        userService.userMapper.selectPageVo(_, _) >> {
+            throw new RuntimeException("spock 异常")
+        }
+
+        when:
+        userService.selectUserPage(null, null)
+
+        then:
+        def exception = thrown(RuntimeException.class)
+        exception.message == "spock 异常"
     }
 
 }

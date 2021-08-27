@@ -41,6 +41,24 @@ public class TimeUtil {
     }
 
     /**
+     * 获取当天最后时间
+     * @return
+     */
+    public static String getNowDateLastStr() {
+        return DateTimeFormatter.ofPattern(DEFAULT_PATTERN).format(LocalDateTime.of(LocalDate.now(), LocalTime.MAX));
+    }
+
+    /**
+     * 获取当天最后时间
+     * @return
+     */
+    public static Date getNowDateLast() {
+        Date date = Date.from(LocalDateTime.of(LocalDate.now(), LocalTime.MAX).atZone(ZoneId.systemDefault()).toInstant());
+        return date;
+    }
+
+
+    /**
      * 昨天开始时间
      * @return
      */
@@ -293,7 +311,7 @@ public class TimeUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(getYesterdayStampByMinute(10));
+        System.out.println(getNowDateLast());
     }
 
     public static String getTimeDifference(String beginTime,String endTime){

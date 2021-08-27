@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,6 +59,7 @@ public class BaseControllerImpl  {
         System.out.println(userDto);
         People people = new People();
         people.setAge(11);
+        people.setDate(new Date());
         return people;
 
     }
