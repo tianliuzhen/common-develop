@@ -51,7 +51,8 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
         @Override
         public void serialize(Object value, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
             if (value==null) {
-                jgen.writeNull();
+                // 根据自定义规则，判断 Long Integer Boolean 为空时如何初始化默认值
+                // jgen.writeNumber(0);
             }
         }
     }
@@ -113,7 +114,19 @@ public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConve
          */
         private boolean isPrimitiveType(BeanPropertyWriter writer) {
             Class<?> clazz = writer.getType().getRawClass();
-            return clazz.isPrimitive();
+            /**
+             * demo：
+             * Class booleanType=boolean.class;
+             * System.out.println("boolean is primitive type："+booleanType.isPrimitive());
+             *
+             * 结果：
+             * boolean is primitive type：true
+             *
+             * 结论：
+             * clazz.isPrimitive() == false 表示是8种基本类型包装类。
+             */
+
+            return !clazz.isPrimitive();
         }
         /**
          * 判断是否是对象类型
