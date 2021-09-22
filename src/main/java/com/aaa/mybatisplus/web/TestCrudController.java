@@ -135,7 +135,7 @@ public class TestCrudController {
     @GetMapping("/testAdds")
     public void testAdds() {
         List<User> list=new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             User user=new User();
             user.setName("Allen"+i);
             if(i%2==0){
@@ -146,7 +146,7 @@ public class TestCrudController {
             list.add(user);
         }
         User user1=new User();
-        user1.setEmail("74@qq.com").setAge(GenderEnum.FEMALE).setId("1");
+        user1.setEmail("74@qq.com").setAge(GenderEnum.FEMALE);
         //测试单个update
         //userService.updateById(user1);
         //测试批量添加

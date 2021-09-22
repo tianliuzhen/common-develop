@@ -1,5 +1,7 @@
 package com.aaa.mybatisplus.config.snowflakeId;
 
+import com.baomidou.mybatisplus.core.toolkit.Sequence;
+
 /**
  * SnowFlake简介
  *    SnowFlake的结构如下(每部分用-分开):
@@ -142,7 +144,13 @@ public class SnowflakeIdWorker {
     /** 测试 */
     public static void main(String[] args) {
         for (int i = 0; i < 5; i++) {
-            long uid = new SnowflakeIdWorker(5, 6).nextId();
+            long id = new Sequence().nextId();
+            System.out.println(id);
+        }
+        System.out.println("======================");
+        SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(5, 6);
+        for (int i = 0; i < 5; i++) {
+            long uid = snowflakeIdWorker.nextId();
             System.out.println(uid);
         }
 

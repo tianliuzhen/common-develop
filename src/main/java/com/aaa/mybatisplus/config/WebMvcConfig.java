@@ -39,8 +39,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private StringHttpMessageConverter stringHttpMessageConverter;
-    @Autowired
-    private JacksonHttpMessageConverter jacksonHttpMessageConverter;
+    // @Autowired
+    // private JacksonHttpMessageConverter jacksonHttpMessageConverter;
 
     /**
      * 添加自定义的拦截器

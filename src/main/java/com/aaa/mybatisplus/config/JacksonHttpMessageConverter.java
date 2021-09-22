@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * 使用官方自带的json格式类库，fastjson因为content type问题时不时控制台报错、无法直接返回二进制等问题
  */
-@Component
+// @Component
 public class JacksonHttpMessageConverter extends MappingJackson2HttpMessageConverter {
 
     /**
