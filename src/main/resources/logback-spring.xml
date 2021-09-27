@@ -5,15 +5,16 @@
     <jmxConfigurator/>
 
     <!--<appender name="LOGSTASH" class="com.cwbase.logback.RedisAppender">-->
-        <!--<host>localhost</host>-->
-        <!--<port>32774</port>-->
-        <!--<key>my-spring-boot-auth</key>-->
+    <!--<host>localhost</host>-->
+    <!--<port>32774</port>-->
+    <!--<key>my-spring-boot-auth</key>-->
 
     <!--</appender>-->
     <!-- 读取spring.application.name中的属性来生成日志文件名 -->
     <springProperty scope="context" name="logAppName" source="spring.application.name" defaultValue="localhost.log"/>
     <!-- 勿用${LOG_FILE}相对路径 生成目录 -->
-    <property name="LOG_HOME" value="./logs"/>
+    <!-- ${LOG_PATH} 读取的就是 application.yml 中的 logging.file.path 的值 -->
+    <property name="LOG_HOME" value="${LOG_PATH}"/>
 
     <!--  默认的按天回滚的日志  -->
     <appender name="FILE_DEFAULT" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -79,7 +80,7 @@
     <!-- 设置日志级别 -->
     <root level="INFO">
         <appender-ref ref="FILE_DEFAULT_ASYNC"/>
-        <appender-ref ref="FILE_ERROR_ASYNC" />
+        <appender-ref ref="FILE_ERROR_ASYNC"/>
     </root>
 
 </configuration>
