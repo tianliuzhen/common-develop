@@ -14,13 +14,14 @@ import java.util.concurrent.Semaphore;
 
 /**
  * @author liuzhen.tian
- * @version 1.0 RedisLuaSubtractStockTest.java  2021/11/18 22:47
+ * @version 1.0 SeckillSubtractStockTest.java  2021/11/18 22:47
  */
 @Slf4j
 @SpringBootTest
-public class RedisLuaSubtractStockTest {
+public class SeckillSubtractStockTest {
 
     public static final String IPHONE_13 = "iphone13";
+
     @Autowired
     SubtractStockByLua subtractStockByLua;
 
@@ -28,7 +29,7 @@ public class RedisLuaSubtractStockTest {
     public static final int requestTotal = 20;
 
     // 同一时刻最大的并发线程的个数
-    public static final int concurrentThreadNum = 20;
+    public static final int concurrentThreadNum = 5;
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -38,7 +39,7 @@ public class RedisLuaSubtractStockTest {
     public void mainTest() throws InterruptedException {
         // TODO: mock从db中 初始化redis数据
         // 初始化 iphone13 库存为 10
-        redisTemplate.opsForValue().set(IPHONE_13, 10);
+        redisTemplate.opsForValue().set(IPHONE_13, 100);
 
         ExecutorService executorService = Executors.newCachedThreadPool();
         CountDownLatch countDownLatch = new CountDownLatch(requestTotal);
@@ -49,7 +50,7 @@ public class RedisLuaSubtractStockTest {
                     semaphore.acquire();
 
                     // 执行抢购手机
-                    subStock(IPHONE_13, 3);
+                    subStock(IPHONE_13, 1);
 
                     semaphore.release();
                 } catch (InterruptedException e) {
@@ -70,7 +71,11 @@ public class RedisLuaSubtractStockTest {
      * @param num 购买件数
      */
     private void subStock(String key, Integer num) {
-        boolean res = subtractStockByLua.subtractStock(key, num);
+        boolean res = subtractStockByLua.subtractStockLimitNum(
+                key,
+                num,
+                "userId:" + Thread.currentThread().getId(),
+                2);
         if (res) {
             // todo： 抢到
             System.out.println(res);
