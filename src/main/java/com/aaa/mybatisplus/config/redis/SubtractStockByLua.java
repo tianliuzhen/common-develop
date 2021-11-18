@@ -8,6 +8,7 @@ import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,10 +39,11 @@ public class SubtractStockByLua {
      * 执行减库存
      *
      * @param goodsStockKey 商品库存key
+     * @param num           购买件数
      * @return boolean
      */
-    public boolean subtractStock(String goodsStockKey) {
-        List<String> keyList = Collections.singletonList(goodsStockKey);
+    public boolean subtractStock(String goodsStockKey, Integer num) {
+        List<String> keyList = Arrays.asList(goodsStockKey, String.valueOf(num));
         return (Boolean) redisTemplate.execute(tryLockScript, keyList);
     }
 

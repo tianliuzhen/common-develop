@@ -38,10 +38,6 @@ public class RedisLuaSubtractStockTest {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    @Before
-    public void initData() {
-
-    }
 
     @Test
     public void mainTest() throws InterruptedException {
@@ -58,7 +54,7 @@ public class RedisLuaSubtractStockTest {
                     semaphore.acquire();
 
                     // 执行抢购手机
-                    subStock();
+                    subStock(IPHONE_13, 3);
 
                     semaphore.release();
                 } catch (InterruptedException e) {
@@ -74,9 +70,12 @@ public class RedisLuaSubtractStockTest {
 
     /**
      * 执行减库存
+     *
+     * @param key 库存key
+     * @param num 购买件数
      */
-    private void subStock() {
-        boolean res = subtractStockByLua.subtractStock(IPHONE_13);
+    private void subStock(String key, Integer num) {
+        boolean res = subtractStockByLua.subtractStock(key, num);
         if (res) {
             // todo： 抢到
             System.out.println(res);
