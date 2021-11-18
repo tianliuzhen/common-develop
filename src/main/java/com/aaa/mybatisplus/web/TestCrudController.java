@@ -127,7 +127,7 @@ public class TestCrudController {
         User user = new User();
         // user.setId("123");
         user.setName("123123123");
-        user.setAge(GenderEnum.FEMALE);
+        user.setAge(GenderEnum.MALE);
         userMapper.insert(user);
     }
 
@@ -135,7 +135,7 @@ public class TestCrudController {
     @GetMapping("/testAdds")
     public void testAdds() {
         List<User> list=new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 200; i++) {
             User user=new User();
             user.setName("Allen"+i);
             if(i%2==0){
