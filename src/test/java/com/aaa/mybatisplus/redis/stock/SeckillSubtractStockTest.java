@@ -41,7 +41,7 @@ public class SeckillSubtractStockTest {
         // 初始化 iphone13 库存为 10
         redisTemplate.opsForValue().set(IPHONE_13, 100);
 
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newFixedThreadPool(100);
         CountDownLatch countDownLatch = new CountDownLatch(requestTotal);
         Semaphore semaphore = new Semaphore(concurrentThreadNum);
         for (int i = 0; i < requestTotal; i++) {
@@ -71,11 +71,22 @@ public class SeckillSubtractStockTest {
      * @param num 购买件数
      */
     private void subStock(String key, Integer num) {
+
+        /**
+         * 场景：
+         * 1：某个秒杀环境，需要要求每个用户总共购买 x 件。
+         * 2：某个秒杀环境，需要要求每个用户单次购买 x 件。
+         *
+         * @param goodsStockKey 商品库存key
+         * @param num           购买件数
+         * @param userId        用户id
+         * @param limitNum      限制购买件数
+         */
         boolean res = subtractStockByLua.subtractStockLimitNum(
                 key,
                 num,
                 "userId:" + Thread.currentThread().getId(),
-                2);
+                3);
         if (res) {
             // todo： 抢到
             System.out.println(res);

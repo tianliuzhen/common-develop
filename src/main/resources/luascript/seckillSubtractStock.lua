@@ -10,16 +10,16 @@ local  user_id     = KEYS[3]
 -- 限制购买件数
 local  limit_num   = KEYS[4]
 
--- 初始化
-redis.call('set', user_id, 0)
+-- 1、不存在时才会初始化购买数量为0，否则会 返回nil 无法处理
+local user_result=redis.call('setnx', user_id, 0)
 
--- 1、校验用户购买是否已经达到上限
+-- 2、校验用户购买数量，是否已经达到上限
 local userNum=redis.call('get', user_id)
 if (userNum >= limit_num) then
     return 0
 end;
 
--- 2、校验库存
+-- 3、校验购买后，库存是否充足
 local  goods_count = redis.call('get', stock_key)
 -- result = 当前库存减去购买件数
 local  result  = goods_count - num
