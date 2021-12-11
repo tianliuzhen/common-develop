@@ -1,6 +1,5 @@
 package com.aaa.mybatisplus.web.base;
 
-import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import lombok.Data;
 
 /**
@@ -10,12 +9,12 @@ import lombok.Data;
  * @version 1.0 CommonResult.java  2021/12/11 20:57
  */
 @Data
-public class CommonResult<T> {
+public class CommonResult<R> {
     private String desc;
     private String code;
-    private T data;
+    private R data;
 
-    public CommonResult(T data) {
+    public CommonResult(R data) {
         this.data = data;
         this.code = "200";
         this.desc = "success";
@@ -24,7 +23,8 @@ public class CommonResult<T> {
     public CommonResult() {
     }
 
-    public static <T> CommonResult<T> success(T data) {
-        return new CommonResult<T>(data);
+
+    public static <R extends CommonResult, T> R success(T result) {
+        return (R) new CommonResult<T>(result);
     }
 }
