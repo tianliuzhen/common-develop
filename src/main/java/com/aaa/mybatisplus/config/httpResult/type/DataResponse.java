@@ -21,7 +21,9 @@ public class DataResponse<T> extends RestfulResponse {
     @ApiModelProperty(value = "接口响应数据")
     private T data;
 
-    /** 业务成功返回业务代码,描述和返回的参数 */
+    /**
+     * 业务成功返回业务代码,描述和返回的参数
+     */
     public static <T> DataResponse<T> success(T data) {
         return new DataResponse<T>(data);
     }
