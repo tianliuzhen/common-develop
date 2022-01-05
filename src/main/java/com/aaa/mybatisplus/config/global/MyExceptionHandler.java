@@ -60,7 +60,7 @@ public class MyExceptionHandler {
     }
 
     /**
-     * 参数未通过@Valid验证异常，
+     * 参数未通过@Valid、@Validated验证异常，
      */
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
