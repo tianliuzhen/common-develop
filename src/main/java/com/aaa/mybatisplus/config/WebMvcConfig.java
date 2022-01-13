@@ -2,6 +2,7 @@ package com.aaa.mybatisplus.config;
 
 import com.aaa.mybatisplus.annotation.config.AccessLimitInterceptor;
 import com.aaa.mybatisplus.annotation.config.PageVoParameterResolver;
+import com.aaa.mybatisplus.annotation.config.ParameterInfo2Interceptor;
 import com.aaa.mybatisplus.annotation.config.ParameterInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
@@ -11,6 +12,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentResolverAdapter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -32,8 +34,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
     private AccessLimitInterceptor accessLimitInterceptor;
+
     @Autowired
     private ParameterInfoInterceptor parameterInfoInterceptor;
+
+    @Autowired
+    private ParameterInfo2Interceptor parameterInfo2Interceptor;
+
     @Autowired
     private PageVoParameterResolver pageVoParameterResolver;
 
@@ -47,8 +54,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
      */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers){
+        /**
+         * HandlerMethodArgumentResolver （推荐，spring3.1版本上新增 ）
+         */
         argumentResolvers.add(parameterInfoInterceptor);
         argumentResolvers.add(pageVoParameterResolver);
+
+        /**
+         * WebArgumentResolver （不推荐）
+         */
+        argumentResolvers.add(new ServletWebArgumentResolverAdapter(parameterInfo2Interceptor));
     }
 
     @Override

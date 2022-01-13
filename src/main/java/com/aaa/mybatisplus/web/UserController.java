@@ -3,6 +3,7 @@ package com.aaa.mybatisplus.web;
 import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.PageAoDefault;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
+import com.aaa.mybatisplus.annotation.ParameterInfo2;
 import com.aaa.mybatisplus.config.global.Shift;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.domain.ao.PageAo;
@@ -80,6 +81,11 @@ public class UserController {
 
     @GetMapping(value = "/testParameterInfo")
     public String testParameterInfo(@ParameterInfo String id ){
+        return  id;
+    }
+
+    @GetMapping(value = "/testParameterInfo2")
+    public String testParameterInfo2(@ParameterInfo2 String id ){
         return  id;
     }
 

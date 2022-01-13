@@ -10,6 +10,8 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 
 /**
+ * 在Spring 3.1.0中，ArgumentResolver现在已更改为HandlerMethodArgumentResolver-以前是WebArgumentResolver
+ *
  * @author liuzhen.tian
  * @version 1.0 2020/6/23 20:49
  */
@@ -29,9 +31,9 @@ public class ParameterInfoInterceptor implements HandlerMethodArgumentResolver {
         String value = annotation.value();
         //获取需要注入值得逻辑
         //该例子在shiro中获取userId或者用户信息
-        if (value == null || "".equalsIgnoreCase(value) || value.equalsIgnoreCase("userId")){
+        if (value == null || "".equalsIgnoreCase(value) || value.equalsIgnoreCase("userId")) {
             return "新的参数";
-        }else {
+        } else {
             return value;
 
         }
