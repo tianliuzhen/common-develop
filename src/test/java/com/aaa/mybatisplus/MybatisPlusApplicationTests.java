@@ -25,7 +25,7 @@ class MybatisPlusApplicationTests {
         System.out.println(userMapper.getOne("1"));
     }
 
-    @Test
+    // @Test
     public void resolveAnnotation(){
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MybatisPlusConfig.class);
         String[] userControllers = context.getBeanDefinitionNames();
@@ -37,7 +37,7 @@ class MybatisPlusApplicationTests {
 
 
     // 传统xml
-    @Test
+    // @Test
     public void resolveXMl(){
         //1. 创建 Spring 的 IOC 容器
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");

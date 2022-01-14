@@ -15,7 +15,7 @@ mybatis-plus:
   # configuration:
   #   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   typeEnumsPackage: com.aaa.mybatisplus.domain.enums
-  mapper-locations: classpath*:/mapper/**Mapper.xml
+  mapper-locations: classpath*:/mapper/**Mapper.xml,classpath*:/com/mapper/**/*Mapper.xml
   global-config:
     db-config:
       # 这里的自定义的字段是 数据库映射的实体类映射 eg： is_del =>  isDel
