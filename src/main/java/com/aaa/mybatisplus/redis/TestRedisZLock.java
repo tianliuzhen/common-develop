@@ -11,11 +11,14 @@ import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -43,6 +46,11 @@ public class TestRedisZLock {
     @Autowired
     @Qualifier("redisLuaLockImpl")
     RedisLuaLock redisLuaLock;
+
+    /**
+     * 布隆过滤器向量
+     */
+    private RBloomFilter<String> bloomFilter;
 
 
     /**
@@ -82,17 +90,17 @@ public class TestRedisZLock {
          *      这里设置了 leaseTime ，会导致看门狗机制失效。
          */
         RLock stock = redissonClient.getLock("stock");
-        if ( stock.tryLock(5,5,TimeUnit.SECONDS)) {
+        if (stock.tryLock(5, 5, TimeUnit.SECONDS)) {
             try {
                 log.info("线程 id: " + Thread.currentThread().getId() + " 获得锁");
                 //模型业务执行时间
                 TimeUnit.SECONDS.sleep(40);
-            }finally {
+            } finally {
                 stock.unlock();
                 log.info("线程 id: " + Thread.currentThread().getId() + " 执行成功，执行解锁");
             }
             return "获取锁成功";
-        }else {
+        } else {
             log.info("线程 id: " + Thread.currentThread().getId() + " 获取锁失败");
             return "获取锁失败";
         }
@@ -114,7 +122,7 @@ public class TestRedisZLock {
             }
 
             return "获取锁成功";
-        }else {
+        } else {
             return "获取锁失败";
         }
     }
@@ -124,26 +132,26 @@ public class TestRedisZLock {
      * redis 缓存的key 在某一个瞬间失效，成千上万的请求过来，在从redis 里面没查到的情况下，
      * 都去访问数据库，给数据库造成压力。
      * 解决方案：
-     *        采用类似单例模式的，双重检查锁进行检查。
-     *        参考:https://blog.csdn.net/hjl021/article/details/79168783
+     * 采用类似单例模式的，双重检查锁进行检查。
+     * 参考:https://blog.csdn.net/hjl021/article/details/79168783
      */
     @GetMapping(value = "/redisBreakdown")
-    public List<Integer> redisBreakdown(){
+    public List<Integer> redisBreakdown() {
         // keyList 采用 volatile 修饰
-        List<Integer> keyList = (List<Integer>)redisTemplate.opsForValue().get("key");
+        List<Integer> keyList = (List<Integer>) redisTemplate.opsForValue().get("key");
         if (keyList == null) {
-            synchronized (this){
-             //双重检测锁,假使同时有5个请求进入了上一个if(null == keyList),加了锁之后one by one 的访问,
-              // 这里再次对缓存进行检测,尽一切可能防止缓存穿透的产生,但是性能会有所损失
-                keyList = (List<Integer>)redisTemplate.opsForValue().get("key");
+            synchronized (this) {
+                //双重检测锁,假使同时有5个请求进入了上一个if(null == keyList),加了锁之后one by one 的访问,
+                // 这里再次对缓存进行检测,尽一切可能防止缓存穿透的产生,但是性能会有所损失
+                keyList = (List<Integer>) redisTemplate.opsForValue().get("key");
                 if (keyList == null) {
                     //这里的 list 模拟从数据库查找的数据
                     List<Integer> list = Arrays.asList(1, 2, 3);
                     log.info("查找数据库");
-                    redisTemplate.opsForValue().set("key",list,60*12,TimeUnit.SECONDS);
+                    redisTemplate.opsForValue().set("key", list, 60 * 12, TimeUnit.SECONDS);
                     keyList = list;
                     System.out.println("请求的数据库。。。。。。");
-                }else {
+                } else {
                     //System.out.println("请求的缓存。。。。。。");
                 }
             }
@@ -152,16 +160,26 @@ public class TestRedisZLock {
     }
 
     @GetMapping(value = "/bloomFilter")
-    public String redisBreakdown(@RequestParam(value = "") String phone){
-        RBloomFilter<String> bloomFilter = redissonClient.getBloomFilter("phoneList");
+    public String redisBreakdown(@RequestParam(defaultValue = "110") String phone) {
+        bloomFilter = Optional.ofNullable(bloomFilter)
+                .orElse(redissonClient.getBloomFilter("phoneList"));
+
         //初始化布隆过滤器：预计元素为100000000L,误差率为3%
         bloomFilter.tryInit(100000000L, 0.03);
         if (bloomFilter.contains(phone)) {
-            return phone+" :已经存在";
-        }else {
+            return phone + " :已经存在";
+        } else {
             bloomFilter.add(phone);
-            return phone+" :不存在";
+            return phone + " :不存在";
         }
+    }
+
+    // 每天凌晨2点刷新bloomFilter
+    @Scheduled(cron = "0 0 2 * * ? ")
+    @GetMapping(value = "/flashBloom")
+    public void flashBloom() {
+        // 不delete()原有旧数据还在
+        bloomFilter.delete();
     }
 
 
