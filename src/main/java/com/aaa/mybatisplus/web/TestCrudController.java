@@ -114,7 +114,7 @@ public class TestCrudController {
     @ApiOperation(value = "普通测试", notes = "")
     @GetMapping("/testSelect2")
     public void testSelect2() {
-        userService.getById(1);
+        User service = userService.getById(8903535456000409601L);
         userMapper.getAll();
         System.out.println(userService.list().size());
         System.out.println("---------");
