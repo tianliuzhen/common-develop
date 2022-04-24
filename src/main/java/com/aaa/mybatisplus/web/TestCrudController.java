@@ -20,14 +20,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -127,7 +124,7 @@ public class TestCrudController {
         User user = new User();
         // user.setId("123");
         user.setName("123123123");
-        user.setAge(GenderEnum.MALE);
+        user.setSex(GenderEnum.MALE);
         userMapper.insert(user);
     }
 
@@ -139,14 +136,14 @@ public class TestCrudController {
             User user=new User();
             user.setName("Allen"+i);
             if(i%2==0){
-                user.setAge(GenderEnum.MALE);
+                user.setSex(GenderEnum.MALE);
             }else {
-                user.setAge(GenderEnum.FEMALE);
+                user.setSex(GenderEnum.FEMALE);
             }
             list.add(user);
         }
         User user1=new User();
-        user1.setEmail("74@qq.com").setAge(GenderEnum.FEMALE);
+        user1.setEmail("74@qq.com").setSex(GenderEnum.FEMALE);
         //测试单个update
         //userService.updateById(user1);
         //测试批量添加

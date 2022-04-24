@@ -3,10 +3,11 @@ package com.aaa.mybatisplus.domain.entity;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 /**
  * description: 描述
@@ -18,19 +19,24 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 @TableName("user")
+@NoArgsConstructor
 public class User {
 
     /**
      *
-     * CREATE TABLE `user` (
-     *   `id` varchar(50) DEFAULT NULL,
-     *   `name` varchar(50) DEFAULT NULL,
-     *   `age` int(1) DEFAULT NULL,
-     *   `email` varchar(50) DEFAULT NULL,
-     *   `status` tinyint(1) NOT NULL DEFAULT '0',
-     *   `manager_id` tinyint(1) DEFAULT NULL,
-     *   `is_del` tinyint(1) NOT NULL DEFAULT '0'
-     * ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+     CREATE TABLE `user` (
+     `id` varchar(50) NOT NULL,
+     `name` varchar(50) DEFAULT NULL,
+     `age` int(11) DEFAULT NULL,
+     `sex` int(1) DEFAULT NULL,
+     `email` varchar(50) DEFAULT NULL,
+     `status` tinyint(1) NOT NULL DEFAULT '0',
+     `manager_id` tinyint(1) DEFAULT NULL,
+     `is_del` tinyint(1) NOT NULL DEFAULT '0',
+     `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+     PRIMARY KEY (`id`),
+     KEY `name` (`name`)
+     ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
      *
      * */
 
@@ -41,7 +47,8 @@ public class User {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
     private String name;
-    private GenderEnum age;
+    private GenderEnum sex;
+    private Long age;
     private String email;
 
     @Version
@@ -60,5 +67,8 @@ public class User {
 
     private LocalDateTime createTime;
 
+    public User(String id, String email) {
+        this.id = id;
+        this.email = email;
+    }
 }
-

@@ -57,8 +57,8 @@ public class TestRedisDS {
     @Cacheable(value="my-redis-cache2",cacheManager = "cacheManager",keyGenerator="allParamGenerator")
     public Object test2(){
         List<User> list = new ArrayList<>();
-        User u = new User().setAge(GenderEnum.FEMALE).setId("1");
-        User u2 = new User().setAge(GenderEnum.MALE).setId("2");
+        User u = new User().setSex(GenderEnum.FEMALE).setId("1");
+        User u2 = new User().setSex(GenderEnum.MALE).setId("2");
         list.add(u);
         list.add(u2);
         log.info("测试是否执行");

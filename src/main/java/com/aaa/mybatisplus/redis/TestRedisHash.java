@@ -73,10 +73,10 @@ public class TestRedisHash {
         List<User> list = new ArrayList<>();
         User user = new User();
         user.setId("1");
-        user.setAge(GenderEnum.FEMALE);
+        user.setSex(GenderEnum.FEMALE);
         User user2 = new User();
         user2.setId("2");
-        user2.setAge(GenderEnum.MALE);
+        user2.setSex(GenderEnum.MALE);
         list.add(user);
         list.add(user2);
         String string = JSONObject.toJSONString(list);

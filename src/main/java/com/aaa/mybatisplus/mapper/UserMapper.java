@@ -4,10 +4,7 @@ import com.aaa.mybatisplus.domain.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -34,13 +31,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return 分页对象
      */
     @Select({" select * from user where `name` LIKE  concat(concat('%',#{name}),'%')  "})
-    IPage<User>   selectPageVo(Page page, @Param("name") String name);
+    IPage<User> selectPageVo(Page page, @Param("name") String name);
 
     @Delete({" delete from user  "})
-    void  deleteAll();
+    void deleteAll();
 
 
-    @Select({ " select * from user   limit 11   " })
+    @Select({" select * from user   limit 11   "})
     List<User> getAll();
 
     /**
@@ -48,5 +45,42 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     User getOne(String id);
+
+    /**
+     * 批量更新（注解版）
+     * 注：需要配置 &allowMultiQueries=true，否则会报错
+     * <p>
+     * 如果只有一个参数可以不加 @Param("userList")
+     *
+     * @param userList userList
+     * @return Integer
+     */
+    @Update({"<script>" +
+            "<foreach collection='userList' item='item' open='' close=''  separator=';'>" +
+            " update user  set email=#{item.email} where id= #{item.id} " +
+            "</foreach> " +
+            " </script>"})
+    Integer batchUpdateUser(List<User> userList);
+
+
+    /**
+     * 批量更新（xml版）
+     * 注：需要配置 &allowMultiQueries=true，否则会报错
+     *
+     * @param userList userList
+     * @return Integer
+     */
+    Integer batchUpdateUser2(List<User> userList);
+
+    /**
+     * 批量更新（xml版）
+     * 注：需要配置 &allowMultiQueries=true，否则会报错
+     * <p>
+     * 使用case，when最后会变成一条sql语句，但是每次都得去遍历list集合，数据量大了会影响效率问题
+     *
+     * @param userList userList
+     * @return Integer
+     */
+    Integer batchUpdateUser3(@Param("userList")List<User> userList);
 }
 

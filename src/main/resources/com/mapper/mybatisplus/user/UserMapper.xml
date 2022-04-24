@@ -3,7 +3,46 @@
 <mapper namespace="com.aaa.mybatisplus.mapper.UserMapper">
 
     <select id="getOne" resultType="com.aaa.mybatisplus.domain.entity.User">
-        select * from  user limit 1
+        select * from  `user` limit 1
 
     </select>
+
+    <update id="batchUpdateUser2">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update `user`
+            <set>
+                <if test="item.email != null and item.email != ''">
+                    email = #{item.email},
+                </if>
+                <if test="item.age != null and item.age != ''">
+                    age = #{item.age},
+                </if>
+            </set>
+            where id = #{item.id}
+        </foreach>
+    </update>
+
+    <update id="batchUpdateUser3" parameterType="java.util.List">
+        update `user`
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="email =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.email!=null and i.email!= ''">
+                        when id=#{i.id} then #{i.email}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="age =case" suffix="end,">
+                <foreach collection="list" item="i" index="index">
+                    <if test="i.age!=null">
+                        when id=#{i.id} then #{i.age}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="list" separator="or" item="i" index="index" >
+            id=#{i.id}
+        </foreach>
+    </update>
 </mapper>
