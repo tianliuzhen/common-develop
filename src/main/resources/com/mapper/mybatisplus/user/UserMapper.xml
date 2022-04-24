@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aaa.mybatisplus.mapper.UserMapper">
 
+
     <select id="getOne" resultType="com.aaa.mybatisplus.domain.entity.User">
         select * from  `user` limit 1
 
@@ -41,8 +42,23 @@
             </trim>
         </trim>
         where
-        <foreach collection="list" separator="or" item="i" index="index" >
+        <foreach collection="list" separator="or" item="i" index="index">
             id=#{i.id}
         </foreach>
     </update>
+
+    <insert id="batchAddUser">
+        INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`)
+        VALUES
+        <foreach collection="userList" item="user" separator=",">
+            (#{user.id},#{user.name},#{user.age},#{user.sex},#{user.email},#{user.status},#{user.isDel},#{user.createTime})
+        </foreach>
+    </insert>
+
+    <insert id="batchAddUser2">
+        <foreach collection="userList" item="user" separator=";">
+        INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`)
+        VALUES  (#{user.id},#{user.name},#{user.age},#{user.sex},#{user.email},#{user.status},#{user.isDel},#{user.createTime})
+        </foreach>
+    </insert>
 </mapper>

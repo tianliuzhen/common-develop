@@ -74,7 +74,7 @@ public interface UserMapper extends BaseMapper<User> {
 
     /**
      * 批量更新（xml版）
-     * 注：需要配置 &allowMultiQueries=true，否则会报错
+     * 注：***不需要***配置 &allowMultiQueries=true
      * <p>
      * 使用case，when最后会变成一条sql语句，但是每次都得去遍历list集合，数据量大了会影响效率问题
      *
@@ -82,5 +82,24 @@ public interface UserMapper extends BaseMapper<User> {
      * @return Integer
      */
     Integer batchUpdateUser3(@Param("userList")List<User> userList);
+
+
+    /**
+     * 批量插入
+     * 注：***不需要***配置 &allowMultiQueries=true
+     *
+     * @param userList userList
+     * @return Integer
+     */
+    Integer batchAddUser(List<User> userList);
+
+    /**
+     * 批量插入2
+     * 注：需要配置 &allowMultiQueries=true
+     *
+     * @param userList userList
+     * @return Integer
+     */
+    Integer batchAddUser2(List<User> userList);
 }
 

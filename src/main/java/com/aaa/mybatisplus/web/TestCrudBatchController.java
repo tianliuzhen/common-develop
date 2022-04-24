@@ -1,6 +1,7 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.domain.entity.User;
+import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +24,7 @@ public class TestCrudBatchController {
     private UserMapper userMapper;
 
     /**
-     * 基于注解
+     * 批量更新：基于注解
      */
     @PostMapping("/batchUpdateUser")
     public void batchUpdateUser() {
@@ -34,7 +36,7 @@ public class TestCrudBatchController {
     }
 
     /**
-     * 基于xml （普通for）
+     * 批量更新：基于xml （普通for）
      */
     @PostMapping("/batchUpdateUser2")
     public void batchUpdateUser2() {
@@ -48,7 +50,7 @@ public class TestCrudBatchController {
     }
 
     /**
-     * 基于xml （case when）
+     * 批量更新：基于xml （case when）
      */
     @PostMapping("/batchUpdateUser3")
     public void batchUpdateUser3() {
@@ -56,6 +58,30 @@ public class TestCrudBatchController {
                 new User("1", "123@qq.com"),
                 new User("2", "456@qq.com"));
         Integer res = userMapper.batchUpdateUser3(users);
+        System.out.println("res = " + res);
+    }
+
+    /**
+     * 批量新增：基于xml （for）
+     */
+    @PostMapping("/batchAddUser")
+    public void batchAddUser() {
+        ArrayList<User> users = Lists.newArrayList(
+                new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
+                new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
+        Integer res = userMapper.batchAddUser(users);
+        System.out.println("res = " + res);
+    }
+
+    /**
+     * 批量新增：基于xml （for）
+     */
+    @PostMapping("/batchAddUser2")
+    public void batchAddUser2() {
+        ArrayList<User> users = Lists.newArrayList(
+                new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
+                new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
+        Integer res = userMapper.batchAddUser2(users);
         System.out.println("res = " + res);
     }
 }

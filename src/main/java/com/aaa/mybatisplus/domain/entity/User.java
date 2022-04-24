@@ -2,6 +2,7 @@ package com.aaa.mybatisplus.domain.entity;
 
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.baomidou.mybatisplus.annotation.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("user")
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     /**
