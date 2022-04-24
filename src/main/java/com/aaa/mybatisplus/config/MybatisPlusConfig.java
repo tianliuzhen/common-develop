@@ -64,6 +64,35 @@ public class MybatisPlusConfig {
         return paginationInterceptor;
     }*/
 
+    /**
+     * 新多租户插件配置,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存万一出现问题
+     */
+    // @Bean
+    // public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    //     MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+    //     interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
+    //
+    //         @Override
+    //         public String getTenantIdColumn() {
+    //             return "manager_id";
+    //         }
+    //
+    //         @Override
+    //         public Expression getTenantId() {
+    //             return new LongValue(0);
+    //         }
+    //
+    //         // 这是 default 方法,默认返回 false 表示所有表都需要拼多租户条件
+    //         @Override
+    //         public boolean ignoreTable(String tableName) {
+    //             return !"user".equalsIgnoreCase(tableName);
+    //         }
+    //     }));
+    //     // 如果用了分页插件注意先 add TenantLineInnerInterceptor 再 add PaginationInnerInterceptor
+    //     // 用了分页插件必须设置 MybatisConfiguration#useDeprecatedExecutor = false
+    //     // interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+    //     return interceptor;
+    // }
 
     @Bean
     public PaginationInterceptor paginationInterceptor() {
@@ -76,11 +105,7 @@ public class MybatisPlusConfig {
         List<ISqlParser> sqlParserList = new ArrayList<>();
         sqlParserList.add(new BlockAttackSqlParser());
 
-        /**
-         * 2、【测试多租户】 SQL 解析处理拦截器<br>
-         * 传入的值一般都是配置文件 静态变量或者session中取出
-         * 意思就是在你的所有的sql 加一个条件 即是 where  AND user.manager_id = 0
-         */
+
         TenantSqlParser tenantSqlParser = new TenantSqlParser();
         tenantSqlParser.setTenantHandler(new TenantHandler() {
             @Override
@@ -123,19 +148,17 @@ public class MybatisPlusConfig {
     }
 
 
-
     /**
      * 乐观锁插件
      * 当要更新一条记录的时候，希望这条记录没有被别人更新
      * 乐观锁实现方式：
-     *     取出记录时，获取当前version
-     *     更新时，带上这个version
-     *     执行更新时， set version = newVersion where version = oldVersion
-     *     如果version不对，就更新失败
-     *     乐观锁配置需要2步 记得两步
-     *     1.插件配置
-     *     2.注解实体字段 @Version 必须要!
-     *
+     * 取出记录时，获取当前version
+     * 更新时，带上这个version
+     * 执行更新时， set version = newVersion where version = oldVersion
+     * 如果version不对，就更新失败
+     * 乐观锁配置需要2步 记得两步
+     * 1.插件配置
+     * 2.注解实体字段 @Version 必须要!
      *
      * @return com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor
      */
