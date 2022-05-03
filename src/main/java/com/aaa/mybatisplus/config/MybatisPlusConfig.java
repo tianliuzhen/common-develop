@@ -33,6 +33,7 @@ import java.util.List;
 @MapperScan("com.aaa.mybatisplus.mapper*")
 @Slf4j
 public class MybatisPlusConfig {
+    int a=1 ;
 
   /*  @Bean
     public PaginationInterceptor paginationInterceptor() {
