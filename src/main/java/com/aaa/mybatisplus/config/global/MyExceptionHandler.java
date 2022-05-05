@@ -23,6 +23,7 @@ import java.util.Map;
 
 /**
  * 自定义异常处理器
+ *
  * @author liuzhen.tian
  * @version 1.0 MyExceptionHandler.java  2020/9/14 10:36
  */
@@ -41,7 +42,7 @@ public class MyExceptionHandler {
     private void logErrorRequest(Exception e) {
         log.error("报错API URL:{}", httpServletRequest.getRequestURL().toString());
         log.error("异常:{}", e.getMessage());
-        log.error(e.getMessage(),e);
+        log.error(e.getMessage(), e);
     }
 
 
@@ -55,8 +56,8 @@ public class MyExceptionHandler {
     public HttpResult RuntimeExceptionHandler(RuntimeException exception) {
         exception.printStackTrace();
         //输出报错日志
-        log.error(exception.getMessage(),exception);
-        return HttpResult.fail(ResultCode.SYSTEM_ERROR);
+        log.error(exception.getMessage(), exception);
+        return HttpResult.fail(ResultCode.SYSTEM_ERROR.getCode(), exception.getMessage());
     }
 
     /**

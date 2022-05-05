@@ -4,7 +4,7 @@ package com.aaa.mybatisplus.web.base;
  * @author liuzhen.tian
  * @version 1.0 AbstractExecuteCallBack.java  2021/12/11 21:10
  */
-public abstract class AbstractExecuteCallBack<Q, T> {
+public abstract class AbstractExecuteCallBack<Q, R> {
     /**
      * 执行参数校验，默认不校验
      *
@@ -18,5 +18,5 @@ public abstract class AbstractExecuteCallBack<Q, T> {
      * @param request 请求值
      * @return T 返回值类型
      */
-    public abstract T execute(Q request);
+    public abstract R execute(Q request);
 }
