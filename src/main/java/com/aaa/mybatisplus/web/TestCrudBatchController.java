@@ -1,16 +1,22 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.SysTimeLog;
 import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.aaa.mybatisplus.mapper.UserMapper;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author liuzhen.tian
@@ -22,6 +28,9 @@ import java.util.ArrayList;
 public class TestCrudBatchController {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
 
     /**
      * 批量更新：基于注解
@@ -62,26 +71,77 @@ public class TestCrudBatchController {
     }
 
     /**
-     * 批量新增：基于xml （for）
+     * 批量新增：基于xml （foreach insert values）
      */
     @PostMapping("/batchAddUser")
+    @SysTimeLog
     public void batchAddUser() {
         ArrayList<User> users = Lists.newArrayList(
                 new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
                 new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
-        Integer res = userMapper.batchAddUser(users);
-        System.out.println("res = " + res);
+        List<User> users1 = getUsers(20000);
+        userMapper.batchAddUser(users1);
     }
 
     /**
-     * 批量新增：基于xml （for）
+     * 批量新增：基于xml （foreach insert）
      */
+    @SysTimeLog
     @PostMapping("/batchAddUser2")
     public void batchAddUser2() {
         ArrayList<User> users = Lists.newArrayList(
                 new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
                 new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
-        Integer res = userMapper.batchAddUser2(users);
-        System.out.println("res = " + res);
+        List<User> users1 = getUsers(10000);
+        // Integer res = userMapper.batchAddUser2(users1);
+        // 批量执行插入
+        List<User> usersTemp = Lists.newArrayList();
+        for (int i = 0; i < users1.size(); i++) {
+            usersTemp.add(users1.get(i));
+            if (i % 500 == 0) {
+                userMapper.batchAddUser2(users1);
+                usersTemp.clear();
+            }
+        }
+    }
+
+    /**
+     * 批量新增：基于xml （批处理）
+     * <p>
+     * 设置ExecutorType.BATCH原理：把SQL语句发个数据库，数据库预编译好，
+     * 数据库等待需要运行的参数，接收到参数后一次运行，
+     * ExecutorType.BATCH只打印一次SQL语句，多次设置参数步骤，
+     * <p>
+     * 也是官方针对批量数据插入优化的方法之一
+     */
+    @PostMapping("/batchAddUser3")
+    public void batchAddUser3() {
+        StopWatch stopWatch = new StopWatch("batchAddUser3");
+        stopWatch.start();
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+            UserMapper mapper = sqlSession.getMapper(UserMapper.class);
+
+            List<User> users = getUsers(10000);
+            for (User user : users) {
+                mapper.insert(user);
+            }
+            sqlSession.commit();
+        } finally {
+            sqlSession.close();
+        }
+        stopWatch.stop();
+        double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
+        System.out.println("totalTimeSeconds = " + totalTimeSeconds);
+        System.out.println(stopWatch.prettyPrint());
+    }
+
+    private List<User> getUsers(int count) {
+        List result = Lists.newArrayList();
+        for (int i = 0; i < count; i++) {
+            result.add(new User(i + "", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, null, 1, LocalDateTime.now()));
+        }
+        return result;
     }
 }
