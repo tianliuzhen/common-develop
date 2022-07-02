@@ -61,4 +61,9 @@
         VALUES  (#{user.id},#{user.name},#{user.age},#{user.sex},#{user.email},#{user.status},#{user.isDel},#{user.createTime})
         </foreach>
     </insert>
+
+    <insert id="insertUser" parameterType="com.aaa.mybatisplus.domain.entity.User">
+        INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`)
+        VALUES (#{id},#{name},#{age},#{sex},#{email},#{status},#{isDel},#{createTime})
+    </insert>
 </mapper>

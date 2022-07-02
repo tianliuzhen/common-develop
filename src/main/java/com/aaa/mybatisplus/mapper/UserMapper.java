@@ -81,7 +81,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @param userList userList
      * @return Integer
      */
-    Integer batchUpdateUser3(@Param("userList")List<User> userList);
+    Integer batchUpdateUser3(@Param("userList") List<User> userList);
 
 
     /**
@@ -101,5 +101,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return Integer
      */
     Integer batchAddUser2(List<User> userList);
+
+    /**
+     * 单个插入
+     *
+     * @param user user
+     * @return Integer
+     */
+    Integer insertUser(User user);
 }
 

@@ -1,8 +1,10 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysTimeLog;
+import com.aaa.mybatisplus.domain.entity.Dept;
 import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
+import com.aaa.mybatisplus.mapper.DeptMapper;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -28,6 +30,9 @@ import java.util.List;
 public class TestCrudBatchController {
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private DeptMapper deptMapper;
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
@@ -143,5 +148,23 @@ public class TestCrudBatchController {
             result.add(new User(i + "", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, null, 1, LocalDateTime.now()));
         }
         return result;
+    }
+
+    @PostMapping("/addUser")
+    public void addUser() {
+        for (int i = 0; i < 5; i++) {
+            User user = new User();
+            user.setId(i + "");
+            user.setStatus(1);
+            user.setIsDel(1);
+            userMapper.insertUser(user);
+        }
+    }
+
+    @PostMapping("/addDept")
+    public void addDept() {
+        for (int i = 0; i < 5; i++) {
+            deptMapper.insertDept(new Dept(null, "aaa", i));
+        }
     }
 }
