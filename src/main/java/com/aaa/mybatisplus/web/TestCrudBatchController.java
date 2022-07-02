@@ -161,10 +161,12 @@ public class TestCrudBatchController {
         }
     }
 
-    @PostMapping("/addDept")
-    public void addDept() {
+    @PostMapping("/returnInsertKey")
+    public void returnInsertKey() {
         for (int i = 0; i < 5; i++) {
-            deptMapper.insertDept(new Dept(null, "aaa", i));
+            Dept aaa = new Dept(null, "aaa", i);
+            deptMapper.insertDept4(aaa);
+            System.out.println(aaa);
         }
     }
 }

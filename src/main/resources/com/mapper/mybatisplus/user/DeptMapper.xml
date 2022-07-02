@@ -2,8 +2,31 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.aaa.mybatisplus.mapper.DeptMapper">
 
-    <insert id="insertDept" >
+    <!--  keyProperty="id" useGeneratedKeys="true" 添加这俩个属性就能返回主键id   -->
+    <insert id="insertDept" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `dept`(`id`, `dept_name`, `dept_no`)
         VALUES (#{id},#{deptName},#{deptNo})
+
+    </insert>
+
+    <insert id="insertDept2">
+        /**
+            order="BEFORE" : BEFORE是先查最近插入一条的id，在进行插入。
+                此时插入会报错：报主键冲突 Duplicate entry '122' for key 'PRIMARY'
+            order="AFTER" : BEFORE是先查最近插入一条的id，在进行插入。
+                此时插入正常了
+            resultType="long" 要和主键类型保持一致，否则依然会报错
+        */
+        <selectKey keyProperty="id" order="AFTER" resultType="long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        INSERT INTO `dept`(`id`, `dept_name`, `dept_no`)
+        VALUES (#{id},#{deptName},#{deptNo})
+
+    </insert>
+
+    <insert id="insertDept3" >
+        INSERT INTO `dept`(`id`, `dept_name`, `dept_no`) VALUES (#{id},#{deptName},#{deptNo})
     </insert>
 </mapper>
