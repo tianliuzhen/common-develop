@@ -84,7 +84,7 @@ public class TestCrudBatchController {
         ArrayList<User> users = Lists.newArrayList(
                 new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
                 new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
-        List<User> users1 = getUsers(20000);
+        List<User> users1 = getUsers(100);
         userMapper.batchAddUser(users1);
     }
 

@@ -48,7 +48,7 @@
     </update>
 
     <insert id="batchAddUser">
-        INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`)
+        INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`, `is_del`, `create_time`)
         VALUES
         <foreach collection="userList" item="user" separator=",">
             (#{user.id},#{user.name},#{user.age},#{user.sex},#{user.email},#{user.status},#{user.isDel},#{user.createTime})
@@ -57,8 +57,9 @@
 
     <insert id="batchAddUser2">
         <foreach collection="userList" item="user" separator=";">
-        INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`)
-        VALUES  (#{user.id},#{user.name},#{user.age},#{user.sex},#{user.email},#{user.status},#{user.isDel},#{user.createTime})
+            INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`, `is_del`, `create_time`)
+            VALUES
+            (#{user.id},#{user.name},#{user.age},#{user.sex},#{user.email},#{user.status},#{user.isDel},#{user.createTime})
         </foreach>
     </insert>
 
@@ -66,4 +67,29 @@
         INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`)
         VALUES (#{id},#{name},#{age},#{sex},#{email},#{status},#{isDel},#{createTime})
     </insert>
+
+    <!--
+    常用于insert、update语句中
+    trim属性主要有以下四个：
+    prefix：在trim标签内sql语句加上前缀
+    suffix：在trim标签内sql语句加上后缀
+    prefixOverrides：指定去除多余的前缀内容，如：prefixOverrides=“AND | OR”，去除trim标签内sql语句多余的前缀"and"或者"or"。
+    suffixOverrides：指定去除多余的后缀内容。
+    -->
+    <update id="updateUserByCondition" parameterType="hashmap">
+        update `user` set
+        <trim suffixOverrides=",">
+            <if test="name !=null and name !='' ">
+                name = #{name} ,
+            </if>
+            <if test="email !=null and email !='' ">
+                email = #{email},
+            </if>
+            <if test="age !=null and age !=0 ">
+                age = #{age},
+            </if>
+        </trim>
+        where id=#{id}
+
+    </update>
 </mapper>

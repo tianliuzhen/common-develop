@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description: 描述
@@ -109,5 +110,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return Integer
      */
     Integer insertUser(User user);
+
+    /**
+     * 单个插入
+     *
+     * @param map
+     * @return Integer
+     */
+    Integer updateUserByCondition(Map<Object, Object> map);
 }
 
