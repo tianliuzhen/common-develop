@@ -179,25 +179,50 @@ public class TestCrudBatchController {
     }
 
     /**
+     * 声明式事务
      * 用数据库 for update nowait 实现排他锁
-     *
-     * @throws InterruptedException
      */
     @GetMapping("/lockByForUpdateNowait")
     @Transactional(rollbackFor = Exception.class)
-    public void lockByForUpdateNowait() throws InterruptedException {
+    public void lockByForUpdateNowait() {
         try {
             deptMapper.lockByForUpdateNowait(1234L);
             TimeUnit.SECONDS.sleep(10);
         } catch (Exception e) {
-            // e.printStackTrace();
+            e.printStackTrace();
             throw new BizException("当前请求正在执行，稍后再试！", 200);
         }
 
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void doSelect() {
+    /**
+     * 编程式事务
+     * 用数据库 for update nowait 实现排他锁
+     */
+    @GetMapping("/lockByForUpdateNowaitV2")
+    public void lockByForUpdateNowaitV2() {
+        transactionTemplate.executeWithoutResult(status -> {
+            try {
+                deptMapper.lockByForUpdateNowait(1234L);
+                TimeUnit.SECONDS.sleep(10);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new BizException("当前请求正在执行，稍后再试！", 200);
+            }
+        });
+    }
 
+    /**
+     * for update 脱离事务是无效的
+     */
+    @GetMapping("/lockByForUpdateNowaitV3")
+    public void lockByForUpdateNowaitV3() {
+        try {
+            deptMapper.lockByForUpdateNowait(1234L);
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException("当前请求正在执行，稍后再试！", 200);
+        }
     }
 }
