@@ -38,4 +38,7 @@ public interface DeptMapper extends BaseMapper<Dept> {
     Integer insertDept4(Dept dept);
 
     Dept lockByForUpdateNowait(Long deptNo);
+
+
+    Dept lockByForUpdate(Long deptNo);
 }

@@ -33,4 +33,8 @@
     <select id="lockByForUpdateNowait" resultType="com.aaa.mybatisplus.domain.entity.Dept">
     select * from dept where dept_no = #{deptNo} for update nowait
     </select>
+
+    <select id="lockByForUpdate" resultType="com.aaa.mybatisplus.domain.entity.Dept">
+    select * from dept where dept_no = #{deptNo} for update ;
+    </select>
 </mapper>

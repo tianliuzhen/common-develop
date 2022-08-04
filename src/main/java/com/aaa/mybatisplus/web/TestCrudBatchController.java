@@ -188,6 +188,25 @@ public class TestCrudBatchController {
 
     /**
      * 声明式事务
+     * 用数据库 for update  实现排他锁
+     */
+    @GetMapping("/lockByForUpdate")
+    @Transactional(rollbackFor = Exception.class)
+    public void lockByForUpdate() {
+        try {
+            System.out.println(Thread.currentThread().getId()+": 竞争锁...");
+            deptMapper.lockByForUpdate(1234L);
+            System.out.println(Thread.currentThread().getId()+": 抢锁成功...");
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new BizException("当前请求正在执行，稍后再试！", 200);
+        }
+
+    }
+
+    /**
+     * 声明式事务
      * 用数据库 for update nowait 实现排他锁
      */
     @GetMapping("/lockByForUpdateNowait")
@@ -219,6 +238,8 @@ public class TestCrudBatchController {
             }
         });
     }
+
+
 
     /**
      * for update 脱离事务是无效的
