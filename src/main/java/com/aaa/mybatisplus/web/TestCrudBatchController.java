@@ -12,6 +12,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StopWatch;
@@ -44,6 +47,11 @@ public class TestCrudBatchController {
 
     @Autowired
     private TransactionTemplate transactionTemplate;
+
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
+    @Autowired
+    private TransactionDefinition transactionDefinition;
 
     /**
      * 批量更新：基于注解
@@ -223,6 +231,21 @@ public class TestCrudBatchController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new BizException("当前请求正在执行，稍后再试！", 200);
+        }
+    }
+
+    @GetMapping("/platformTransactionManager")
+    public void platformTransactionManager() {
+        TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
+        try {
+            Dept aaa = new Dept(null, "aaa", 1919);
+            deptMapper.insertDept4(aaa);
+            // 模拟异常
+            int a = 1 / 0;
+            platformTransactionManager.commit(transaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+            platformTransactionManager.rollback(transaction);
         }
     }
 }
