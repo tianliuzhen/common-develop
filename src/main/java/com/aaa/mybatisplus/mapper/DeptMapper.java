@@ -36,4 +36,6 @@ public interface DeptMapper extends BaseMapper<Dept> {
     @Insert(value = " INSERT INTO `dept`(`id`, `dept_name`, `dept_no`) VALUES (#{id},#{deptName},#{deptNo})")
     @SelectKey(statement = "SELECT LAST_INSERT_ID()", keyProperty = "id", before = false, resultType = Long.class)
     Integer insertDept4(Dept dept);
+
+    Dept lockByForUpdateNowait(Long deptNo);
 }

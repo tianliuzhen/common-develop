@@ -11,11 +11,11 @@
 
     <insert id="insertDept2">
         /**
-            order="BEFORE" : BEFORE是先查最近插入一条的id，在进行插入。
-                此时插入会报错：报主键冲突 Duplicate entry '122' for key 'PRIMARY'
-            order="AFTER" : BEFORE是先查最近插入一条的id，在进行插入。
-                此时插入正常了
-            resultType="long" 要和主键类型保持一致，否则依然会报错
+        order="BEFORE" : BEFORE是先查最近插入一条的id，在进行插入。
+        此时插入会报错：报主键冲突 Duplicate entry '122' for key 'PRIMARY'
+        order="AFTER" : BEFORE是先查最近插入一条的id，在进行插入。
+        此时插入正常了
+        resultType="long" 要和主键类型保持一致，否则依然会报错
         */
         <selectKey keyProperty="id" order="AFTER" resultType="long">
             SELECT LAST_INSERT_ID()
@@ -26,7 +26,11 @@
 
     </insert>
 
-    <insert id="insertDept3" >
+    <insert id="insertDept3">
         INSERT INTO `dept`(`id`, `dept_name`, `dept_no`) VALUES (#{id},#{deptName},#{deptNo})
     </insert>
+
+    <select id="lockByForUpdateNowait" resultType="com.aaa.mybatisplus.domain.entity.Dept">
+    select * from dept where dept_no = #{deptNo} for update nowait
+    </select>
 </mapper>

@@ -1,6 +1,7 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysTimeLog;
+import com.aaa.mybatisplus.config.global.exceptions.BizException;
 import com.aaa.mybatisplus.domain.entity.Dept;
 import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
@@ -11,7 +12,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StopWatch;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author liuzhen.tian
@@ -36,6 +41,9 @@ public class TestCrudBatchController {
 
     @Autowired
     private SqlSessionFactory sqlSessionFactory;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     /**
      * 批量更新：基于注解
@@ -168,5 +176,28 @@ public class TestCrudBatchController {
             deptMapper.insertDept4(aaa);
             System.out.println(aaa);
         }
+    }
+
+    /**
+     * 用数据库 for update nowait 实现排他锁
+     *
+     * @throws InterruptedException
+     */
+    @GetMapping("/lockByForUpdateNowait")
+    @Transactional(rollbackFor = Exception.class)
+    public void lockByForUpdateNowait() throws InterruptedException {
+        try {
+            deptMapper.lockByForUpdateNowait(1234L);
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e) {
+            // e.printStackTrace();
+            throw new BizException("当前请求正在执行，稍后再试！", 200);
+        }
+
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void doSelect() {
+
     }
 }

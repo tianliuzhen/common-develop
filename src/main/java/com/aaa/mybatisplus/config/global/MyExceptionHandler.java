@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.config.global;
 
+import com.aaa.mybatisplus.config.global.exceptions.BizException;
 import com.aaa.mybatisplus.config.global.exceptions.DemoException;
 import com.aaa.mybatisplus.config.global.exceptions.LimitException;
 import com.aaa.mybatisplus.config.httpResult.HttpResult;
@@ -118,6 +119,17 @@ public class MyExceptionHandler {
         logErrorRequest(exception);
         return HttpResult.fail(exception.getErrorCode(), exception.getErrorMsg());
     }
+
+    /**
+     * 业务层异常
+     */
+    @ExceptionHandler(BizException.class)
+    @ResponseBody
+    private HttpResult serviceExceptionHandler(BizException exception) {
+        logErrorRequest(exception);
+        return HttpResult.fail(exception.getErrorCode(), exception.getErrorMsg());
+    }
+
 
     /**
      * 限流异常
