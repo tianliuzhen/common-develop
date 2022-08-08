@@ -5,14 +5,14 @@ import com.aaa.mybatisplus.annotation.config.PageVoParameterResolver;
 import com.aaa.mybatisplus.annotation.config.ParameterInfo2Interceptor;
 import com.aaa.mybatisplus.annotation.config.ParameterInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import org.springframework.web.servlet.config.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ServletWebArgumentResolverAdapter;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -63,7 +63,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         /**
          * WebArgumentResolver （不推荐）
          */
-        argumentResolvers.add(new ServletWebArgumentResolverAdapter(parameterInfo2Interceptor));
+        // argumentResolvers.add(new ServletWebArgumentResolverAdapter(parameterInfo2Interceptor));
     }
 
     @Override

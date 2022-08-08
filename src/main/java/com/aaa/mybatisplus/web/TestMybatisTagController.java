@@ -1,5 +1,7 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.annotation.Lock;
+import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,20 @@ public class TestMybatisTagController {
         hashMap.put("age", 0L);
         userMapper.updateUserByCondition(hashMap);
     }
+
+
+    @GetMapping(value = "/testLock")
+    @Lock(prefix = "biz_123", suffix = "#id")
+    public String testLock(String id) {
+        return id;
+    }
+
+    @GetMapping(value = "/testLock2")
+    @Lock(prefix = "biz_123", suffix = "#user.id")
+    public String testLock2(User user) {
+        return "null";
+    }
+
 }
 
 
