@@ -29,7 +29,8 @@ import java.lang.reflect.Method;
 public class LockAspect {
 
     // 定义切点
-    @Pointcut("execution(* com.aaa.mybatisplus.web..*.*(..))")
+    // @Pointcut("execution(* com.aaa.mybatisplus.web..*.*(..))")
+    @Pointcut("@within(com.aaa.mybatisplus.annotation.Lock) || @annotation(com.aaa.mybatisplus.annotation.Lock)")
     public void pointCut() {
     }
 

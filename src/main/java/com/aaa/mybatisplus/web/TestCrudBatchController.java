@@ -14,7 +14,6 @@ import org.assertj.core.util.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StopWatch;
@@ -255,18 +254,4 @@ public class TestCrudBatchController {
         }
     }
 
-    @GetMapping("/platformTransactionManager")
-    public void platformTransactionManager() {
-        TransactionStatus transaction = platformTransactionManager.getTransaction(transactionDefinition);
-        try {
-            Dept aaa = new Dept(null, "aaa", 1919);
-            deptMapper.insertDept4(aaa);
-            // 模拟异常
-            int a = 1 / 0;
-            platformTransactionManager.commit(transaction);
-        } catch (Exception e) {
-            e.printStackTrace();
-            platformTransactionManager.rollback(transaction);
-        }
-    }
 }
