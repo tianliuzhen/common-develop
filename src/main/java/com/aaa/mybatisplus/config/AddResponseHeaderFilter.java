@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.config;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -12,7 +13,7 @@ import java.io.IOException;
  * @author liuzhen.tian
  * @version 1.0 AddResponseHeaderFilter.java  2022/8/11 21:39
  */
-// @Component
+@Component
 public class AddResponseHeaderFilter extends OncePerRequestFilter {
 
     @Override
