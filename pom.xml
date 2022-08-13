@@ -158,6 +158,12 @@
             <groupId>org.springframework.retry</groupId>
             <artifactId>spring-retry</artifactId>
         </dependency>
+
+        <!--
+        spring aop用这个依赖就行了，
+        或者用<artifactId>spring-boot-starter-aop</artifactId>
+        不需要再添加aspectjweaver的依赖了，因为spring-boot-starter-aop包含了aspectjweaver
+         -->
         <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
@@ -185,7 +191,8 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <!-- 这是spring boot devtool plugin -->
-            <plugin> <groupId>org.springframework.boot</groupId>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <!--fork : 如果没有该项配置，肯呢个devtools不会起作用，即应用不会restart -->
