@@ -4,6 +4,7 @@ import com.aaa.mybatisplus.annotation.ArgsInfo;
 import com.aaa.mybatisplus.annotation.PageAoDefault;
 import com.aaa.mybatisplus.annotation.ParameterInfo;
 import com.aaa.mybatisplus.annotation.ParameterInfo2;
+import com.aaa.mybatisplus.annotation.task.StartTaskRun;
 import com.aaa.mybatisplus.config.global.Shift;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.domain.ao.PageAo;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -124,5 +126,11 @@ public class UserController {
         return id+"1";
     }
 
+    @StartTaskRun(businessType = 5)
+    @StartTaskRun(businessType = 6)
+    @GetMapping("/startTaskRun")
+    public void startTaskRun() {
+        System.out.println();
+    }
 
 }
