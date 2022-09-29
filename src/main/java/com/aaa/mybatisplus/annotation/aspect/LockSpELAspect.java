@@ -26,7 +26,7 @@ import java.lang.reflect.Method;
 
 @Aspect
 @Component
-public class LockAspect {
+public class LockSpELAspect {
 
     // 定义切点
     // @Pointcut("execution(* com.aaa.mybatisplus.web..*.*(..))")
