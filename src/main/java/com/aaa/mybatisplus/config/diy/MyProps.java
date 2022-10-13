@@ -1,9 +1,8 @@
 package com.aaa.mybatisplus.config.diy;
 
+import com.aaa.mybatisplus.domain.entity.City;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,6 +22,7 @@ public class MyProps {
 
     private List<String> list;
 
+    private List<City> cityList;
 
     private Map<String,String> maps;
 

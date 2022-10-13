@@ -7,6 +7,7 @@ import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.aaa.mybatisplus.mapper.DeptMapper;
 import com.aaa.mybatisplus.mapper.UserMapper;
+import com.aaa.mybatisplus.service.UserService;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -39,6 +40,9 @@ public class TestCrudBatchController {
     private UserMapper userMapper;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private DeptMapper deptMapper;
 
     @Autowired
@@ -51,6 +55,19 @@ public class TestCrudBatchController {
     private PlatformTransactionManager platformTransactionManager;
     @Autowired
     private TransactionDefinition transactionDefinition;
+
+
+    /**
+     * 批量更新：基于注解
+     */
+    @GetMapping("/batchUpdateUser22")
+    public void batchUpdateUser22() {
+        ArrayList<User> users = Lists.newArrayList(
+                new User("1", "123@qq.com"),
+                new User("2", "456@qq.com"));
+        boolean b = userService.saveOrUpdateBatch(users);
+        System.out.println("b = " + b);
+    }
 
     /**
      * 批量更新：基于注解

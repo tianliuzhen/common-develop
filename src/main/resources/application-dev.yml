@@ -96,9 +96,19 @@ my-props:
     - topic1
     - topic2
     - topic3
+#  #复杂类型 写法1
+#  cityList:
+#    - cityName: 杭州
+#      cityCode: 100001
+#    - cityName: 上海
+#      cityCode: 100002
+#  #复杂类型 写法2
+  cityList[0]:
+    cityName: 杭州
+    cityCode: 100001
   maps:
-    #maps 写法 1 （行内写法）
-    #{key1: 'value1', key2: 'value2'}
-    #maps 写法 2
+#    maps 写法 1 （行内写法）
+#    {key1: 'value1', key2: 'value2'}
+#    maps 写法 2
     key3: value3
     key4: value4
