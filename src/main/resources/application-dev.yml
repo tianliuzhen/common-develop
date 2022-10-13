@@ -84,31 +84,28 @@ my-props:
     key11:
       - t1
       - t2
-      - t3
     key22:
       - t11
       - t22
-      - t33
-  list:
-    #list 写法 1 （行内写法）
-    #    [topic1,topic2,topic3]
-    #list 写法 2
-    - topic1
-    - topic2
-    - topic3
-#  #复杂类型 写法1
-#  cityList:
+  list:   #list 写法 1 （行内写法）
+   [topic1,topic2,topic3]
+#  list: #list 写法 2
+#    - topic1
+#    - topic2
+#    - topic3
+
+#  cityList: #复杂类型 写法1
 #    - cityName: 杭州
 #      cityCode: 100001
 #    - cityName: 上海
 #      cityCode: 100002
-#  #复杂类型 写法2
-  cityList[0]:
+
+  cityList[0]:  #复杂类型 写法2
     cityName: 杭州
     cityCode: 100001
-  maps:
-#    maps 写法 1 （行内写法）
-#    {key1: 'value1', key2: 'value2'}
-#    maps 写法 2
-    key3: value3
-    key4: value4
+
+  maps: # maps 写法 1 （行内写法）
+    {key1: 'value1', key2: 'value2'}
+#  maps: # maps 写法 2
+#    key3: value3
+#    key4: value4
