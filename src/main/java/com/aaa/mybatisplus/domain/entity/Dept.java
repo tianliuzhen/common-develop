@@ -27,4 +27,5 @@ public class Dept {
     private Long id;
     private String deptName;
     private Integer deptNo;
+
 }

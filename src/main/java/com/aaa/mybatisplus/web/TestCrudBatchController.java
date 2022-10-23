@@ -184,13 +184,22 @@ public class TestCrudBatchController {
 
     @PostMapping("/addUser")
     public void addUser() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             User user = new User();
-            user.setId(i + "");
             user.setStatus(1);
-            user.setIsDel(1);
+            user.setIsDel(0);
+            user.setOnlineTime(LocalDateTime.now());
             userMapper.insertUser(user);
         }
+    }
+
+    @PostMapping("/getOneUser")
+    public void getOneUser() {
+        // mybatis
+        userMapper.getOne("1");
+        // mybatis-plus (自定义typeHandle 无法生效)
+        userMapper.selectById("1");
+
     }
 
     @PostMapping("/returnInsertKey")
@@ -210,9 +219,9 @@ public class TestCrudBatchController {
     @Transactional(rollbackFor = Exception.class)
     public void lockByForUpdate() {
         try {
-            System.out.println(Thread.currentThread().getId()+": 竞争锁...");
+            System.out.println(Thread.currentThread().getId() + ": 竞争锁...");
             deptMapper.lockByForUpdate(1234L);
-            System.out.println(Thread.currentThread().getId()+": 抢锁成功...");
+            System.out.println(Thread.currentThread().getId() + ": 抢锁成功...");
             TimeUnit.SECONDS.sleep(10);
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,7 +263,6 @@ public class TestCrudBatchController {
             }
         });
     }
-
 
 
     /**

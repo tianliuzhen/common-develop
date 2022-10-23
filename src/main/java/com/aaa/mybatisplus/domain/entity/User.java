@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.domain.entity;
 
+import com.aaa.mybatisplus.config.typeHandler.TimeConvertHandler;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Accessors(chain = true)
-@TableName("user")
+// 在注解@TableName中增加autoResultMap = true表示使用xml中的映射配置
+@TableName(value = "user", autoResultMap = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -36,6 +38,7 @@ public class User {
      `manager_id` tinyint(1) DEFAULT NULL,
      `is_del` tinyint(1) NOT NULL DEFAULT '0',
      `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+     `online_time` bigint DEFAULT NULL COMMENT '上线时间',
      PRIMARY KEY (`id`),
      KEY `name` (`name`)
      ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
@@ -69,8 +72,26 @@ public class User {
 
     private LocalDateTime createTime;
 
+    /**
+     * 上线时间
+     */
+    @TableField(typeHandler = TimeConvertHandler.class)
+    private LocalDateTime onlineTime;
+
     public User(String id, String email) {
         this.id = id;
         this.email = email;
+    }
+
+    public User(String id, String name, GenderEnum sex, Long age, String email, Integer status, Integer managerId, Integer isDel, LocalDateTime createTime) {
+        this.id = id;
+        this.name = name;
+        this.sex = sex;
+        this.age = age;
+        this.email = email;
+        this.status = status;
+        this.managerId = managerId;
+        this.isDel = isDel;
+        this.createTime = createTime;
     }
 }
