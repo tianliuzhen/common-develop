@@ -15,7 +15,10 @@ mybatis-plus:
   # configuration:
   #   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   typeEnumsPackage: com.aaa.mybatisplus.domain.enums
+  #  mapper文件扫描地址
   mapper-locations: classpath*:/mapper/**Mapper.xml,classpath*:/com/mapper/**/*Mapper.xml
+  #  配置文件扫描地址
+  config-location: classpath:mybatis.xml
   # 自定义TypeHandler的注册（这个不是配置别名的意思）
   type-handlers-package: com.aaa.mybatisplus.config.typeHandler
   # 返回type别名配置扫描
@@ -27,7 +30,6 @@ mybatis-plus:
       logic-delete-field: isDel  #全局逻辑删除字段值 3.3.0开始支持，详情看下面。
       logic-delete-value: 1 # 逻辑已删除值(默认为 1)
       logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
-
 ---
 server:
   workerId: 0

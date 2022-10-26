@@ -8,6 +8,8 @@ import com.aaa.mybatisplus.domain.enums.GenderEnum;
 import com.aaa.mybatisplus.mapper.DeptMapper;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -201,6 +203,19 @@ public class TestCrudBatchController {
         userMapper.selectById("1");
 
     }
+
+    @PostMapping("/getAllUserByPage")
+    public void getAllUserByPage() {
+        PageHelper.startPage(1, 10);
+        List<User> users = userMapper.selectList(null);
+        PageInfo<User> userPageInfo = new PageInfo<>(users);
+        System.out.println(userPageInfo.getPageNum());  // 获取当前页码
+        System.out.println(userPageInfo.getPageSize());  // 获取页面长度
+        System.out.println(userPageInfo.getNextPage());  // 获取下一页页码
+        System.out.println(userPageInfo.getPages());  // 获取页数
+        System.out.println(userPageInfo.getTotal());  // 获取数据数量
+    }
+
 
     @PostMapping("/returnInsertKey")
     public void returnInsertKey() {
