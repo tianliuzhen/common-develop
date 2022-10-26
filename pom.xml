@@ -35,6 +35,20 @@
             <version>3.4.1</version>
         </dependency>
 
+        <!--  mybatis-plus-boot-starter 包含下面了俩个依赖   -->
+        <!--
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+            <version>3.5.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+        -->
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
@@ -175,6 +189,21 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>5.3.2</version>
+        </dependency>
+
+        <!-- tkMapper-->
+        <!-- https://mvnrepository.com/artifact/tk.mybatis/mapper-spring-boot-starter -->
+        <!--  <dependency>
+              <groupId>tk.mybatis</groupId>
+              <artifactId>mapper-spring-boot-starter</artifactId>
+              <version>2.1.5</version>
+          </dependency>-->
+
+        <!-- https://mvnrepository.com/artifact/tk.mybatis/mapper -->
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>4.2.2</version>
         </dependency>
 
 

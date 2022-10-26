@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 等效于  @tk.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper2")   -->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.aaa.mybatisplus.mapper2"/>
+    </bean>
+
+    <!-- 等效于 @org.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper")   -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.aaa.mybatisplus.mapper"/>
+    </bean>
+
+    <bean id="commonBean" class="com.aaa.mybatisplus.web.base.CommonBean"/>
+
+</beans>
