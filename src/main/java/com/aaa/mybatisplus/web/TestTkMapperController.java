@@ -6,12 +6,14 @@ import com.aaa.mybatisplus.web.base.CommonBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.Setter;
+import org.assertj.core.util.Lists;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,9 +32,11 @@ public class TestTkMapperController {
 
     @PostMapping("/insert")
     public Object insert() {
-        empTkMapper.insert(new Emp(5L, "x", 1L, 1));
+        Emp emp = new Emp(null, "x", 1L, 1);
+        empTkMapper.insert(emp);
 
-        return null;
+        // 返回新增的主键id
+        return emp.getId();
     }
 
     @PostMapping("/update")
@@ -49,6 +53,25 @@ public class TestTkMapperController {
         empTkMapper.updateByPrimaryKeySelective(emp);
 
         return null;
+    }
+
+
+    @PostMapping("/insertList")
+    public Object insertList() {
+        Emp aaa = new Emp(null, "aaa", 20L, 1);
+        Emp bbb = new Emp(null, "bbb", 20L, 1);
+        ArrayList<Emp> recordList = Lists.newArrayList(aaa, bbb);
+        empTkMapper.batchInsert(recordList);
+        return recordList;
+    }
+
+    @PostMapping("/updateList")
+    public Object updateList() {
+        Emp aaa = new Emp(10L, "xx", 20L, 1);
+        Emp bbb = new Emp(11L, "xx", 20L, 1);
+        ArrayList<Emp> recordList = Lists.newArrayList(aaa, bbb);
+        empTkMapper.batchUpdateByPrimary(recordList);
+        return recordList;
     }
 
     @PostMapping("/selectByExample")

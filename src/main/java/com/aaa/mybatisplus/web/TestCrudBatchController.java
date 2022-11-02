@@ -198,7 +198,7 @@ public class TestCrudBatchController {
     @PostMapping("/getOneUser")
     public void getOneUser() {
         // mybatis
-        userMapper.getOne("1");
+        // userMapper.getOne("1");
         // mybatis-plus (自定义typeHandle 无法生效)
         userMapper.selectById("1");
 

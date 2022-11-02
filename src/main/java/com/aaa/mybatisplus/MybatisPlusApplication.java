@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 // 原生的扫描
 @org.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper")
 // tkMapper的扫描
-// @tk.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper2")
+@tk.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper2")
 @ImportResource(locations={"classpath:spring-common.xml"})
 @EnableAsync
 @EnableScheduling
