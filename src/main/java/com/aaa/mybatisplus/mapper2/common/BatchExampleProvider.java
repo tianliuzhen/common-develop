@@ -104,8 +104,9 @@ public class BatchExampleProvider extends ExampleProvider {
         sql.append("</trim>");
         sql.append("</foreach>");
 
-        // 反射把MappedStatement中的设置主键名
+        // 反射把MappedStatement中的设置主键名，也就是支持返回主键id
         EntityHelper.setKeyProperties(EntityHelper.getPKColumns(entityClass), ms);
+
         return sql.toString();
     }
 }
