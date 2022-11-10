@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <context id="Tables" targetRuntime="MyBatis3">
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            <property name="caseSensitive" value="true"/>
+            <property name="forceAnnotation" value="true"/>
+            <property name="beginningDelimiter" value="`"/>
+            <property name="endingDelimiter" value="`"/>
+        </plugin>
+
+        <!--数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3301/master?characterEncoding=utf8&amp;useSSL=false&amp;serverTimezone=Asia/Shanghai&amp;allowMultiQueries=true"
+                        userId="root"
+                        password="123456">
+        </jdbcConnection>
+
+        <!--生成实体类 指定包名 以及生成的地址  -->
+        <javaModelGenerator targetPackage="com.aaa.mybatisplus.domain.entity"
+                            targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- mapper映射文件 -->
+        <sqlMapGenerator targetPackage="mapper.tk"
+                         targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\resources">
+            <property name="enableSubPackages" value="false"/>
+        </sqlMapGenerator>
+        <!-- xml -->
+        <javaClientGenerator  targetPackage="com.aaa.mybatisplus.mapper2"
+                             targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\java"
+                              type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!--对应数据库表 mysql可以加入主键自增 字段命名 忽略某字段等 -->
+        <table tableName="sys_user_one" domainObjectName="UserOne"
+               enableCountByExample="false"
+               enableUpdateByExample="false"
+               enableDeleteByExample="false"
+               enableSelectByExample="false"
+               selectByExampleQueryId="false" />
+
+    </context>
+</generatorConfiguration>
+
