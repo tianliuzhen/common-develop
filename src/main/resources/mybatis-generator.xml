@@ -6,9 +6,11 @@
 <generatorConfiguration>
     <context id="Tables" targetRuntime="MyBatis3">
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!--  参考：https://github.com/abel533/Mapper/wiki/4.1.mappergenerator    -->
             <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
             <property name="caseSensitive" value="true"/>
             <property name="forceAnnotation" value="true"/>
+            <!--  tk注解数据库字段的半角符号 -->
             <property name="beginningDelimiter" value="`"/>
             <property name="endingDelimiter" value="`"/>
         </plugin>
@@ -33,9 +35,9 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
         <!-- xml -->
-        <javaClientGenerator  targetPackage="com.aaa.mybatisplus.mapper2"
+        <javaClientGenerator targetPackage="com.aaa.mybatisplus.mapper2"
                              targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\java"
-                              type="XMLMAPPER">
+                             type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
@@ -45,7 +47,7 @@
                enableUpdateByExample="false"
                enableDeleteByExample="false"
                enableSelectByExample="false"
-               selectByExampleQueryId="false" />
+               selectByExampleQueryId="false"/>
 
     </context>
 </generatorConfiguration>
