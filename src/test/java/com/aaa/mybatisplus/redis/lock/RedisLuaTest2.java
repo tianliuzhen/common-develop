@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.*;
 
 /**
  * @author liuzhen.tian
@@ -19,7 +16,7 @@ import java.util.concurrent.Semaphore;
  */
 @Slf4j
 @SpringBootTest
-public class RedisLuaTest {
+public class RedisLuaTest2 {
 
     @Autowired
     // @Qualifier("redisLuaLockImplV2")
@@ -37,17 +34,15 @@ public class RedisLuaTest {
     public void mainTest() throws InterruptedException {
         ExecutorService executorService = Executors.newCachedThreadPool();
         CountDownLatch countDownLatch = new CountDownLatch(requestTotal);
-        Semaphore semaphore = new Semaphore(concurrentThreadNum);
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(concurrentThreadNum);
         for (int i = 0; i < requestTotal; i++) {
             executorService.execute(() -> {
                 try {
-                    semaphore.acquire();
-                    // test1
+                    log.info(Thread.currentThread().getName() + "：到达栅栏");
+                    cyclicBarrier.await();
+                    log.info(Thread.currentThread().getName() + "：冲破栅栏");
                     lockLuaTest();
-                    // test2
-                    // lockRedissonTest();
-                    semaphore.release();
-                } catch (InterruptedException e) {
+                } catch (InterruptedException | BrokenBarrierException e){
                     log.error("exception", e);
                 }
                 countDownLatch.countDown();
