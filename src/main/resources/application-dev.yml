@@ -70,6 +70,12 @@ swagger:
   base-path: /**
   exclude-path: /error, /ops/**
 
+knife4j:
+  basic:
+    enable: true
+    password: 123456
+    username: admin
+
 
 #测试自定义属性 映射到yml
 dept:

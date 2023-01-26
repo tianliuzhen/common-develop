@@ -43,7 +43,7 @@ public class TestCrudController {
     private User2Service user2Service;
 
     @ApiOperation(value = "分页测试", notes = "插件测试")
-    @ApiImplicitParam(name = "page", value = "分页参数", required = true)
+    @ApiImplicitParam(name = "pageDto", value = "分页参数", required = true)
     @PostMapping("/testSelectPage")
     public ResultResponse<?> testSelectPage(@RequestBody PageDto pageDto ) {
         Page<User> page=new Page();

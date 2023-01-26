@@ -3,10 +3,7 @@ package com.aaa.mybatisplus.config.swagger;
 
 import com.aaa.mybatisplus.annotation.SwaggerApi1;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,12 +19,17 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.ApiKeyVehicle;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * description: Swagger配置
  * 原生的ui：http://localhost:8070/swagger-ui.html  （新版  knife4j 已经去除原生ui这个接口）
  * 美化后的ui：http://localhost:8070/doc.html
+ *
  * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
  * @date 2019-12-20
@@ -93,6 +95,7 @@ public class SwaggerConfig {
                 .securityContexts(securityContexts())
                 ;
     }
+
     /**
      * 2. 根据注解分组
      */
@@ -111,18 +114,19 @@ public class SwaggerConfig {
                 .securityContexts(securityContexts())
                 ;
     }
+
     /**
      * 3. 根据 路径 进行分组
-     *      简单拦截配置：   .paths(PathSelectors.ant("/user/**"))
-     *      复杂拦截配置如下：
+     * 简单拦截配置：   .paths(PathSelectors.ant("/user/**"))
+     * 复杂拦截配置如下：
      */
     @Bean
     public Docket createApi3() {
-
-
+        // 排除接口
         Set<Predicate<String>> excludePath = new HashSet<>();
         excludePath.add(PathSelectors.ant("/user/findById"));
 
+        // 包含接口
         Set<Predicate<String>> basePath = new HashSet<>();
         basePath.add(PathSelectors.ant("/user/**"));
         return new Docket(DocumentationType.SWAGGER_2)
@@ -130,11 +134,8 @@ public class SwaggerConfig {
                 .apiInfo(apiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(
-                        Predicates.and(
-                                Predicates.not(Predicates.or(excludePath)),
-                                Predicates.and(basePath)
-                ))
+                .paths(basePath.iterator().next())
+                .paths(excludePath.iterator().next())
                 .build()
                 //全局权限验证
                 .securitySchemes(securitySchemes())
@@ -161,20 +162,20 @@ public class SwaggerConfig {
                         swaggerProperties.getContact().getName(),
                         swaggerProperties.getContact().getUrl(),
                         swaggerProperties.getContact().getEmail()
-                        ))
+                ))
                 .build();
     }
 
     /**
      * 配置基于 ApiKey 的鉴权对象
      */
-    private List<ApiKey> securitySchemes() {
-        List<ApiKey> apiKeys = new ArrayList<>();
-        apiKeys.add(new ApiKey(
+    private List<SecurityScheme> securitySchemes() {
+        List<SecurityScheme> securitySchemes = new ArrayList<>();
+        securitySchemes.add(new ApiKey(
                 swaggerProperties.getAuthorization().getName(),
                 swaggerProperties.getAuthorization().getKeyName(),
                 ApiKeyVehicle.HEADER.getValue()));
-        return apiKeys;
+        return securitySchemes;
     }
 
     /**
@@ -185,7 +186,7 @@ public class SwaggerConfig {
         List<SecurityContext> securityContexts = new ArrayList<>();
         securityContexts.add(SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex( swaggerProperties.getAuthorization().getAuthRegex())).build());
+                .forPaths(PathSelectors.regex(swaggerProperties.getAuthorization().getAuthRegex())).build());
         return securityContexts;
     }
 
@@ -200,7 +201,6 @@ public class SwaggerConfig {
         securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
         return securityReferences;
     }
-
 
 
 }
