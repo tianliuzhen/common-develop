@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.AntPathMatcher;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -29,8 +30,11 @@ import java.util.function.Predicate;
  * description: Swagger配置
  * 原生的ui：http://localhost:8070/swagger-ui.html  （新版  knife4j 已经去除原生ui这个接口）
  * 美化后的ui：http://localhost:8070/doc.html
+ * <p>
+ * 坑1：
+ * 如果出现异常：java.lang.NullPointerException: null at springfox.documentation.swagger2.mappers.RequestParameterMapper.bodyParameter(RequestParameterMapper.java:264)
+ * 则检查  @ApiImplicitParam注解name参数与具体入参是否缺失
  *
- * @author 田留振(liuzhen.tian @ haoxiaec.com)
  * @version 1.0
  * @date 2019-12-20
  */
@@ -124,7 +128,7 @@ public class SwaggerConfig {
     public Docket createApi3() {
         // 排除接口
         Set<Predicate<String>> excludePath = new HashSet<>();
-        excludePath.add(PathSelectors.ant("/user/findById"));
+        excludePath.add(notAnt("/user/findById"));
 
         // 包含接口
         Set<Predicate<String>> basePath = new HashSet<>();
@@ -141,6 +145,39 @@ public class SwaggerConfig {
                 .securitySchemes(securitySchemes())
                 .securityContexts(securityContexts())
                 ;
+    }
+
+    /**
+     * 排除指定路径
+     *
+     * @param antPattern
+     * @return
+     */
+    public static Predicate<String> notAnt(final String antPattern) {
+        return new Predicate<String>() {
+            @Override
+            public boolean test(String input) {
+                AntPathMatcher matcher = new AntPathMatcher();
+                return !matcher.match(antPattern, input);
+            }
+        };
+    }
+
+    public static void main(String[] args) {
+        // 匹配指定路径
+        Predicate<String> ant = PathSelectors.ant("/user/**");
+        System.out.println(ant.test("/user/sd/sd/sd"));
+
+        //正则表达式
+        String patternStr = "-?[0-9]+(\\.[0-9]+)?";
+        //需要匹配的字符串
+        String str = "123";
+        Predicate<String> regex = PathSelectors.regex(patternStr);
+        System.out.println(regex.test(str));
+
+        // 排除指定路径
+        Predicate<String> notAnt = notAnt("/user/**");
+        System.out.println(notAnt.test("/user/sd/sd/sd"));
     }
 
     /**
