@@ -17,7 +17,7 @@ import java.util.UUID;
 @Component
 public class LogInterceptor implements HandlerInterceptor {
 
-    private static final String TRACE_ID = "TRACE_ID";
+    public static final String TRACE_ID = "TRACE_ID";
 
     /**
      * 1.前置拦截器
@@ -32,11 +32,13 @@ public class LogInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String tid = UUID.randomUUID().toString().replace("-", "");
         //1.这里我们是让客户端传入链路ID，然后进行前置拦截捕获
-        if (!StringUtils.isEmpty(request.getHeader("TRACE_ID"))) {
-            tid = request.getHeader("TRACE_ID");
+        if (!StringUtils.isEmpty(request.getHeader(TRACE_ID))) {
+            tid = request.getHeader(TRACE_ID);
         }
         //2.利用MDC将请求的上下文信息存储到当前线程的上下文映射中
         MDC.put(TRACE_ID, tid);
+
+        response.addHeader(LogInterceptor.TRACE_ID, MDC.get(LogInterceptor.TRACE_ID));
         return true;
     }
 

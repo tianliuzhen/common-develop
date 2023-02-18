@@ -1,5 +1,6 @@
 package com.aaa.mybatisplus.config;
 
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -21,5 +22,6 @@ public class AddResponseHeaderFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         httpServletResponse.addHeader("tlz-version", "1.0.0");
         filterChain.doFilter(httpServletRequest, httpServletResponse);
+        httpServletResponse.addHeader(LogInterceptor.TRACE_ID, MDC.get(LogInterceptor.TRACE_ID));
     }
 }
