@@ -15,11 +15,16 @@
     <!-- 勿用${LOG_FILE}相对路径 生成目录 -->
     <!-- ${LOG_PATH} 读取的就是 application.yml 中的 logging.file.path 的值 -->
     <property name="LOG_HOME" value="${LOG_PATH}"/>
+<!--    <property name="logAppName" value="${sys:log.name}"/>-->
+<!--    <property name="logAppName" value="${ctx:log.name}"/>-->
+<!--    <property name="logAppName" value=" ${ctx:log.name}"/>-->
+
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - [%X{TRACE_ID}] - %msg%n" />
 
     <!--  默认的按天回滚的日志  -->
     <appender name="FILE_DEFAULT" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS}[%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>[%X{TRACE_ID}]  %d{HH:mm:ss.SSS}[%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}/${logAppName}/log.%d{yyyy-MM-dd}.%i</fileNamePattern>
@@ -40,7 +45,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS}[%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>[%X{TRACE_ID}]  %d{HH:mm:ss.SSS}[%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>

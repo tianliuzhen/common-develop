@@ -36,6 +36,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private AccessLimitInterceptor accessLimitInterceptor;
 
     @Autowired
+    private LogInterceptor logInterceptor;
+
+
+    @Autowired
     private ParameterInfoInterceptor parameterInfoInterceptor;
 
     @Autowired
@@ -69,6 +73,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(accessLimitInterceptor);
+        registry.addInterceptor(logInterceptor);
     }
 
 

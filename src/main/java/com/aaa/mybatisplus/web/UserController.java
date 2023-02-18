@@ -1,9 +1,6 @@
 package com.aaa.mybatisplus.web;
 
-import com.aaa.mybatisplus.annotation.ArgsInfo;
-import com.aaa.mybatisplus.annotation.PageAoDefault;
-import com.aaa.mybatisplus.annotation.ParameterInfo;
-import com.aaa.mybatisplus.annotation.ParameterInfo2;
+import com.aaa.mybatisplus.annotation.*;
 import com.aaa.mybatisplus.annotation.task.StartTaskRun;
 import com.aaa.mybatisplus.config.global.Shift;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
@@ -23,6 +20,7 @@ import java.util.Date;
 /**
  * Created by Ares on 2018/7/5.
  */
+@SysLog
 @RestController
 @RequestMapping("/user")
 public class UserController {
