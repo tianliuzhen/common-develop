@@ -15,9 +15,6 @@
     <!-- 勿用${LOG_FILE}相对路径 生成目录 -->
     <!-- ${LOG_PATH} 读取的就是 application.yml 中的 logging.file.path 的值 -->
     <property name="LOG_HOME" value="${LOG_PATH}"/>
-<!--    <property name="logAppName" value="${sys:log.name}"/>-->
-<!--    <property name="logAppName" value="${ctx:log.name}"/>-->
-<!--    <property name="logAppName" value=" ${ctx:log.name}"/>-->
 
     <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - [%X{TRACE_ID}] - %msg%n" />
 
