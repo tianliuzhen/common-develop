@@ -24,6 +24,7 @@ import java.time.Duration;
  * @date 2020/3/25
  */
 @Configuration
+// @AllArgsConstructor
 public class RedisDbMany {
 
 
