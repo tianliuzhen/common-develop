@@ -14,8 +14,8 @@ import java.util.List;
  * @author liuzhen.tian
  * @version 1.0 AsyncController.java  2020/10/20 23:44
  */
-@RestController
 @SysLog
+@RestController
 public class AsyncController {
 
     @Autowired
@@ -25,5 +25,11 @@ public class AsyncController {
     @SysTimeLog
     public List<Entity> testAsync(){
         return asyncService.queryData();
+    }
+
+    @GetMapping("/testAsyncError")
+    @SysTimeLog
+    public void testAsyncError(){
+        throw new RuntimeException("123123");
     }
 }

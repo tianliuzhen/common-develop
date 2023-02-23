@@ -38,7 +38,7 @@ public class SysTimeLogAspect {
         try {
             proceed = joinPoint.proceed();
         } catch (Throwable e) {
-            e.printStackTrace();
+            throw e;
         }
         String endTime = TimeUtil.getNowDateDetail();
         log.info(TimeUtil.getNowDateDetail() + " ==================》{}方法 执行结束 ......", joinPoint.getSignature().getName());

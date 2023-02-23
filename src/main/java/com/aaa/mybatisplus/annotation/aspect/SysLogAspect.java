@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalTime;
 import java.util.Arrays;
@@ -76,5 +77,13 @@ public class SysLogAspect {
         System.out.println("after : "+ LocalTime.now());
         //处理完请求，返回内容
         log.info("RESPONCE : "+ ret);
+    }
+
+    /**
+     * 操作发生异常记录日志
+     */
+    @AfterThrowing(pointcut = "logPointCut()", throwing = "exception")
+    public void doAfterThrowing(JoinPoint joinPoint, Exception exception) {
+        log.error("exception: "+ exception);
     }
 }
