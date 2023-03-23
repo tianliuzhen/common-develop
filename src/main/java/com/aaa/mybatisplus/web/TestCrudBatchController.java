@@ -2,6 +2,7 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.annotation.SysTimeLog;
 import com.aaa.mybatisplus.config.global.exceptions.BizException;
+import com.aaa.mybatisplus.config.snowflakeId.SnowflakeComponent;
 import com.aaa.mybatisplus.domain.entity.Dept;
 import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.domain.enums.GenderEnum;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -38,6 +40,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping(value = "batch")
 public class TestCrudBatchController {
+    public static final int COUNT = 10000 * 10;
     @Autowired
     private UserMapper userMapper;
 
@@ -58,6 +61,8 @@ public class TestCrudBatchController {
     @Autowired
     private TransactionDefinition transactionDefinition;
 
+    @Autowired
+    private SnowflakeComponent snowflakeComponent;
 
     /**
      * 批量更新：基于注解
@@ -115,10 +120,7 @@ public class TestCrudBatchController {
     @PostMapping("/batchAddUser")
     @SysTimeLog
     public void batchAddUser() {
-        ArrayList<User> users = Lists.newArrayList(
-                new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
-                new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
-        List<User> users1 = getUsers(100);
+        List<User> users1 = getUsers(10000 * 10);
         userMapper.batchAddUser(users1);
     }
 
@@ -131,14 +133,15 @@ public class TestCrudBatchController {
         ArrayList<User> users = Lists.newArrayList(
                 new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
                 new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
-        List<User> users1 = getUsers(10000);
-        // Integer res = userMapper.batchAddUser2(users1);
+        List<User> userList = getUsers(10000 * 10);
+        // Integer res = userMapper.batchAddUser2(userList);
         // 批量执行插入
         List<User> usersTemp = Lists.newArrayList();
-        for (int i = 0; i < users1.size(); i++) {
-            usersTemp.add(users1.get(i));
-            if (i % 500 == 0) {
-                userMapper.batchAddUser2(users1);
+        for (int i = 0; i < userList.size(); i++) {
+            usersTemp.add(userList.get(i));
+            if (i % 5000 == 0 && i != 0) {
+                // todo：  <foreach INSERT 比 <foreach VALUES 插入要慢
+                userMapper.batchAddUser(usersTemp);
                 usersTemp.clear();
             }
         }
@@ -152,20 +155,31 @@ public class TestCrudBatchController {
      * ExecutorType.BATCH只打印一次SQL语句，多次设置参数步骤，
      * <p>
      * 也是官方针对批量数据插入优化的方法之一
+     * 部分参考：https://blog.csdn.net/qq_42093488/article/details/124956848
      */
     @PostMapping("/batchAddUser3")
+    @Transactional
     public void batchAddUser3() {
         StopWatch stopWatch = new StopWatch("batchAddUser3");
         stopWatch.start();
         SqlSession sqlSession = null;
         try {
             sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+
+            // todo 注意：******* 这里必须要从 sqlSession.getMapper 获得 mapper
+            // todo 否则，Executor不是BatchExecutor
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
 
-            List<User> users = getUsers(10000);
-            for (User user : users) {
-                mapper.insert(user);
+            List<User> users = getUsers(COUNT);
+            for (int i = 0; i < users.size(); i++) {
+                mapper.insert(users.get(i));
+                if (i % 10000 == 0 && i != 0) {
+                    // org.apache.ibatis.executor.BatchExecutor.doFlushStatements
+                    // todo：会执行 stmt.executeBatch() ，会把数据先刷一波入库
+                    sqlSession.flushStatements();
+                }
             }
+            // 如果中间不执行 flushStatements(),commit 方法只会一次性执行
             sqlSession.commit();
         } finally {
             sqlSession.close();
@@ -179,7 +193,7 @@ public class TestCrudBatchController {
     private List<User> getUsers(int count) {
         List result = Lists.newArrayList();
         for (int i = 0; i < count; i++) {
-            result.add(new User(i + "", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, null, 1, LocalDateTime.now()));
+            result.add(new User(UUID.randomUUID().toString(), "aaa" + i, GenderEnum.FEMALE, 11L, "123@qq.com", 0, null, 1, LocalDateTime.now()));
         }
         return result;
     }
