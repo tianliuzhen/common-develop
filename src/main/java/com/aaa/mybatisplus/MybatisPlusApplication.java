@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 // tkMapper的扫描
 @tk.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper2")
 @ImportResource(locations={"classpath:spring-common.xml"})
-@EnableAsync
+@EnableAsync(proxyTargetClass=true)
 @EnableScheduling
 public class MybatisPlusApplication {
 
