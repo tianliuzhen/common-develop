@@ -70,6 +70,7 @@
     </appender>
 
 
+    <!-- 这里的优先级高于 <root level="INFO">   -->
     <!-- 配置不同环境日志级别 -->
     <springProfile name="dev">
         <logger name="com.aaa.mybatisplus" level="DEBUG"/>

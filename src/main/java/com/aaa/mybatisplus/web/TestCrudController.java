@@ -206,7 +206,7 @@ public class TestCrudController {
     @GetMapping("/testApiParam")
     public String testApiParam(@ApiParam(name = "id", value = "普通的参数id说明", required = true) @RequestParam("id") String id) {
         log.info("info:{}", id);
-        log.debug("debug:{}", id);
+        log.debug("debug===========:{}", id);
 
         new Thread(() -> {
             log.error("info2:{}", id);
