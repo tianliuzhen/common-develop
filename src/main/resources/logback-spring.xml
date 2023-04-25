@@ -16,7 +16,8 @@
     <!-- ${LOG_PATH} 读取的就是 application.yml 中的 logging.file.path 的值 -->
     <property name="LOG_HOME" value="${LOG_PATH}"/>
 
-    <property name="log.pattern" value="[%X{TRACE_ID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - [%X{TRACE_ID}] - %msg%n" />
+    <property name="log.pattern"
+              value="[%X{TRACE_ID}] %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n"/>
 
     <!--  默认的按天回滚的日志  -->
     <appender name="FILE_DEFAULT" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -45,10 +46,27 @@
             <pattern>${log.pattern}</pattern>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
             <level>ERROR</level>
+            <!-- 匹配时的操作：接收（记录） -->
             <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
             <onMismatch>DENY</onMismatch>
         </filter>
+    </appender>
+
+    <!-- 控制台输出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+            <charset>utf8</charset>
+        </encoder>
+
+        <!--临界值过滤器,过滤掉低于指定临界值的日志-->
+        <!--        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+        <!--            &lt;!&ndash;过滤掉所有低于info级别的日志&ndash;&gt;-->
+        <!--            <level>info</level>-->
+        <!--        </filter>-->
     </appender>
 
 
@@ -83,6 +101,7 @@
     <root level="INFO">
         <appender-ref ref="FILE_DEFAULT_ASYNC"/>
         <appender-ref ref="FILE_ERROR_ASYNC"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>
