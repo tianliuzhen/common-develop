@@ -89,10 +89,9 @@ public class TestCrudController {
         // 测试逻辑删除
         //使用mp自带方法删除和查找都会附带逻辑删除功能 (自己写的xml不会包括注解)
         user2Service.removeById(2);
-        user2Service.getById(1);
-        System.out.println(1 / 0);
-        //全表删除或更新
-        userMapper.delete(null);
+        // user2Service.getById(1);
+        // //全表删除或更新
+        // userMapper.delete(null);
     }
 
     @ApiOperation(value = "测试全部删除", notes = "攻击 SQL 阻断解析器")
