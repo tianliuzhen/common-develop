@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 
 /**
@@ -71,6 +72,7 @@ public class User {
     private Integer isDel;
 
     private LocalDateTime createTime;
+    private Date updateTime;
 
     /**
      * 上线时间

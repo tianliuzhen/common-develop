@@ -13,6 +13,7 @@ import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.User2Service;
 import com.aaa.mybatisplus.service.UserService;
 import com.aaa.mybatisplus.util.ThreadMdcUtil;
+import com.aaa.mybatisplus.util.TimeUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
@@ -25,7 +26,9 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -43,6 +46,27 @@ public class TestCrudController {
 
     @Autowired
     private User2Service user2Service;
+
+    @PostMapping("/selectByTime")
+    public void selectByTime(){
+        // 时间入参为 LocalDateTime
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("beginTime", TimeUtil.strToLocalDateTime("2023-05-01 21:51:22"));
+        hashMap.put("endTime", TimeUtil.strToLocalDateTime("2023-05-24 21:56:22"));
+        userMapper.selectByCreateTime(hashMap);
+
+        // 时间入参为 string
+        HashMap<String, Object> hashMap2 = new HashMap<>();
+        hashMap2.put("beginTime", "2023-05-01 21:51:22");
+        hashMap2.put("endTime", "2023-05-24 21:56:22");
+        userMapper.selectByCreateTime(hashMap2);
+
+        // 时间入参为 date
+        HashMap<String, Object> hashMap3 = new HashMap<>();
+        hashMap3.put("beginTime", TimeUtil.strToDate("2023-05-01 21:51:22"));
+        hashMap3.put("endTime", TimeUtil.strToDate("2023-05-24 21:56:22"));
+        userMapper.selectByUpdateTime(hashMap3);
+    }
 
     @ApiOperation(value = "分页测试", notes = "插件测试")
     @ApiImplicitParam(name = "pageDto", value = "分页参数", required = true)
@@ -124,6 +148,8 @@ public class TestCrudController {
         System.out.println(user2Service.list().size());
     }
 
+    @Resource
+    private TestMapper testMapper;
     @ApiOperation(value = "普通增加一条", notes = "")
     @GetMapping("/insertOne")
     public void insertOne() {

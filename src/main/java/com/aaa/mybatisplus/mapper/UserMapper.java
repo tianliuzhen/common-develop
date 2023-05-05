@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +41,12 @@ public interface UserMapper extends BaseMapper<User> {
 
     @Select({" select * from user   limit 11   "})
     List<User> getAll();
+
+    @Select({" select * from user  where create_time > #{beginTime} and create_time <= #{endTime}  "})
+    List<User> selectByCreateTime(HashMap map);
+
+    @Select({" select * from user  where update_time > #{beginTime} and update_time <= #{endTime}  "})
+    List<User> selectByUpdateTime(HashMap map);
 
     /**
      * @param id

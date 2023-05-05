@@ -1,5 +1,7 @@
 package com.aaa.mybatisplus.util;
 
+import lombok.SneakyThrows;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.*;
@@ -23,9 +25,9 @@ public class TimeUtil {
     public static final String DATE_PATTERN2 = "yyyy/MM/dd";
 
 
-
     /**
      * 获取当天时间
+     *
      * @return
      */
     public static String getNowDateDetail() {
@@ -34,6 +36,7 @@ public class TimeUtil {
 
     /**
      * 获取当天时间
+     *
      * @return
      */
     public static String getNowDate() {
@@ -42,6 +45,7 @@ public class TimeUtil {
 
     /**
      * 获取当天最后时间
+     *
      * @return
      */
     public static String getNowDateLastStr() {
@@ -50,6 +54,7 @@ public class TimeUtil {
 
     /**
      * 获取当天最后时间
+     *
      * @return
      */
     public static Date getNowDateLast() {
@@ -60,6 +65,7 @@ public class TimeUtil {
 
     /**
      * 昨天开始时间
+     *
      * @return
      */
     public static String getYesterdayStart() {
@@ -68,6 +74,7 @@ public class TimeUtil {
 
     /**
      * 昨天结束时间
+     *
      * @return
      */
     public static String getYesterdayEnd() {
@@ -78,6 +85,7 @@ public class TimeUtil {
 
     /**
      * 一周前开始时间
+     *
      * @return
      */
     public static String getWeekAgoStart() {
@@ -86,6 +94,7 @@ public class TimeUtil {
 
     /**
      * 一周前结束时间
+     *
      * @return
      */
     public static String getWeekAgoEnd() {
@@ -95,6 +104,7 @@ public class TimeUtil {
 
     /**
      * 一月前开始时间
+     *
      * @return
      */
     public static String getMonthAgoStart() {
@@ -103,6 +113,7 @@ public class TimeUtil {
 
     /**
      * 一月前结束时间
+     *
      * @return
      */
     public static String getMonthAgoEnd() {
@@ -118,44 +129,48 @@ public class TimeUtil {
 
     /**
      * 获取昨天时间戳
+     *
      * @return 1569427200
      */
     public static Long getYesterdayStamp() {
-        return getTodayStamp() - 24*10 * 60 * 60;
+        return getTodayStamp() - 24 * 10 * 60 * 60;
     }
 
     /**
      * 获取几天前时间戳
+     *
      * @return 1569427200
      */
     public static Long getYesterdayStampByDay(int day) {
-        return getTodayStamp() - 24 *day * 60 * 60;
+        return getTodayStamp() - 24 * day * 60 * 60;
     }
 
     /**
      * 获取几分钟前的时间戳
+     *
      * @return 1569427200
      */
     public static Long getYesterdayStampByMinute(int minute) {
-        return System.currentTimeMillis()/1000 - minute * 60;
+        return System.currentTimeMillis() / 1000 - minute * 60;
     }
 
 
     /**
      * 获取今天时间戳
+     *
      * @return 1569513600
      */
     public static Long getTodayStamp() {
         Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY,0);
-        c.set(Calendar.MINUTE,0);
-        c.set(Calendar.SECOND,0);
-        c.set(Calendar.MILLISECOND,0);
-        Long today = c.getTimeInMillis()/1000;
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        Long today = c.getTimeInMillis() / 1000;
         return today;
     }
 
-    public static LocalDateTime getSomeAfterDayTime(Date dNow,int count) {
+    public static LocalDateTime getSomeAfterDayTime(Date dNow, int count) {
         //得到日历
         Calendar calendar = Calendar.getInstance();
         //把当前时间赋给日历
@@ -170,6 +185,7 @@ public class TimeUtil {
 
     /**
      * 获取指定时间到现在的剩余秒数
+     *
      * @param time
      * @return
      */
@@ -183,6 +199,7 @@ public class TimeUtil {
 
     /**
      * date 转成 localDateTime
+     *
      * @param date
      * @return
      */
@@ -194,6 +211,7 @@ public class TimeUtil {
 
     /**
      * localDateTime 转成 date
+     *
      * @param time
      * @return
      */
@@ -206,6 +224,7 @@ public class TimeUtil {
 
     /**
      * 获取之前的时间
+     *
      * @return
      */
     public static String getBeforeDayByDay(int day) {
@@ -214,51 +233,58 @@ public class TimeUtil {
 
     /**
      * 获取前几个小时的时间戳
+     *
      * @param day
      */
-    public static   String getIntegerByDay(int day){
+    public static String getIntegerByDay(int day) {
         Calendar calendar = Calendar.getInstance();
         /* HOUR_OF_DAY 指示一天中的小时 */
         calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - day);
         SimpleDateFormat df = new SimpleDateFormat(DEFAULT_PATTERN);
 
-        return date2TimeStamp(df.format(calendar.getTime()),DEFAULT_PATTERN);
+        return date2TimeStamp(df.format(calendar.getTime()), DEFAULT_PATTERN);
     }
+
     /**
      * 获取前几个小时的时间戳
+     *
      * @param hour
      */
-    public static   String getIntegerByHour(int hour){
+    public static String getIntegerByHour(int hour) {
         Calendar calendar = Calendar.getInstance();
         /* HOUR_OF_DAY 指示一天中的小时 */
         calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - hour);
         SimpleDateFormat df = new SimpleDateFormat(DEFAULT_PATTERN);
 
-        return date2TimeStamp(df.format(calendar.getTime()),DEFAULT_PATTERN);
+        return date2TimeStamp(df.format(calendar.getTime()), DEFAULT_PATTERN);
     }
+
     /**
      * 将时间戳转成日期字符串
+     *
      * @param timeStamp 时间戳的值,类型为：Long
-     * @param pattern 转成字符串的格式
+     * @param pattern   转成字符串的格式
      * @return
      */
-    public static String getDateStringByTimeSTamp(Long timeStamp,String pattern){
+    public static String getDateStringByTimeSTamp(Long timeStamp, String pattern) {
         String result = null;
-        Date date = new Date(timeStamp*1000);
+        Date date = new Date(timeStamp * 1000);
         SimpleDateFormat sd = new SimpleDateFormat(pattern);
         result = sd.format(date);
         return result;
     }
+
     /**
      * 日期格式字符串转换成时间戳
+     *
      * @param date_str 字符串日期
-     * @param format 如：yyyy-MM-dd HH:mm:ss
+     * @param format   如：yyyy-MM-dd HH:mm:ss
      * @return
      */
-    public static String date2TimeStamp(String date_str,String format){
+    public static String date2TimeStamp(String date_str, String format) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
-            return String.valueOf(sdf.parse(date_str).getTime()/1000);
+            return String.valueOf(sdf.parse(date_str).getTime() / 1000);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -267,12 +293,13 @@ public class TimeUtil {
 
     /**
      * 计算昨天0点的时间戳
+     *
      * @return java.lang.Long
      */
-    public static Long getYesterdayStartBYt(){
+    public static Long getYesterdayStartBYt() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)-1,0,0,0);
-        long tt = calendar.getTime().getTime()/1000;
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH) - 1, 0, 0, 0);
+        long tt = calendar.getTime().getTime() / 1000;
         System.out.println(tt);
         return tt;
     }
@@ -280,47 +307,50 @@ public class TimeUtil {
 
     /**
      * 将timestamp转为LocalDateTime
+     *
      * @param timestamp
      * @return java.time.LocalDateTime
      */
-    public static LocalDateTime timestamToDatetime(long timestamp){
+    public static LocalDateTime timestamToDatetime(long timestamp) {
         Instant instant = Instant.ofEpochMilli(timestamp);
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
 
     /**
      * 将LocalDataTime转为timestam
+     *
      * @param ldt
      * @return long
      */
-    public static long datatimeToTimestamp(LocalDateTime ldt){
+    public static long datatimeToTimestamp(LocalDateTime ldt) {
         long timestamp = ldt.toInstant(ZoneOffset.of("+8")).toEpochMilli();
         return timestamp;
     }
 
     /**
      * 获取指定时间戳 前后时间加减
+     *
      * @param timestamp
      * @return
      */
-    public static Long getSpecifyTimestampByTimestamp(long timestamp){
-        LocalDateTime today_end = LocalDateTime.of(timestamToDatetime(timestamp*1000).toLocalDate(), LocalTime.MAX);
+    public static Long getSpecifyTimestampByTimestamp(long timestamp) {
+        LocalDateTime today_end = LocalDateTime.of(timestamToDatetime(timestamp * 1000).toLocalDate(), LocalTime.MAX);
 
-        long timeStampSec =datatimeToTimestamp(today_end)/1000;
-        return Long.valueOf( String.format("%010d", timeStampSec));
+        long timeStampSec = datatimeToTimestamp(today_end) / 1000;
+        return Long.valueOf(String.format("%010d", timeStampSec));
     }
 
     public static void main(String[] args) {
         System.out.println(getNowDateLast());
     }
 
-    public static String getTimeDifference(String beginTime,String endTime){
-        DateFormat sdf=new SimpleDateFormat(DEFAULT_PATTERN);
-        Date begin=null;
-        Date end=null;
+    public static String getTimeDifference(String beginTime, String endTime) {
+        DateFormat sdf = new SimpleDateFormat(DEFAULT_PATTERN);
+        Date begin = null;
+        Date end = null;
         try {
-            begin=sdf.parse(beginTime);
-            end=sdf.parse(endTime);
+            begin = sdf.parse(beginTime);
+            end = sdf.parse(endTime);
             //计算时间差
             long diff = end.getTime() - begin.getTime();
             //计算天数
@@ -332,7 +362,7 @@ public class TimeUtil {
             //计算秒
             long seconds = (diff % (1000 * 60)) / 1000;
             //输出
-            return ""+days+"天"+hours+"小时"+minutes+"分"+seconds+"秒";
+            return "" + days + "天" + hours + "小时" + minutes + "分" + seconds + "秒";
         } catch (Exception e) {
             // TODO: handle exception
             System.out.println("你输入的日期格式不对，请重新输入！");
@@ -340,4 +370,49 @@ public class TimeUtil {
         return "";
     }
 
+    /**
+     * 字符串  转 Date
+     *
+     * @param dateStr
+     * @return
+     */
+    @SneakyThrows
+    public static Date strToDate(String dateStr) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_PATTERN);
+
+        return formatter.parse(dateStr);
+    }
+
+    /**
+     * Date  转 字符串
+     *
+     * @param date
+     * @return
+     */
+    public static String dateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(DEFAULT_PATTERN);
+        return formatter.format(date);
+    }
+
+    /**
+     * 字符串 转 LocalDateTime
+     *
+     * @param str
+     * @return
+     */
+    public static LocalDateTime strToLocalDateTime(String str) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(DEFAULT_PATTERN);
+        return LocalDateTime.parse(str, df);
+    }
+
+    /**
+     * LocalDateTime  转 字符串
+     *
+     * @param date
+     * @return
+     */
+    public static String localDateTimeToStr(LocalDateTime date) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern(DEFAULT_PATTERN);
+        return df.format(date);
+    }
 }
