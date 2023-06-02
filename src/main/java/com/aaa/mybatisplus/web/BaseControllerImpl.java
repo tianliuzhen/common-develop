@@ -83,8 +83,13 @@ public class BaseControllerImpl {
     @PostMapping("/returnLongStr2")
     public Object returnLongStr2() {
         Emp factorRelation = new Emp();
-        factorRelation.setId(111L);
-
+        factorRelation.setId(1461642036950462475L);
+        factorRelation.setUserName("xxx");
         return JSONObject.parse(JSONObject.toJSONString(factorRelation));
     }
+    @PostMapping("/returnLongStr3")
+    public String returnLongStr3() {
+        return "我是";
+    }
+
 }
