@@ -1,8 +1,12 @@
 package com.aaa.mybatisplus.domain.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.Id;
 
 /**
  * @author liuzhen.tian
@@ -12,7 +16,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FactorRelation {
+    @Id
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long factorId;
+    @Id
     private Long ruleId;
     private String name;
 }

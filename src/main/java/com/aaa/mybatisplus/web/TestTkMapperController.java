@@ -100,7 +100,9 @@ public class TestTkMapperController {
         factorRelationMapper.deleteByPrimaryKey(factorRelation);
 
         factorRelationMapper.insert(factorRelation);
-        factorRelationMapper.selectByPrimaryKey(factorRelation);
+
+        FactorRelation req = new FactorRelation(1L, 2L, null);
+        factorRelationMapper.selectByPrimaryKey(req);
         return factorRelation;
     }
 
