@@ -51,8 +51,8 @@ public class TestCrudController {
     public void selectByTime(){
         // 时间入参为 LocalDateTime
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("beginTime", TimeUtil.strToLocalDateTime("2023-05-01 21:51:22"));
-        hashMap.put("endTime", TimeUtil.strToLocalDateTime("2023-05-24 21:56:22"));
+        hashMap.put("beginTime", TimeUtil.strToDate("2023-05-01 21:51:22"));
+        hashMap.put("endTime", TimeUtil.strToDate("2023-05-24 21:56:22"));
         userMapper.selectByCreateTime(hashMap);
 
         // 时间入参为 string

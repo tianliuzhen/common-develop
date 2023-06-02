@@ -1,7 +1,9 @@
 package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.domain.entity.Emp;
+import com.aaa.mybatisplus.domain.entity.FactorRelation;
 import com.aaa.mybatisplus.mapper2.EmpTkMapper;
+import com.aaa.mybatisplus.mapper2.FactorRelationMapper;
 import com.aaa.mybatisplus.web.base.CommonBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,8 +29,12 @@ public class TestTkMapperController {
     @Resource
     private EmpTkMapper empTkMapper;
 
+    @Resource
+    private FactorRelationMapper factorRelationMapper;
+
     @Setter
     private CommonBean commonBean;
+
 
     @PostMapping("/insert")
     public Object insert() {
@@ -42,7 +48,7 @@ public class TestTkMapperController {
     @PostMapping("/update")
     public Object update() {
 
-        Example example=new Example(Emp.class);//要查询的表对应的实体类
+        Example example = new Example(Emp.class);//要查询的表对应的实体类
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("userName", "%c%");
         empTkMapper.selectByExample(example);
@@ -79,7 +85,7 @@ public class TestTkMapperController {
         // 分页拦截
         PageHelper.startPage(1, 2);
 
-        Example example=new Example(Emp.class);//要查询的表对应的实体类
+        Example example = new Example(Emp.class);//要查询的表对应的实体类
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("userName", "%c%");
         List<Emp> emps = empTkMapper.selectByExample(example);
@@ -87,4 +93,15 @@ public class TestTkMapperController {
         PageInfo<Emp> userPageInfo = new PageInfo<>(emps);
         return userPageInfo;
     }
+
+    @PostMapping("/insertTwoPrimary")
+    public Object insertTwoPrimary() {
+        FactorRelation factorRelation = new FactorRelation(1L, 2L, "a");
+        factorRelationMapper.deleteByPrimaryKey(factorRelation);
+
+        factorRelationMapper.insert(factorRelation);
+        factorRelationMapper.selectByPrimaryKey(factorRelation);
+        return factorRelation;
+    }
+
 }
