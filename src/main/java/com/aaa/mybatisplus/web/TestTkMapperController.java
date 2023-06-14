@@ -7,8 +7,8 @@ import com.aaa.mybatisplus.mapper2.FactorRelationMapper;
 import com.aaa.mybatisplus.web.base.CommonBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import lombok.Setter;
 import org.assertj.core.util.Lists;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,8 +32,8 @@ public class TestTkMapperController {
     @Resource
     private FactorRelationMapper factorRelationMapper;
 
-    @Setter
-    private CommonBean commonBean;
+    @Autowired
+    private  CommonBean commonBean;
 
 
     @PostMapping("/insert")
