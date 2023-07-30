@@ -4,6 +4,7 @@ import com.aaa.mybatisplus.domain.entity.Emp;
 import com.aaa.mybatisplus.domain.entity.FactorRelation;
 import com.aaa.mybatisplus.mapper2.EmpTkMapper;
 import com.aaa.mybatisplus.mapper2.FactorRelationMapper;
+import com.aaa.mybatisplus.util.MyFunUtil;
 import com.aaa.mybatisplus.web.base.CommonBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.weekend.WeekendSqls;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class TestTkMapperController {
     private FactorRelationMapper factorRelationMapper;
 
     @Autowired
-    private  CommonBean commonBean;
+    private CommonBean commonBean;
 
 
     @PostMapping("/insert")
@@ -82,6 +84,24 @@ public class TestTkMapperController {
 
     @PostMapping("/selectByExample")
     public Object selectByExample() {
+        // 分页拦截
+        PageHelper.startPage(1, 2);
+
+        WeekendSqls<Emp> custom = WeekendSqls.custom();
+        custom.andLike(Emp::getUserName, "%爱上%");
+        Example build = new Example.Builder(Emp.class)
+                .select(MyFunUtil.getFieldName((Emp::getUserName))) // 可指定字段
+                .where(custom)
+                .orderByDesc("id")
+                .build();
+        List<Emp> emps = empTkMapper.selectByExample(build);
+
+        PageInfo<Emp> userPageInfo = new PageInfo<>(emps);
+        return userPageInfo;
+    }
+
+    @PostMapping("/selectByExample2")
+    public Object selectByExample2() {
         // 分页拦截
         PageHelper.startPage(1, 2);
 
