@@ -47,6 +47,7 @@ public class TestCrudController {
     @Autowired
     private User2Service user2Service;
 
+    @SysLog
     @PostMapping("/selectByTime")
     public void selectByTime(){
         // 时间入参为 LocalDateTime

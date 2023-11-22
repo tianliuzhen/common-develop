@@ -5,11 +5,11 @@
     <!--  keyProperty="id" useGeneratedKeys="true" 添加这俩个属性就能返回主键id   -->
     <insert id="insertDept" keyProperty="id" useGeneratedKeys="true">
         INSERT INTO `dept`(`id`, `dept_name`, `dept_no`)
-        VALUES (#{id},#{deptName},#{deptNo})
+        VALUES (#{id}, #{deptName}, #{deptNo})
 
     </insert>
 
-    <insert id="insertDept2">
+    <insert id="returnInsertKey">
         /**
         order="BEFORE" : BEFORE是先查最近插入一条的id，在进行插入。
         此时插入会报错：报主键冲突 Duplicate entry '122' for key 'PRIMARY'
@@ -26,15 +26,28 @@
 
     </insert>
 
-    <insert id="insertDept3">
-        INSERT INTO `dept`(`id`, `dept_name`, `dept_no`) VALUES (#{id},#{deptName},#{deptNo})
+    <insert id="batchReturnInsertKey" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO `dept`( `dept_name`, `dept_no`)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.deptName},#{item.deptNo})
+        </foreach>
+    </insert>
+
+    <insert id="returnInsertKeyXml">
+        INSERT INTO `dept`(`id`, `dept_name`, `dept_no`)
+        VALUES (#{id}, #{deptName}, #{deptNo})
     </insert>
 
     <select id="lockByForUpdateNowait" resultType="com.aaa.mybatisplus.domain.entity.Dept">
-    select * from dept where dept_no = #{deptNo} for update nowait
+        select *
+        from dept
+        where dept_no = #{deptNo} for update nowait
     </select>
 
     <select id="lockByForUpdate" resultType="com.aaa.mybatisplus.domain.entity.Dept">
-    select * from dept where dept_no = #{deptNo} for update ;
+        select *
+        from dept
+        where dept_no = #{deptNo} for update;
     </select>
 </mapper>

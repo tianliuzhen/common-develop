@@ -9,7 +9,7 @@ import com.aaa.mybatisplus.bean.beanA.TestBeanA;
 public class TestBeanB {
     String getStr(){
         TestBeanA testBeanA = new TestBeanA();
-        testBeanA.getStr();
+        // testBeanA.getStr();
         return "";
     }
 }

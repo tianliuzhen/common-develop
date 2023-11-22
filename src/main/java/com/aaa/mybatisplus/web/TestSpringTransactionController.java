@@ -6,7 +6,6 @@ import com.aaa.mybatisplus.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -26,8 +25,6 @@ import java.util.HashMap;
 @Slf4j
 @RestController
 @RequestMapping("/testSpringTransaction")
-// 可以配置在启动类
-@EnableAspectJAutoProxy(exposeProxy = true)
 public class TestSpringTransactionController {
     @Autowired
     private UserMapper userMapper;

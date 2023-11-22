@@ -235,10 +235,20 @@ public class TestCrudBatchController {
     public void returnInsertKey() {
         for (int i = 0; i < 5; i++) {
             Dept aaa = new Dept(null, "aaa", i);
-            deptMapper.insertDept4(aaa);
+            deptMapper.returnInsertKeyAnnotation(aaa);
             System.out.println(aaa);
         }
     }
+
+    @PostMapping("/batchReturnInsertKey")
+    public void batchReturnInsertKey() {
+        List<Dept> list = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            list.add(new Dept(null, "aaa", i));
+        }
+        deptMapper.batchReturnInsertKey(list);
+    }
+
 
     /**
      * 声明式事务

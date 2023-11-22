@@ -7,7 +7,8 @@ spring:
     active: dev
   application:
     name: mybatis-plus
-
+  aop:
+    auto: false
 
 #mybatis-plus配置控制台打印完整带参数SQL语句
 mybatis-plus:
