@@ -5,7 +5,7 @@
 
     <!-- 等效于  @tk.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper2")   -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.aaa.mybatisplus.mapper2"/>
+        <property name="basePackage" value="com.aaa.mybatisplus.mappertk"/>
     </bean>
 
     <!-- 等效于 @org.mybatis.spring.annotation.MapperScan("com.aaa.mybatisplus.mapper")   -->

@@ -233,9 +233,9 @@ public class TestCrudBatchController {
 
     @PostMapping("/returnInsertKey")
     public void returnInsertKey() {
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             Dept aaa = new Dept(null, "aaa", i);
-            deptMapper.returnInsertKeyAnnotation(aaa);
+            deptMapper.insertDept(aaa);
             System.out.println(aaa);
         }
     }

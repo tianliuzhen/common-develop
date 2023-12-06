@@ -35,7 +35,7 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
         <!-- xml -->
-        <javaClientGenerator targetPackage="com.aaa.mybatisplus.mapper2"
+        <javaClientGenerator targetPackage="com.aaa.mybatisplus.mappertk"
                              targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\java"
                              type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>

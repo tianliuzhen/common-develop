@@ -1,4 +1,4 @@
-package com.aaa.mybatisplus.mapper2.common;
+package com.aaa.mybatisplus.mappertk.common;
 
 import org.apache.ibatis.mapping.MappedStatement;
 import tk.mybatis.mapper.entity.EntityColumn;

@@ -2,8 +2,10 @@ package com.aaa.mybatisplus.web;
 
 import com.aaa.mybatisplus.domain.entity.Emp;
 import com.aaa.mybatisplus.domain.entity.FactorRelation;
-import com.aaa.mybatisplus.mapper2.EmpTkMapper;
-import com.aaa.mybatisplus.mapper2.FactorRelationMapper;
+import com.aaa.mybatisplus.domain.entity.WxUser;
+import com.aaa.mybatisplus.mappertk.EmpTkMapper;
+import com.aaa.mybatisplus.mappertk.FactorRelationMapper;
+import com.aaa.mybatisplus.mappertk.WxUserTkMapper;
 import com.aaa.mybatisplus.util.MyFunUtil;
 import com.aaa.mybatisplus.web.base.CommonBean;
 import com.github.pagehelper.PageHelper;
@@ -42,6 +44,7 @@ public class TestTkMapperController {
     public Object insert() {
         Emp emp = new Emp(null, "x", 1L, 1);
         empTkMapper.insert(emp);
+
 
         // 返回新增的主键id
         return emp.getId();
@@ -126,4 +129,15 @@ public class TestTkMapperController {
         return factorRelation;
     }
 
+    @Autowired
+    private WxUserTkMapper wxUserTkMapper;
+
+    @PostMapping("/saveOrUpdate")
+    public Object saveOrUpdate() {
+        // 如果存在id，执行更新
+        // 如果不存在id，就执行新增
+        wxUserTkMapper.saveOrUpdate(new WxUser(1L, "tom",""));
+
+        return null;
+    }
 }
