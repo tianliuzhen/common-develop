@@ -3,8 +3,11 @@ package com.aaa.mybatisplus.web.base;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -100,4 +103,32 @@ public class ControllerTemplate {
         }, null);
     }
 
+    /**
+     * 无事务执行
+     *
+     * @param request 请求值
+     * @param doCheck 前置校验consumer函数
+     * @param doBiz   业务执行function1函数
+     * @param <Q>     请求值类型
+     * @param <R>     执行结果类型
+     * @return
+     */
+    public <Q, R extends CommonResult> R noTxTemplate(Q request, Consumer<Q> doCheck, Function<Q, R> doBiz) {
+        // 解析出请求路径
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest httpServletRequest = attributes.getRequest();
+        String biz = httpServletRequest.getRequestURL().toString();
+
+        return execute(biz, request, new AbstractExecuteCallBack<>() {
+            @Override
+            protected void check(Q request) {
+                doCheck.accept(request);
+            }
+
+            @Override
+            public R execute(Q request) {
+                return doBiz.apply(request);
+            }
+        }, null);
+    }
 }
