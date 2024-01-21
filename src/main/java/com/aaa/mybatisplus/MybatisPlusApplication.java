@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @MapperScan 和 @Mapper 缺一不可
@@ -21,6 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 // @EnableAsync(proxyTargetClass = true)
 @EnableScheduling
 // @EnableAspectJAutoProxy(exposeProxy = true)
+@EnableTransactionManagement(order = 3)
 public class MybatisPlusApplication {
 
     @Bean(name = "testMapper")

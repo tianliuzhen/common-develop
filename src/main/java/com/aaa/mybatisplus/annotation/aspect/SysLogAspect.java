@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -21,6 +22,7 @@ import java.util.Arrays;
  */
 @Slf4j
 @Aspect
+@Order(value = 2)
 @Component
 public class SysLogAspect {
 
@@ -30,7 +32,6 @@ public class SysLogAspect {
      * execution(...)
      */
     @Pointcut("@within(com.aaa.mybatisplus.annotation.SysLog) || @annotation(com.aaa.mybatisplus.annotation.SysLog)")
-
     public void logPointCut() { }
 
 
@@ -68,6 +69,7 @@ public class SysLogAspect {
         try {
             System.out.println(time);
         } catch (Exception e) {
+           e.printStackTrace();
         }
         return result;
     }

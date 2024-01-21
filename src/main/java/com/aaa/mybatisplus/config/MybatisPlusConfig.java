@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * description: Spring boot方式
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @version 1.0
  * @date 2019/12/21
  */
-@EnableTransactionManagement
 @Configuration
 // @MapperScan("com.aaa.mybatisplus.mapper*")
 @Slf4j

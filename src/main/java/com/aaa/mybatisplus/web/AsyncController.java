@@ -29,7 +29,8 @@ public class AsyncController {
 
     @GetMapping("/testAsyncError")
     @SysTimeLog
-    public void testAsyncError(){
-        throw new RuntimeException("123123");
+    public String testAsyncError() throws InterruptedException {
+        Thread.sleep(4000);
+        return "suc";
     }
 }

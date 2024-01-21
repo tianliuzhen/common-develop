@@ -2,13 +2,12 @@ package com.aaa.mybatisplus.config.intercept;
 
 import org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * @author liuzhen.tian
  * @version 1.0 BeanNameAutoProxyCreatorCOnfig.java  2023/4/20 22:45
  */
-@Configuration
+// @Configuration
 public class BeanNameAutoProxyCreatorConfig {
 
     @Bean
