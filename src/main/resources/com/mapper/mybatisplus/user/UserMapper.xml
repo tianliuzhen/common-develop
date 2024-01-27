@@ -13,6 +13,18 @@
 
     </select>
 
+    <select id="selectByCondition" resultType="user">
+        select * from  `user`
+        <where>
+            <if test="name!=null &amp;&amp; name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="email!=null and email!=''">
+                and email like concat('%',#{email},'%')
+            </if>
+        </where>
+    </select>
+
     <update id="batchUpdateUser2">
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update `user`

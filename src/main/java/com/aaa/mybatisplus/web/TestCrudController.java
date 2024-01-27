@@ -69,6 +69,15 @@ public class TestCrudController {
         userMapper.selectByUpdateTime(hashMap3);
     }
 
+    @SysLog
+    @PostMapping("/selectByCondition")
+    public void selectByCondition(){
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("name", "test001");
+        param.put("email", "test001@qq.com");
+        userMapper.selectByCondition(param);
+    }
+
     @ApiOperation(value = "分页测试", notes = "插件测试")
     @ApiImplicitParam(name = "pageDto", value = "分页参数", required = true)
     @PostMapping("/testSelectPage")

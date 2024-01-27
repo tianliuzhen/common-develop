@@ -55,6 +55,15 @@ public interface UserMapper extends BaseMapper<User> {
     User getOne(String id);
 
     /**
+     * 根据条件动态查询
+     *
+     * @param map
+     * @return
+     */
+    List<User> selectByCondition(HashMap map);
+
+
+    /**
      * 批量更新（注解版）
      * 注：需要配置 &allowMultiQueries=true，否则会报错
      * <p>
