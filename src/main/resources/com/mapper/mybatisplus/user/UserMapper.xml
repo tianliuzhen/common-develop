@@ -16,11 +16,23 @@
     <select id="selectByCondition" resultType="user">
         select * from  `user`
         <where>
-            <if test="name!=null &amp;&amp; name!=''">
-                and name like concat('%',#{name},'%')
+            <if test="name!=null &amp;&amp;name!=''">
+                and name like concat('%',#{map.name},'%')
             </if>
             <if test="email!=null and email!=''">
-                and email like concat('%',#{email},'%')
+                and email like concat('%',#{map.email},'%')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByConditionV2" resultType="user">
+        select * from  `user`
+        <where>
+            <if test="map.name!=null &amp;&amp; map.name!=''">
+                and name like concat('%',#{map.name},'%')
+            </if>
+            <if test="map.email!=null and map.email!=''">
+                and email like concat('%',#{map.email},'%')
             </if>
         </where>
     </select>

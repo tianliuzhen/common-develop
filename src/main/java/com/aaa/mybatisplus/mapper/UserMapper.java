@@ -61,6 +61,7 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     List<User> selectByCondition(HashMap map);
+    List<User> selectByConditionV2(@Param("map")  HashMap map);
 
 
     /**

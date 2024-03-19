@@ -49,7 +49,7 @@ public class TestCrudController {
 
     @SysLog
     @PostMapping("/selectByTime")
-    public void selectByTime(){
+    public void selectByTime() {
         // 时间入参为 LocalDateTime
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("beginTime", TimeUtil.strToDate("2023-05-01 21:51:22"));
@@ -71,11 +71,20 @@ public class TestCrudController {
 
     @SysLog
     @PostMapping("/selectByCondition")
-    public void selectByCondition(){
+    public void selectByCondition() {
         HashMap<String, Object> param = new HashMap<>();
-        param.put("name", "test001");
+        // param.put("name", "test001");
         param.put("email", "test001@qq.com");
         userMapper.selectByCondition(param);
+    }
+
+    @SysLog
+    @PostMapping("/selectByConditionV2")
+    public void selectByConditionV2() {
+        HashMap<String, Object> param = new HashMap<>();
+        // param.put("name", "test001");
+        param.put("email", "test001@qq.com");
+        userMapper.selectByConditionV2(param);
     }
 
     @ApiOperation(value = "分页测试", notes = "插件测试")
@@ -160,6 +169,7 @@ public class TestCrudController {
 
     @Resource
     private TestMapper testMapper;
+
     @ApiOperation(value = "普通增加一条", notes = "")
     @GetMapping("/insertOne")
     public void insertOne() {
@@ -246,10 +256,9 @@ public class TestCrudController {
         new Thread(() -> {
             log.error("info2:{}", id);
         }).start();
-        new Thread(ThreadMdcUtil.wrap(()->{
+        new Thread(ThreadMdcUtil.wrap(() -> {
             log.error("info3:{}", id);
         }, MDC.getCopyOfContextMap())).start();
-
 
 
         return "id:" + id;
