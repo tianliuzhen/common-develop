@@ -91,6 +91,11 @@ public class MultiThreadTransactionManagerTest {
             });
         }
 
+        // 模拟异常，回滚上面的insertUser
+        runnableList.add(() -> {
+            int a = 1 / 0;
+        });
+
         multiThreadTransactionManager.execute(runnableList, ThreadPoolUtil.common_pool);
     }
 }
