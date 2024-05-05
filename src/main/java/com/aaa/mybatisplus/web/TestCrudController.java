@@ -12,7 +12,6 @@ import com.aaa.mybatisplus.domain.enums.ResultCode;
 import com.aaa.mybatisplus.mapper.UserMapper;
 import com.aaa.mybatisplus.service.User2Service;
 import com.aaa.mybatisplus.service.UserService;
-import com.aaa.mybatisplus.util.ThreadMdcUtil;
 import com.aaa.mybatisplus.util.TimeUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -22,7 +21,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -256,9 +254,6 @@ public class TestCrudController {
         new Thread(() -> {
             log.error("info2:{}", id);
         }).start();
-        new Thread(ThreadMdcUtil.wrap(() -> {
-            log.error("info3:{}", id);
-        }, MDC.getCopyOfContextMap())).start();
 
 
         return "id:" + id;
