@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+    <!--    日志的默认配置 会生成 spring.log 文件 -->
+    <!--    <include resource="org/springframework/boot/logging/logback/base.xml"/>-->
     <jmxConfigurator/>
 
     <!--<appender name="LOGSTASH" class="com.cwbase.logback.RedisAppender">-->
@@ -102,6 +103,7 @@
     <root level="INFO">
         <appender-ref ref="FILE_DEFAULT_ASYNC"/>
         <appender-ref ref="FILE_ERROR_ASYNC"/>
+        <!--  控制台日志输出，一般禁用即可      -->
         <appender-ref ref="STDOUT"/>
     </root>
 
