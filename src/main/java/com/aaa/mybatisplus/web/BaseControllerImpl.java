@@ -3,6 +3,7 @@ package com.aaa.mybatisplus.web;
 import com.aaa.mybatisplus.annotation.Assignment;
 import com.aaa.mybatisplus.annotation.SysLog;
 import com.aaa.mybatisplus.annotation.SysTimeLog;
+import com.aaa.mybatisplus.config.LogInterceptor;
 import com.aaa.mybatisplus.config.httpResult.type.ResultResponse;
 import com.aaa.mybatisplus.domain.dto.PageDto;
 import com.aaa.mybatisplus.domain.dto.UserDto;
@@ -11,11 +12,11 @@ import com.aaa.mybatisplus.domain.entity.FactorRelation;
 import com.aaa.mybatisplus.domain.entity.People;
 import com.aaa.mybatisplus.util.CommonUtils;
 import com.aaa.mybatisplus.util.HttpContextUtils;
+import com.aaa.mybatisplus.util.ThreadPoolUtil;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.log4j.Log4j2;
+import org.slf4j.MDC;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
@@ -29,6 +30,7 @@ import java.util.Map;
  * @version 1.0
  * @date 2020/1/14
  */
+@Log4j2
 @RestController
 public class BaseControllerImpl {
 
@@ -80,16 +82,36 @@ public class BaseControllerImpl {
         return factorRelation;
     }
 
-    @PostMapping("/returnLongStr2")
+    @GetMapping("/returnLongStr2")
     public Object returnLongStr2() {
         Emp factorRelation = new Emp();
         factorRelation.setId(1461642036950462475L);
         factorRelation.setUserName("xxx");
         return JSONObject.parse(JSONObject.toJSONString(factorRelation));
     }
-    @PostMapping("/returnLongStr3")
-    public String returnLongStr3() {
-        return "我是";
+
+    @GetMapping("/returnLongStr3")
+    public Object returnLongStr3() {
+        Emp factorRelation = new Emp();
+        factorRelation.setId(1461642036950462475L);
+        factorRelation.setUserName("xxx");
+        log.debug(Thread.currentThread().getName() + "-" + MDC.get(LogInterceptor.TRACE_ID));
+        return factorRelation;
     }
 
+    /**
+     * 测试多线程异步请求，打印
+     *
+     * @return
+     */
+    @GetMapping("/testManyAsyncPool")
+    public String testManyAsyncPool() {
+        for (int i = 0; i < 10; i++) {
+            ThreadPoolUtil.common_pool.execute(() -> {
+                log.info(Thread.currentThread().getName() + "-" + MDC.get(LogInterceptor.TRACE_ID));
+            });
+        }
+
+        return "我是";
+    }
 }
