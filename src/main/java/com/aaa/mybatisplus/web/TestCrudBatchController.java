@@ -26,9 +26,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -40,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping(value = "batch")
 public class TestCrudBatchController {
-    public static final int COUNT = 10000 * 10;
+    public static final int COUNT = 3 * 10;
     @Autowired
     private UserMapper userMapper;
 
@@ -158,7 +164,6 @@ public class TestCrudBatchController {
      * 部分参考：https://blog.csdn.net/qq_42093488/article/details/124956848
      */
     @PostMapping("/batchAddUser3")
-    @Transactional
     public void batchAddUser3() {
         StopWatch stopWatch = new StopWatch("batchAddUser3");
         stopWatch.start();
@@ -173,10 +178,15 @@ public class TestCrudBatchController {
             List<User> users = getUsers(COUNT);
             for (int i = 0; i < users.size(); i++) {
                 mapper.insert(users.get(i));
-                if (i % 10000 == 0 && i != 0) {
-                    // org.apache.ibatis.executor.BatchExecutor.doFlushStatements
-                    // todo：会执行 stmt.executeBatch() ，会把数据先刷一波入库
-                    sqlSession.flushStatements();
+                if (i % 10 == 0 && i != 0) {
+                    /*  commit 核心执行逻辑
+                     *  sqlSession.commit();
+                     *  ||
+                     *  org.apache.ibatis.executor.BatchExecutor.doFlushStatements
+                     *  ||
+                     *  com.mysql.cj.jdbc.StatementImpl.executeBatch (stmt.executeBatch())
+                     */
+                    sqlSession.commit();
                 }
             }
             // 如果中间不执行 flushStatements(),commit 方法只会一次性执行
@@ -188,6 +198,72 @@ public class TestCrudBatchController {
         double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
         System.out.println("totalTimeSeconds = " + totalTimeSeconds);
         System.out.println(stopWatch.prettyPrint());
+    }
+
+
+    /**
+     * JDBC分批次批量插入
+     * 同：com.aaa.mybatisplus.web.TestCrudBatchController#batchAddUser3() 它只是对jdbc的封装
+     *
+     * @throws IOException
+     */
+    @PostMapping("/batchAddUser4")
+    public void batchAddUser4() throws IOException {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        String databaseURL = "jdbc:mysql://localhost:3306/master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true";
+        String user = "root";
+        String password = "123456";
+
+        try {
+            connection = DriverManager.getConnection(databaseURL, user, password);
+            // 关闭自动提交事务，改为手动提交
+            connection.setAutoCommit(false);
+            System.out.println("===== 开始插入数据 =====");
+            long startTime = System.currentTimeMillis();
+            String sqlInsert = "INSERT INTO user ( name, age) VALUES ( ?, ?)";
+            preparedStatement = connection.prepareStatement(sqlInsert);
+
+            Random random = new Random();
+            for (int i = 1; i <= 30; i++) {
+                preparedStatement.setString(1, "aaa:" + i);
+                preparedStatement.setInt(2, random.nextInt(100));
+                // 添加到批处理中
+                preparedStatement.addBatch();
+
+                if (i % 10 == 0) {
+                    // 每1000条数据提交一次
+                    preparedStatement.executeBatch();
+                    connection.commit();
+                    System.out.println("成功插入第 " + i + " 条数据");
+                }
+
+            }
+            // 处理剩余的数据
+            preparedStatement.executeBatch();
+            connection.commit();
+            long spendTime = System.currentTimeMillis() - startTime;
+            System.out.println("成功插入 30 万条数据,耗时：" + spendTime + "毫秒");
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     private List<User> getUsers(int count) {
