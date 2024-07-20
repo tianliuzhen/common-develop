@@ -1,8 +1,11 @@
 package com.aaa.mybatisplus.web;
 
+import com.aaa.mybatisplus.config.MultiThreadTransactionManagerV2;
 import com.aaa.mybatisplus.config.global.exceptions.BizException;
 import com.aaa.mybatisplus.domain.entity.User;
 import com.aaa.mybatisplus.mapper.UserMapper;
+import com.aaa.mybatisplus.util.ThreadPoolUtil;
+import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author liuzhen.tian
@@ -147,4 +151,23 @@ public class TestSpringTransactionController {
         throw new BizException();
     }
 
+
+    /**
+     * 异步线程的带事务执行的正确方案
+     */
+    @GetMapping("/asyncTrans")
+    public void asyncTrans() {
+        MultiThreadTransactionManagerV2 multiThreadTransactionManager =
+                new MultiThreadTransactionManagerV2(platformTransactionManager, 20, TimeUnit.SECONDS);
+        multiThreadTransactionManager.execute(Lists.newArrayList(() -> {
+            insertUser();
+            // 模拟异常
+            try {
+                int a = 1 / 0;
+            } catch (Exception e) {
+                // throw e;
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            }
+        }), ThreadPoolUtil.common_pool);
+    }
 }
