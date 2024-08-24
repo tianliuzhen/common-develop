@@ -22,12 +22,15 @@ import javax.servlet.http.HttpServletResponse;
 public class MyCookieController {
 
 
-    //首先，想要获取Cookie信息，那么就得先有Cookie信息，这边我们自己从头开始，先弄个Cookie吧。
+    /**
+     * 通过请求设置cookie信息
+     *
+     * @param response
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/setCookies", method = RequestMethod.GET)
-    public String setCookies(HttpServletResponse response,HttpServletRequest request) {
-        //HttpServerletRequest 装请求信息类
-        //HttpServerletRespionse 装相应信息的类
-
+    public String setCookies(HttpServletResponse response, HttpServletRequest request) {
         // CookieTestInfo 这里面可以塞，用户信息或者认证token等等
         Cookie cookie = new Cookie("sessionId", "CookieTestInfo");
 
@@ -52,9 +55,18 @@ public class MyCookieController {
          */
         // cookie.setHttpOnly(true);  //不能被js访问的Cookie
 
-        // 正常的cookie只能在一个应用中共享，即一个cookie只能由创建它的应用获得。
-        // 可在同一应用服务器内共享方法：设置cookie.setPath("/");
-        cookie.setPath(request.getContextPath());
+        /**
+         * cookie共享的路径，如果默认不填，
+         * 会自动解析 http://localhost:8080/cookies/setCookies 中的  cookies   作为 Path
+         * 会自动解析 http://localhost:8080/cookies/setCookies 中的  localhost 作为 Domain
+         */
+        cookie.setPath("/");
+        /**
+         *  todo 设置域名  domain参数必须以点(".")开始 ,
+         *  很奇怪。后端这里如果是 . 开头，会直接报错 "An invalid domain [.local.cvb] was specified for this cookie
+         *  不以 . 开头，浏览器保存cookie会默认 带上.开头
+         */
+        cookie.setDomain("local.cvb");
 
         response.addCookie(cookie);
         return "添加cookies信息成功";
@@ -77,8 +89,6 @@ public class MyCookieController {
      */
     @RequestMapping(value = "/getCookies", method = RequestMethod.GET)
     public String getCookies(HttpServletRequest request) {
-        //HttpServletRequest 装请求信息类
-        //HttpServletRespionse 装相应信息的类
         //   Cookie cookie=new Cookie("sessionId","CookieTestInfo");
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
@@ -100,4 +110,5 @@ public class MyCookieController {
         System.out.println("testCookieValue,sessionId=" + sessionId);
         return "SUCCESS";
     }
+
 }
