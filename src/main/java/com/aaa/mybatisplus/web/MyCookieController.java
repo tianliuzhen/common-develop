@@ -66,7 +66,7 @@ public class MyCookieController {
          *  很奇怪。后端这里如果是 . 开头，会直接报错 "An invalid domain [.local.cvb] was specified for this cookie
          *  不以 . 开头，浏览器保存cookie会默认 带上.开头
          */
-        cookie.setDomain("local.cvb");
+        cookie.setDomain(".local.cvb");
 
         response.addCookie(cookie);
         return "添加cookies信息成功";
