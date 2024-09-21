@@ -1,6 +1,6 @@
 package com.aaa.commondevelop.service.impl;
 
-import com.aaa.commondevelop.annotation.SysLog;
+import com.aaa.commondevelop.domain.annotation.SysLog;
 import com.aaa.commondevelop.service.AopService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

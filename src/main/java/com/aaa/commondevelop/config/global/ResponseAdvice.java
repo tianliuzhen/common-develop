@@ -14,7 +14,6 @@ package com.aaa.commondevelop.config.global;
 import com.aaa.commondevelop.config.httpResult.HttpResult;
 import com.aaa.commondevelop.config.httpResult.RestfulResponse;
 import com.aaa.commondevelop.web.base.CommonResult;
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -65,8 +64,6 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
                                   Class selectedConverterType,
                                   ServerHttpRequest request,
                                   ServerHttpResponse response) {
-
-
         /**
          * case：1
          * 有些接口可能想要的返回值。有的是  result或者有的是 content 等等
@@ -81,14 +78,14 @@ public class ResponseAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         /**
-         * case：2
-         * 基本基本数据类型也可以直接返回，唯独String 类型
-         * 如果检测到是字符串直接返回字符串，否则会报错
+         * 基本基本数据类型也可以直接返回，唯独String 类型,如果检测到是字符串直接返回字符串，否则会报错（cannot be cast to class java.lang.String）
          * 具体原因是：内部没有做判断，字符串还是走的 对象的转换接口，所以就会异常
+         * 解决方案：让MappingJackson2HttpMessageConverter放在前面位置 ，可参考 https://www.yuque.com/tianliuzhen/rinavs/xc37p0iivfzwrirf
          */
-        if(body instanceof String) {
-            return JSON.toJSONString(HttpResult.ok(body));
-        }
+        // if(body instanceof String) {
+        //     return JSON.toJSONString(HttpResult.ok(body));
+        // }
+
         /**
          * case：3
          * body = HttpResult  直接返回，一般是异常

@@ -24,4 +24,12 @@ public class AopController {
         TimeUnit.MILLISECONDS.sleep(200);
     }
 
+    @GetMapping(value = "/returnStr",produces = {"application/json;charset=utf-8"})
+    public String returnStr() {
+        return "returnStr";
+    }
+    @GetMapping("/returnInt")
+    public int returnInt() {
+        return 1;
+    }
 }

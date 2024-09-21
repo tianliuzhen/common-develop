@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.web;
 
-import com.aaa.commondevelop.annotation.PageAoDefault;
-import com.aaa.commondevelop.annotation.SysLog;
+import com.aaa.commondevelop.domain.annotation.PageAoDefault;
+import com.aaa.commondevelop.domain.annotation.SysLog;
 import com.aaa.commondevelop.config.global.Shift;
 import com.aaa.commondevelop.config.httpResult.type.ResultResponse;
 import com.aaa.commondevelop.domain.ao.PageAo;

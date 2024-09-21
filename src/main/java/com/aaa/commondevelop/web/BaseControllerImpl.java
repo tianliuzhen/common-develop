@@ -1,8 +1,8 @@
 package com.aaa.commondevelop.web;
 
-import com.aaa.commondevelop.annotation.Assignment;
-import com.aaa.commondevelop.annotation.SysLog;
-import com.aaa.commondevelop.annotation.SysTimeLog;
+import com.aaa.commondevelop.domain.annotation.Assignment;
+import com.aaa.commondevelop.domain.annotation.SysLog;
+import com.aaa.commondevelop.domain.annotation.SysTimeLog;
 import com.aaa.commondevelop.config.LogInterceptor;
 import com.aaa.commondevelop.config.httpResult.type.ResultResponse;
 import com.aaa.commondevelop.domain.dto.PageDto;

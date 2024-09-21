@@ -1,6 +1,9 @@
 package com.aaa.commondevelop.web;
 
-import com.aaa.commondevelop.annotation.*;
+import com.aaa.commondevelop.domain.annotation.AccessLimit;
+import com.aaa.commondevelop.domain.annotation.LessLog;
+import com.aaa.commondevelop.domain.annotation.Limit;
+import com.aaa.commondevelop.domain.annotation.SwaggerApi1;
 import com.aaa.commondevelop.domain.enums.LogType;
 import com.aaa.commondevelop.domain.enums.LtTypeEnum;
 import com.google.common.util.concurrent.RateLimiter;

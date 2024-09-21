@@ -1,6 +1,6 @@
 package com.aaa.commondevelop.web;
 
-import com.aaa.commondevelop.annotation.Lock;
+import com.aaa.commondevelop.domain.annotation.Lock;
 import com.aaa.commondevelop.domain.entity.User;
 import com.aaa.commondevelop.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;

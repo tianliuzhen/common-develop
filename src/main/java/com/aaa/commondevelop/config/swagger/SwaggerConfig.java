@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.config.swagger;
 
 
-import com.aaa.commondevelop.annotation.SwaggerApi1;
+import com.aaa.commondevelop.domain.annotation.SwaggerApi1;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

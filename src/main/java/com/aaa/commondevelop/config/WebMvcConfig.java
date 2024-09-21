@@ -1,9 +1,9 @@
 package com.aaa.commondevelop.config;
 
-import com.aaa.commondevelop.annotation.config.AccessLimitInterceptor;
-import com.aaa.commondevelop.annotation.config.PageVoParameterResolver;
-import com.aaa.commondevelop.annotation.config.ParameterInfo2Interceptor;
-import com.aaa.commondevelop.annotation.config.ParameterInfoInterceptor;
+import com.aaa.commondevelop.config.aop.interceptor.AccessLimitInterceptor;
+import com.aaa.commondevelop.config.aop.interceptor.PageVoParameterResolver;
+import com.aaa.commondevelop.config.aop.interceptor.ParameterInfo2Interceptor;
+import com.aaa.commondevelop.config.aop.interceptor.ParameterInfoInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -48,8 +48,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private PageVoParameterResolver pageVoParameterResolver;
 
-    @Autowired
-    private StringHttpMessageConverter stringHttpMessageConverter;
     // @Autowired
     // private JacksonHttpMessageConverter jacksonHttpMessageConverter;
 
@@ -87,6 +85,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         for (int i = 0; i < converters.size(); i++) {
             // 继承 WebMvcConfigurationSupport 默认编码是 ISO 这里修改为 UTF_8
             if (converters.get(i) instanceof StringHttpMessageConverter){
+                StringHttpMessageConverter stringHttpMessageConverter = (StringHttpMessageConverter) converters.get(i);
                 stringHttpMessageConverter.setDefaultCharset(StandardCharsets.UTF_8);
                 converters.set(i, stringHttpMessageConverter);
             }
@@ -102,6 +101,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
     // public void configureMessageConverters(List<HttpMessageConverter<?>> converters){
     //     converters.add(new StringHttpMessageConverter(StandardCharsets.UTF_8));
     // }
+
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        for (int i = 0; i < converters.size(); i++) {
+            if (converters.get(i) instanceof MappingJackson2HttpMessageConverter) {
+                MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = (MappingJackson2HttpMessageConverter) converters.get(i);
+                converters.set(i, converters.get(0));
+                converters.set(0, mappingJackson2HttpMessageConverter);
+                break;
+            }
+        }
+    }
 
     /**
      *  extends WebMvcConfigurationSupport 造成问题

@@ -1,6 +1,6 @@
 package com.aaa.commondevelop.web;
 
-import com.aaa.commondevelop.annotation.SysTimeLog;
+import com.aaa.commondevelop.domain.annotation.SysTimeLog;
 import com.aaa.commondevelop.config.global.exceptions.BizException;
 import com.aaa.commondevelop.config.snowflakeId.SnowflakeComponent;
 import com.aaa.commondevelop.domain.entity.Dept;

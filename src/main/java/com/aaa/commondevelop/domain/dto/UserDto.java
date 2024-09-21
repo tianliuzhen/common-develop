@@ -1,6 +1,6 @@
 package com.aaa.commondevelop.domain.dto;
 
-import com.aaa.commondevelop.annotation.Check;
+import com.aaa.commondevelop.domain.annotation.Check;
 import lombok.Data;
 
 /**
