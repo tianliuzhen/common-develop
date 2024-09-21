@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aaa.mybatisplus.mapper.DeptMapper">
+<mapper namespace="com.aaa.commondevelop.mapper.DeptMapper">
 
     <!--  keyProperty="id" useGeneratedKeys="true" 添加这俩个属性就能返回主键id   -->
     <insert id="insertDept" keyProperty="id" useGeneratedKeys="true">
@@ -39,13 +39,13 @@
         VALUES (#{id}, #{deptName}, #{deptNo})
     </insert>
 
-    <select id="lockByForUpdateNowait" resultType="com.aaa.mybatisplus.domain.entity.Dept">
+    <select id="lockByForUpdateNowait" resultType="com.aaa.commondevelop.domain.entity.Dept">
         select *
         from dept
         where dept_no = #{deptNo} for update nowait
     </select>
 
-    <select id="lockByForUpdate" resultType="com.aaa.mybatisplus.domain.entity.Dept">
+    <select id="lockByForUpdate" resultType="com.aaa.commondevelop.domain.entity.Dept">
         select *
         from dept
         where dept_no = #{deptNo} for update;

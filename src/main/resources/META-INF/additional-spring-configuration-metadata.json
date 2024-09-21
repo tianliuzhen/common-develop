@@ -2,8 +2,8 @@
   "groups": [
     {
       "name": "test",
-      "type": "com.aaa.mybatisplus.config.diy.TestProperties",
-      "sourceType": "com.aaa.mybatisplus.config.diy.TestProperties"
+      "type": "com.aaa.commondevelop.config.diy.TestProperties",
+      "sourceType": "com.aaa.commondevelop.config.diy.TestProperties"
     }
   ],
   "properties": [
@@ -11,18 +11,18 @@
       "name": "test.age",
       "type": "java.lang.String",
       "description": "年龄.",
-      "sourceType": "com.aaa.mybatisplus.config.diy.TestProperties"
+      "sourceType": "com.aaa.commondevelop.config.diy.TestProperties"
     },
     {
       "name": "test.name",
       "type": "java.lang.String",
       "description": "名字.",
-      "sourceType": "com.aaa.mybatisplus.config.diy.TestProperties"
+      "sourceType": "com.aaa.commondevelop.config.diy.TestProperties"
     },
     {
       "name": "test.oldName",
       "type": "java.lang.String",
-      "sourceType": "com.aaa.mybatisplus.config.diy.TestProperties",
+      "sourceType": "com.aaa.commondevelop.config.diy.TestProperties",
       "deprecated": true,
       "deprecation": {
         "reason": "new name",

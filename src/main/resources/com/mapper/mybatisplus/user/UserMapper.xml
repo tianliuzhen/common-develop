@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aaa.mybatisplus.mapper.UserMapper">
+<mapper namespace="com.aaa.commondevelop.mapper.UserMapper">
     <!-- autoMapping="true" 是默认的，表示自动映射，如果设置为false，只会映射手动配置值   -->
     <resultMap id="userMap" type="User" autoMapping="true">
         <id column="id" property="id"/>
@@ -92,9 +92,9 @@
         </foreach>
     </insert>
 
-    <insert id="insertUser" parameterType="com.aaa.mybatisplus.domain.entity.User">
+    <insert id="insertUser" parameterType="com.aaa.commondevelop.domain.entity.User">
         INSERT INTO `user`(`id`, `name`, `age`, `sex`, `email`, `status`,  `is_del`, `create_time`, `online_time`)
-        VALUES (#{id},#{name},#{age},#{sex},#{email},#{status},#{isDel},#{createTime},#{onlineTime,typeHandler=com.aaa.mybatisplus.config.typeHandler.TimeConvertHandler})
+        VALUES (#{id},#{name},#{age},#{sex},#{email},#{status},#{isDel},#{createTime},#{onlineTime,typeHandler=com.aaa.commondevelop.config.typeHandler.TimeConvertHandler})
     </insert>
 
     <!--

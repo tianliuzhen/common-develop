@@ -23,7 +23,7 @@
         </jdbcConnection>
 
         <!--生成实体类 指定包名 以及生成的地址  -->
-        <javaModelGenerator targetPackage="com.aaa.mybatisplus.domain.entity"
+        <javaModelGenerator targetPackage="com.aaa.commondevelop.domain.entity"
                             targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -35,7 +35,7 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
         <!-- xml -->
-        <javaClientGenerator targetPackage="com.aaa.mybatisplus.mappertk"
+        <javaClientGenerator targetPackage="com.aaa.commondevelop.mappertk"
                              targetProject="F:\WorkSpace\MyGithub\mybatis-plus\src\main\java"
                              type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>

@@ -82,10 +82,10 @@
     <!-- 这里的优先级高于 <root level="INFO">   -->
     <!-- 配置不同环境日志级别 -->
     <springProfile name="dev">
-        <logger name="com.aaa.mybatisplus" level="DEBUG"/>
+        <logger name="com.aaa.commondevelop" level="DEBUG"/>
     </springProfile>
     <springProfile name="prod">
-        <logger name="com.aaa.mybatisplus" level="INFO"/>
+        <logger name="com.aaa.commondevelop" level="INFO"/>
     </springProfile>
 
     <!-- 配置异步日志，每一个配置的 appender 需要单独的去配置异步文件-->

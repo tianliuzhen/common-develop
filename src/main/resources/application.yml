@@ -15,15 +15,15 @@ mybatis-plus:
   # 是否要开启 mp sql输出日志
   # configuration:
   #   log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  typeEnumsPackage: com.aaa.mybatisplus.domain.enums
+  typeEnumsPackage: com.aaa.commondevelop.domain.enums
   #  mapper文件扫描地址
   mapper-locations: classpath*:/mapper/**Mapper.xml,classpath*:/com/mapper/**/*Mapper.xml
   #  配置文件扫描地址
   config-location: classpath:mybatis.xml
   # 自定义TypeHandler的注册（这个不是配置别名的意思）
-  type-handlers-package: com.aaa.mybatisplus.config.typeHandler
+  type-handlers-package: com.aaa.commondevelop.config.typeHandler
   # 返回type别名配置扫描
-  type-aliases-package: com.aaa.mybatisplus.domain.entity;com.aaa.mybatisplus.config.typeHandler
+  type-aliases-package: com.aaa.commondevelop.domain.entity;com.aaa.commondevelop.config.typeHandler
   global-config:
     db-config:
       # 这里的自定义的字段是 数据库映射的实体类映射 eg： is_del =>  isDel
