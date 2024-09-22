@@ -1,15 +1,15 @@
 package com.aaa.commondevelop.web;
 
+import com.aaa.commondevelop.config.LogInterceptor;
+import com.aaa.commondevelop.config.httpResult.type.ResultResponse;
 import com.aaa.commondevelop.domain.annotation.Assignment;
 import com.aaa.commondevelop.domain.annotation.SysLog;
 import com.aaa.commondevelop.domain.annotation.SysTimeLog;
-import com.aaa.commondevelop.config.LogInterceptor;
-import com.aaa.commondevelop.config.httpResult.type.ResultResponse;
-import com.aaa.commondevelop.domain.dto.PageDto;
 import com.aaa.commondevelop.domain.dto.UserDto;
 import com.aaa.commondevelop.domain.entity.Emp;
 import com.aaa.commondevelop.domain.entity.FactorRelation;
 import com.aaa.commondevelop.domain.entity.People;
+import com.aaa.commondevelop.domain.request.UserAddRequest;
 import com.aaa.commondevelop.util.CommonUtils;
 import com.aaa.commondevelop.util.HttpContextUtils;
 import com.aaa.commondevelop.util.ThreadPoolUtil;
@@ -39,7 +39,7 @@ public class BaseControllerImpl {
     public static UserDto userDto;
 
     @PostMapping("/testStr")
-    public ResultResponse<String> testStr(@Valid @RequestBody PageDto pageDto) {
+    public ResultResponse<String> testStr(@Valid @RequestBody UserAddRequest request) {
         Map map = new HashMap();
         map.put("key", "val");
         System.out.println(CommonUtils.getIpAddr(HttpContextUtils.getHttpServletRequest()));

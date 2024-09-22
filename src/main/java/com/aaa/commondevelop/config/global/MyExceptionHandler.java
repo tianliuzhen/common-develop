@@ -45,7 +45,19 @@ public class MyExceptionHandler {
         log.error("异常:{}", e.getMessage());
         log.error(e.getMessage(), e);
     }
-
+    /**
+     * 默认的全局异常拦截
+     * RuntimeException
+     */
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public HttpResult RuntimeExceptionHandler(Exception exception) {
+        exception.printStackTrace();
+        //输出报错日志
+        log.error(exception.getMessage(), exception);
+        return HttpResult.fail(ResultCode.SYSTEM_ERROR.getCode(), exception.getMessage());
+    }
 
     /**
      * 默认的全局异常拦截
@@ -64,7 +76,6 @@ public class MyExceptionHandler {
     /**
      * 参数未通过@Valid、@Validated验证异常，
      */
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     private HttpResult methodArgumentNotValid(MethodArgumentNotValidException exception) {
