@@ -1,10 +1,7 @@
 package com.aaa.commondevelop.schedule;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -23,15 +20,37 @@ import java.util.Date;
 public class MyCustomScheduled {
 
     /**
-     * 允许并发执行
+     * 允许并发执行（不推荐）
+     * 原因：
+     *  本身这里的线程作用：只是分配任务，而不是执行任务
+     *  无法做出线程数的估计
+     *
+     * 原理：
+     * org.springframework.scheduling.annotation.ScheduledAnnotationBeanPostProcessor#finishRegistration()
+     *   实例化后置：ScheduledTaskRegistrar 实例化之后会调用此方法
+     * org.springframework.scheduling.config.ScheduledTaskRegistrar#setTaskScheduler(org.springframework.scheduling.TaskScheduler)
+     *   注入：taskScheduler
+     * org.springframework.scheduling.config.ScheduledTaskRegistrar#scheduleTasks()
+     *   兜底：如果为设置taskScheduler，采用this.localExecutor = Executors.newSingleThreadScheduledExecutor()
      */
-    @Bean
-    public TaskScheduler taskScheduler() {
-        ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
-        taskScheduler.setPoolSize(10);
-        taskScheduler.initialize();
-        return taskScheduler;
-    }
+    // @Bean
+    // public TaskScheduler taskScheduler() {
+    //     ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
+    //     taskScheduler.setPoolSize(10);
+    //     taskScheduler.initialize();
+    //     return taskScheduler;
+    // }
+
+    // 同上
+    // @Configuration
+    // public class ScheduleConfig implements SchedulingConfigurer {
+    //
+    //     @Override
+    //     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
+    //         ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(10, new BasicThreadFactory.Builder().namingPattern("customized-schedule-pool-%d").daemon(true).build());
+    //         taskRegistrar.setScheduler(executorService);
+    //     }
+    // }
 
     @Scheduled(cron = "0/11 * * * * ?")
     public void run1() {
