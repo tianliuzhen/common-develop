@@ -46,3 +46,9 @@ logging:
   #  日志生成位置
   file:
     path: ./logs
+
+---
+spring:
+  messages:
+    basename: i18n/message
+    encoding: UTF-8

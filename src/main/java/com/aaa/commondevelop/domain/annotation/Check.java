@@ -4,10 +4,7 @@ import com.aaa.commondevelop.config.aop.aspect.ParamConstraintValidated;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * description: 描述
@@ -30,7 +27,7 @@ public @interface Check {
     /**
      * 提示信息
      **/
-    String message() default "参数不为指定值";
+    String message() default "{custom.check.message}";
 
     Class<?>[] groups() default {};
 
