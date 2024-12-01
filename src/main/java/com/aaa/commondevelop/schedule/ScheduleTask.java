@@ -27,7 +27,7 @@ import java.util.Date;
 @Data
 @Slf4j
 @Component
-@PropertySource("classpath:task-config.ini")
+@PropertySource("classpath:/task-config.ini")
 public class ScheduleTask implements SchedulingConfigurer {
 
     @Value("${printTime.cron}")
