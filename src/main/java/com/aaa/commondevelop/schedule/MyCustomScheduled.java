@@ -2,7 +2,6 @@ package com.aaa.commondevelop.schedule;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -16,7 +15,7 @@ import java.util.Date;
  * @version 1.0 MyScheduled.java  2024/7/14 20:38
  */
 @Slf4j
-@Component
+// @Component
 public class MyCustomScheduled {
 
     /**

@@ -1,11 +1,13 @@
 package com.aaa.commondevelop.redis;
 
 import com.aaa.commondevelop.config.redis.RedisDbMany;
+import com.aaa.commondevelop.web.base.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,6 +25,8 @@ public class TestRedisTransactional {
     @Autowired
     private RedisDbMany redisDbMany;
 
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @PostConstruct
     public void init() {
@@ -36,6 +40,7 @@ public class TestRedisTransactional {
 
     /**
      * 不借助spring，redis单独执行事务
+     *
      * @return
      */
     @GetMapping(value = "/incrementWithTrans")
@@ -49,6 +54,7 @@ public class TestRedisTransactional {
 
     /**
      * 切记：如果加上@Transactional，相当于 multi() =》... =》exec()
+     *
      * @return
      */
     @GetMapping(value = "/incrementWithTransV2")
@@ -61,6 +67,7 @@ public class TestRedisTransactional {
 
     /**
      * 不开启spring事务，只设置setEnableTransactionSupport 也是无效的
+     *
      * @return
      */
     @GetMapping(value = "/incrementWithTransV3")
@@ -68,6 +75,22 @@ public class TestRedisTransactional {
         redisTemplate.setEnableTransactionSupport(true);
         Long increment = valueOperations.increment("test:count", 1);
         return increment;
+    }
+
+
+    /**
+     * 编程式事务效果也同于声明式事务：TestRedisTransactional#incrementWithTransV2()
+     *
+     * @return
+     */
+    @GetMapping(value = "/incrementWithTransV4")
+    public Object incrementWithTransV4() {
+        Long execute = transactionTemplate.execute(e -> {
+            redisTemplate.setEnableTransactionSupport(true);
+            Long increment = valueOperations.increment("test:count", 1);
+            return increment;
+        });
+        return CommonResult.success(execute);
     }
 
 
