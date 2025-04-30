@@ -95,7 +95,9 @@ public class TestRedisTransactional {
 
 
     @GetMapping(value = "/incrementNoTrans")
+    // @Transactional  // 假设没开启事务
     public Object incrementNoTrans() {
+        redisTemplate.setEnableTransactionSupport(true);
         return valueOperations.increment("test:count", 1);
     }
 }

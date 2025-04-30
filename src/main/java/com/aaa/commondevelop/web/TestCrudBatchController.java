@@ -1,8 +1,8 @@
 package com.aaa.commondevelop.web;
 
-import com.aaa.commondevelop.domain.annotation.SysTimeLog;
 import com.aaa.commondevelop.config.global.exceptions.BizException;
 import com.aaa.commondevelop.config.snowflakeId.SnowflakeComponent;
+import com.aaa.commondevelop.domain.annotation.SysTimeLog;
 import com.aaa.commondevelop.domain.entity.Dept;
 import com.aaa.commondevelop.domain.entity.User;
 import com.aaa.commondevelop.domain.enums.GenderEnum;
@@ -15,10 +15,13 @@ import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.assertj.core.util.Lists;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.ConnectionHolder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -69,6 +73,9 @@ public class TestCrudBatchController {
 
     @Autowired
     private SnowflakeComponent snowflakeComponent;
+
+    @Autowired
+    private DataSource dataSource;
 
     /**
      * 批量更新：基于注解
@@ -394,4 +401,37 @@ public class TestCrudBatchController {
         }
     }
 
+    /**
+     * 测试多线程事务共享提交的问题
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @GetMapping(value = "testTran3")
+    public void testTranAsync() throws InterruptedException {
+        ConnectionHolder resource = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
+        deptMapper.insert(new Dept(1L, "部门1", 1));
+        // 要配置： @EnableAspectJAutoProxy(exposeProxy = true)
+        TestCrudBatchController proxy = (TestCrudBatchController) AopContext.currentProxy();
+        Thread thread = new Thread(() -> {
+            System.out.println("testTranAsync");
+            TransactionSynchronizationManager.bindResource(dataSource, resource);
+            /* 绑定完资源后,在走到 getTransaction 时，不再创建Transaction，复用之前的Transaction
+             * org.springframework.transaction.support.AbstractPlatformTransactionManager#getTransaction(org.springframework.transaction.TransactionDefinition)
+             * org.springframework.transaction.support.AbstractPlatformTransactionManager.isExistingTransaction
+             * org.springframework.transaction.support.AbstractPlatformTransactionManager.handleExistingTransaction
+             */
+            proxy.testTranAsyncInner();
+        });
+        thread.start();
+        thread.join(); // 当前线程（即 Spring 控制器方法所在的 HTTP 请求处理线程）暂停执行，等待上面那个子线程执行完毕，否则无效
+        System.out.println("testTranAsyncInner");
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void testTranAsyncInner() {
+        deptMapper.insert(new Dept(2L, "部门2", 1));
+        throw new RuntimeException("我异常了");
+    }
 }

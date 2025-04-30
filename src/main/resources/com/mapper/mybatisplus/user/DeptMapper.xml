@@ -17,7 +17,7 @@
         此时插入正常了
         resultType="long" 要和主键类型保持一致，否则依然会报错
         */
-        <selectKey keyProperty="id" order="AFTER" resultType="long">
+        <selectKey keyProperty="id" order="BEFORE" resultType="long">
             SELECT LAST_INSERT_ID()
         </selectKey>
 
