@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -19,15 +20,15 @@ import java.util.concurrent.*;
 public class RedisLuaTest2 {
 
     @Autowired
-    // @Qualifier("redisLuaLockImplV2")
-    @Qualifier("redisLuaLockImpl")
+    @Qualifier("redisLuaLockImplV2")
+    // @Qualifier("redisLuaLockImpl")
     RedisLuaLock redisLuaLock;
 
     // 总的请求个数
-    public static final int requestTotal = 20;
+    public static final int requestTotal = 4;
 
     // 同一时刻最大的并发线程的个数
-    public static final int concurrentThreadNum = 20;
+    public static final int concurrentThreadNum = 4;
 
 
     @Test
@@ -42,7 +43,7 @@ public class RedisLuaTest2 {
                     cyclicBarrier.await();
                     log.info(Thread.currentThread().getName() + "：冲破栅栏");
                     lockLuaTest();
-                } catch (InterruptedException | BrokenBarrierException e){
+                } catch (InterruptedException | BrokenBarrierException e) {
                     log.error("exception", e);
                 }
                 countDownLatch.countDown();
@@ -56,12 +57,13 @@ public class RedisLuaTest2 {
     private void lockLuaTest() {
         String value = UUID.randomUUID().toString();
         try {
-            Boolean aaa = redisLuaLock.tryLock("aaa", value, 10);
+            Boolean aaa = redisLuaLock.tryLock("aaa", value, 4);
             if (!aaa) {
                 System.out.println(Thread.currentThread().getName() + "：已经加锁，请等待！");
             } else {
-                Thread.sleep(6 * 1000);
-                System.err.println(Thread.currentThread().getName() + "：首先执行的线程");
+                System.err.println(Thread.currentThread().getName() + "：首先执行的线程，开始执行" + new Date());
+                Thread.sleep(10 * 1000);
+                System.err.println(Thread.currentThread().getName() + "：首先执行的线程，开始结束" + new Date());
             }
 
         } catch (InterruptedException e) {
