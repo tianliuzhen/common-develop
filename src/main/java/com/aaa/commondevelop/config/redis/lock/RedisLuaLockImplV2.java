@@ -39,8 +39,8 @@ import java.util.concurrent.locks.LockSupport;
  */
 @Component
 public class RedisLuaLockImplV2 implements RedisLuaLock {
-    public static final long DEFAULT_WAIT_TIME = 30; // 默认等待时间(秒)
     public static final int DEFAULT_SECOND_LEN = 10; // 默认超时时间
+    public static final long DEFAULT_WAIT_TIME = 30; // 默认等待时间(秒)
     public static final long SPIN_FOR_TIME_THRESHOLD = 1000L; // 自旋阈值(毫秒)
 
 
@@ -111,13 +111,13 @@ public class RedisLuaLockImplV2 implements RedisLuaLock {
     }
 
     @Override
-    public Boolean lock(String key, String value) {
-        return lock(key, value, DEFAULT_SECOND_LEN, DEFAULT_WAIT_TIME);
+    public void lock(String key, String value) {
+        lock(key, value, DEFAULT_SECOND_LEN, DEFAULT_WAIT_TIME);
     }
 
     @Override
-    public Boolean lock(String key, String value, Integer time) {
-        return lock(key, value, DEFAULT_SECOND_LEN, DEFAULT_WAIT_TIME);
+    public void lock(String key, String value, Integer time) {
+        lock(key, value, DEFAULT_SECOND_LEN, DEFAULT_WAIT_TIME);
     }
 
     public Boolean lock(String lock, String val, Integer second, long waitTime) {

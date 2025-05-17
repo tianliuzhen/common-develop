@@ -1,6 +1,7 @@
 package com.aaa.commondevelop.redis.lock;
 
 import com.aaa.commondevelop.config.redis.lock.RedisLuaLock;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,10 +55,10 @@ public class RedisLuaTest2 {
         log.info("请求完成");
     }
 
-    private void lockLuaTest() {
+    private void tryLockLuaTest() {
         String value = UUID.randomUUID().toString();
         try {
-            Boolean aaa = redisLuaLock.lock("aaa", value, 100);
+            Boolean aaa = redisLuaLock.tryLock("aaa", value, 10);
             if (!aaa) {
                 System.out.println(Thread.currentThread().getName() + "：已经加锁，请等待！");
             } else {
@@ -72,9 +73,19 @@ public class RedisLuaTest2 {
             redisLuaLock.releaseLock("aaa", value);
         }
 
-        // Boolean aaa = redisLockLua.releaseLock("aaa", UUID.randomUUID().toString());
-        // System.out.println(aaa);
-        // redisLockSet.getDistributedLock("aaa", UUID.randomUUID().toString(), 10);
+    }
+
+    @SneakyThrows
+    private void lockLuaTest() {
+        String value = UUID.randomUUID().toString();
+        try {
+            redisLuaLock.lock("lockLuaTest", value, 2);
+            System.out.println(Thread.currentThread().getName() + "：获得锁，开始执行！" + ",date:" + new Date());
+
+            Thread.sleep(1000);
+        } finally {
+            redisLuaLock.releaseLock("lockLuaTest", value);
+        }
     }
 
 }

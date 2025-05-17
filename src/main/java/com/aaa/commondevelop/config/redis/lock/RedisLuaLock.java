@@ -34,9 +34,9 @@ public interface RedisLuaLock {
      * @param value 值用于解锁时判断
      * @return Boolean
      */
-    Boolean lock(String key, String value);
+    void lock(String key, String value);
 
-    Boolean lock(String key, String value, Integer time);
+    void lock(String key, String value, Integer time);
 
 
     /**
