@@ -57,12 +57,12 @@ public class RedisLuaTest2 {
     private void lockLuaTest() {
         String value = UUID.randomUUID().toString();
         try {
-            Boolean aaa = redisLuaLock.tryLock("aaa", value, 4);
+            Boolean aaa = redisLuaLock.lock("aaa", value, 100);
             if (!aaa) {
                 System.out.println(Thread.currentThread().getName() + "：已经加锁，请等待！");
             } else {
                 System.err.println(Thread.currentThread().getName() + "：首先执行的线程，开始执行" + new Date());
-                Thread.sleep(10 * 1000);
+                Thread.sleep(2 * 1000);
                 System.err.println(Thread.currentThread().getName() + "：首先执行的线程，开始结束" + new Date());
             }
 

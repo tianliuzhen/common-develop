@@ -84,6 +84,16 @@ public class RedisLuaLockImpl implements RedisLuaLock{
         return result;
     }
 
+    @Override
+    public Boolean lock(String key, String value) {
+        return null;
+    }
+
+    @Override
+    public Boolean lock(String key, String value, Integer time) {
+        return null;
+    }
+
     /**
      * 释放锁操作
      * @param key

@@ -1,6 +1,5 @@
 package com.aaa.commondevelop.config.redis.lock;
 
-import com.aaa.commondevelop.config.redis.DelayTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * redisTemplate 基于 lua  实现分布式锁 版本二
@@ -39,8 +39,9 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Component
 public class RedisLuaLockImplV2 implements RedisLuaLock {
-
+    public static final long DEFAULT_WAIT_TIME = 30; // 默认等待时间(秒)
     public static final int DEFAULT_SECOND_LEN = 10; // 默认超时时间
+    public static final long SPIN_FOR_TIME_THRESHOLD = 1000L; // 自旋阈值(毫秒)
 
 
     @Autowired
@@ -104,10 +105,48 @@ public class RedisLuaLockImplV2 implements RedisLuaLock {
         boolean parseBoolean = Boolean.parseBoolean(flag);
         if (parseBoolean) {
             // 加锁成功, 启动一个延时线程, 防止业务逻辑未执行完毕就因锁超时而使锁释放
-            DelayTask postponeTask = new DelayTask(lock, val, second, this);
             startLockRenewal(lock, val, second);
         }
         return parseBoolean;
+    }
+
+    @Override
+    public Boolean lock(String key, String value) {
+        return lock(key, value, DEFAULT_SECOND_LEN, DEFAULT_WAIT_TIME);
+    }
+
+    @Override
+    public Boolean lock(String key, String value, Integer time) {
+        return lock(key, value, DEFAULT_SECOND_LEN, DEFAULT_WAIT_TIME);
+    }
+
+    public Boolean lock(String lock, String val, Integer second, long waitTime) {
+        long nanosTimeout = TimeUnit.SECONDS.toNanos(waitTime);
+        final long deadline = System.nanoTime() + nanosTimeout;
+
+        // 先尝试快速获取锁
+        if (tryLock(lock, val, second)) {
+            return true;
+        }
+
+        // 如果快速获取失败，则进入阻塞等待
+        while (true) {
+            if (tryLock(lock, val, second)) {
+                return true;
+            }
+
+            // 检查是否超时
+            nanosTimeout = deadline - System.nanoTime();
+            if (nanosTimeout <= 0L) {
+                return false;
+            }
+
+            // 自旋一小段时间(1秒内)以提高响应速度
+            if (nanosTimeout > SPIN_FOR_TIME_THRESHOLD) {
+                // 短暂休眠，避免CPU空转
+                LockSupport.parkNanos(this, 100_000); // 100微秒
+            }
+        }
     }
 
     /**
@@ -122,27 +161,43 @@ public class RedisLuaLockImplV2 implements RedisLuaLock {
      */
     private void startLockRenewal(String lock, String val, Integer originalExpire) {
         // 计算续期间隔，确保在锁过期前续期
-        int renewalInterval = Math.min(originalExpire / 3, LOCK_RENEWAL_INTERVAL);
+        // 续约检测阈值（剩余1秒时续约）
+        int renewalThreshold = 1000;
+        // 最大续约次数
+        int maxRenewals = 5;
 
         // 使用AtomicBoolean作为停止标志
-        AtomicInteger delayCount = new AtomicInteger(5);
-
+        AtomicInteger renewalCount = new AtomicInteger(0);
         ScheduledFuture<?> future = scheduledExecutorService.scheduleAtFixedRate(() -> {
-            if (delayCount.get() == 0) {
-                return;
-            }
-
             try {
-                if (delayTask(lock, val, originalExpire)) {
-                    System.out.println("延时成功..................................." + new Date());
-                    delayCount.getAndDecrement();
+                if (renewalCount.get() >= maxRenewals) {
+                    // 达到最大续约次数，停止续约
+                    stopLockRenewal(lock);
+                    // 主动释放锁
+                    releaseLock(lock, val);
+                    return;
+                }
+
+                // 获取锁的当前剩余时间
+                Long remainingTime = getRemainingTime(lock);
+                System.out.println("remainingTime = " + remainingTime + ", thread:" + Thread.currentThread().getName());
+                if (remainingTime != null && remainingTime <= renewalThreshold) {
+                    // 尝试续约
+                    boolean renewed = delayTask(lock, val, originalExpire);
+                    if (renewed) {
+                        renewalCount.incrementAndGet();
+                        System.out.println("续约成功 for key: " + lock + ", count: " + renewalCount.get() + ", date:" + new Date());
+                    } else {
+                        // 续约失败，停止续约
+                        stopLockRenewal(lock);
+                    }
                 }
             } catch (Exception e) {
-                // 处理续期任务中的异常
-                delayCount.set(0);
+                // 记录日志
+                System.err.println("Lock renewal failed for key: " + lock + ", error: " + e.getMessage());
+                stopLockRenewal(lock);
             }
-        }, renewalInterval, renewalInterval, TimeUnit.SECONDS);
-
+        }, 1, 1, TimeUnit.SECONDS); // 每秒检查一次剩余时间
         // 记录续期任务
         renewalTasks.put(lock, future);
     }
@@ -174,5 +229,8 @@ public class RedisLuaLockImplV2 implements RedisLuaLock {
         return Boolean.valueOf(flag);
     }
 
-
+    private Long getRemainingTime(String lock) {
+        // 使用 Redis 的 TTL 命令获取锁的剩余时间
+        return redisTemplate.getExpire(lock, TimeUnit.MILLISECONDS);
+    }
 }

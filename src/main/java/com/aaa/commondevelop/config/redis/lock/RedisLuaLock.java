@@ -8,7 +8,7 @@ public interface RedisLuaLock {
 
 
     /**
-     * 加锁
+     * 加锁  (非阻塞锁)
      *
      * @param key   key
      * @param value 值用于解锁时判断
@@ -17,7 +17,7 @@ public interface RedisLuaLock {
     Boolean tryLock(String key, String value);
 
     /**
-     * 自定义加锁过期时间
+     * 自定义加锁过期时间 (非阻塞锁)
      *
      * @param key   key
      * @param value 值用于解锁时判断
@@ -25,6 +25,19 @@ public interface RedisLuaLock {
      * @return Boolean
      */
     Boolean tryLock(String key, String value, Integer time);
+
+
+    /**
+     * 加锁 (阻塞锁)
+     *
+     * @param key   key
+     * @param value 值用于解锁时判断
+     * @return Boolean
+     */
+    Boolean lock(String key, String value);
+
+    Boolean lock(String key, String value, Integer time);
+
 
     /**
      * 释放锁操作
