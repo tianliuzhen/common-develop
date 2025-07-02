@@ -16,6 +16,13 @@ public class PageResultHelper {
     /**
      * page分页
      *
+     * 原理：
+     * 通过拦截器封装select count(*) from xxx
+     * com.github.pagehelper.util.ExecutorUtil#executeAutoCount(com.github.pagehelper.Dialect, org.apache.ibatis.executor.Executor, org.apache.ibatis.mapping.MappedStatement, java.lang.Object, org.apache.ibatis.mapping.BoundSql, org.apache.ibatis.session.RowBounds, org.apache.ibatis.session.ResultHandler)
+     *
+     * 缺陷：会一直使用线程池
+     * net.sf.jsqlparser.parser.CCJSqlParserUtil#parseStatement(net.sf.jsqlparser.parser.CCJSqlParser)
+     *
      * @param pageNum  当前页
      * @param pageSize 页数
      * @param queryDb  查询返回结果
