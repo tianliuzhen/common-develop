@@ -7,6 +7,7 @@ import com.aaa.commondevelop.mappertk.EmpTkMapper;
 import com.aaa.commondevelop.mappertk.FactorRelationMapper;
 import com.aaa.commondevelop.mappertk.WxUserTkMapper;
 import com.aaa.commondevelop.util.MyFunUtil;
+import com.aaa.commondevelop.util.PageResultHelper;
 import com.aaa.commondevelop.web.base.CommonBean;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -53,7 +54,7 @@ public class TestTkMapperController {
     @PostMapping("/update")
     public Object update() {
 
-        Example example = new Example(Emp.class);//要查询的表对应的实体类
+        Example example = new Example(Emp.class);// 要查询的表对应的实体类
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("userName", "%c%");
         empTkMapper.selectByExample(example);
@@ -108,13 +109,25 @@ public class TestTkMapperController {
         // 分页拦截
         PageHelper.startPage(1, 2);
 
-        Example example = new Example(Emp.class);//要查询的表对应的实体类
+        Example example = new Example(Emp.class);// 要查询的表对应的实体类
         Example.Criteria criteria = example.createCriteria();
         criteria.andLike("userName", "%c%");
         List<Emp> emps = empTkMapper.selectByExample(example);
 
         PageInfo<Emp> userPageInfo = new PageInfo<>(emps);
         return userPageInfo;
+    }
+
+    @PostMapping("/selectByExample3")
+    public Object selectByExample3() {
+        PageInfo<Emp> pageInfo = PageResultHelper.toPageInfo(1, 10, () -> {
+            return empTkMapper.selectByExample(
+                    Example.builder(Emp.class)
+                            .where(WeekendSqls.<Emp>custom().andLike(Emp::getUserName, "%aaa%"))
+                            .build());
+
+        }, Emp.class);
+        return pageInfo;
     }
 
     @PostMapping("/insertTwoPrimary")
@@ -136,7 +149,7 @@ public class TestTkMapperController {
     public Object saveOrUpdate() {
         // 如果存在id，执行更新
         // 如果不存在id，就执行新增
-        wxUserTkMapper.saveOrUpdate(new WxUser(1L, "tom",""));
+        wxUserTkMapper.saveOrUpdate(new WxUser(1L, "tom", ""));
 
         return null;
     }
