@@ -52,3 +52,10 @@ spring:
   messages:
     basename: i18n/message
     encoding: UTF-8
+---
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  pageSizeZero: true
