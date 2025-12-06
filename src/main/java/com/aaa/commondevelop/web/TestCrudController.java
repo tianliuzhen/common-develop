@@ -5,7 +5,7 @@ import com.aaa.commondevelop.domain.annotation.SysLog;
 import com.aaa.commondevelop.config.global.Shift;
 import com.aaa.commondevelop.config.httpResult.type.ResultResponse;
 import com.aaa.commondevelop.domain.ao.PageAo;
-import com.aaa.commondevelop.domain.dto.PageDto;
+import com.aaa.commondevelop.domain.dto.PageDTO;
 import com.aaa.commondevelop.domain.entity.User;
 import com.aaa.commondevelop.domain.enums.GenderEnum;
 import com.aaa.commondevelop.domain.enums.ResultCode;
@@ -104,7 +104,7 @@ public class TestCrudController {
     @ApiOperation(value = "分页测试", notes = "插件测试")
     @ApiImplicitParam(name = "pageDto", value = "分页参数", required = true)
     @PostMapping("/testSelectPage")
-    public ResultResponse<?> testSelectPage(@RequestBody PageDto pageDto) {
+    public ResultResponse<?> testSelectPage(@RequestBody PageDTO pageDto) {
         Page<User> page = new Page();
         System.out.println("分页测试：：：");
         // 每页数量、当前页

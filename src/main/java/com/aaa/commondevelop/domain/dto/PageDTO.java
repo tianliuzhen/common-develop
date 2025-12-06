@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
  * @date 2020/1/14
  */
 @Data
-public class PageDto {
+public class PageDTO {
 
     @ApiModelProperty(name="current",value="当前页",required=true)
     private Integer current;

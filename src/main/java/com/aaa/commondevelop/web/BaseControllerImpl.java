@@ -5,7 +5,7 @@ import com.aaa.commondevelop.config.httpResult.type.ResultResponse;
 import com.aaa.commondevelop.domain.annotation.Assignment;
 import com.aaa.commondevelop.domain.annotation.SysLog;
 import com.aaa.commondevelop.domain.annotation.SysTimeLog;
-import com.aaa.commondevelop.domain.dto.UserDto;
+import com.aaa.commondevelop.domain.dto.UserDTO;
 import com.aaa.commondevelop.domain.entity.Emp;
 import com.aaa.commondevelop.domain.entity.FactorRelation;
 import com.aaa.commondevelop.domain.entity.People;
@@ -36,7 +36,7 @@ public class BaseControllerImpl {
 
     private static String str = "default";
 
-    public static UserDto userDto;
+    public static UserDTO userDto;
 
     @PostMapping("/testStr")
     public ResultResponse<String> testStr(@Valid @RequestBody UserAddRequest request) {

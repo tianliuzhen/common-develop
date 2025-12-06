@@ -11,7 +11,7 @@ import lombok.Data;
  * @date 2020/3/12
  */
 @Data
-public class UserDto {
+public class UserDTO {
     /**
      * 姓名
      * */
@@ -23,7 +23,7 @@ public class UserDto {
     @Check(paramValues = {"man", "woman"})
     private String sex;
 
-    public UserDto(String name, String sex) {
+    public UserDTO(String name, String sex) {
         this.name = name;
         this.sex = sex;
     }

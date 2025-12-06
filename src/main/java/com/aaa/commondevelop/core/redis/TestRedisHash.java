@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.core.redis;
 
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.domain.dto.UserDto;
+import com.aaa.commondevelop.domain.dto.UserDTO;
 import com.aaa.commondevelop.domain.enums.GenderEnum;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -41,7 +41,7 @@ public class TestRedisHash {
         redisTemplate.opsForHash().put("h:z","userDto",map);
         Object userDto1 = redisTemplate.opsForHash().get("h:z", "userDto");
         // 将map 转实体
-        UserDto userDto2 = JSONObject.parseObject(JSONObject.toJSONString(userDto1), UserDto.class);
+        UserDTO userDto2 = JSONObject.parseObject(JSONObject.toJSONString(userDto1), UserDTO.class);
         System.out.println(userDto2.toString());
         //测试枚举转换
         testString();

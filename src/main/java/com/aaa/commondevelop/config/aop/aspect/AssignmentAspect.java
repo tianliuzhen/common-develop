@@ -1,6 +1,6 @@
 package com.aaa.commondevelop.config.aop.aspect;
 
-import com.aaa.commondevelop.domain.dto.UserDto;
+import com.aaa.commondevelop.domain.dto.UserDTO;
 import com.aaa.commondevelop.web.BaseControllerImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -43,9 +43,9 @@ public class  AssignmentAspect {
 
         String methodName = joinPoint.getSignature().getName();
         if(methodName.equals("testInt")){
-            BaseControllerImpl.userDto = new UserDto("name","man");
+            BaseControllerImpl.userDto = new UserDTO("name","man");
         }else{
-            BaseControllerImpl.userDto = new UserDto("name2","woman");
+            BaseControllerImpl.userDto = new UserDTO("name2","woman");
         }
 
 
