@@ -9,7 +9,7 @@ import com.aaa.commondevelop.domain.dto.PageDto;
 import com.aaa.commondevelop.domain.entity.User;
 import com.aaa.commondevelop.domain.enums.GenderEnum;
 import com.aaa.commondevelop.domain.enums.ResultCode;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.service.User2Service;
 import com.aaa.commondevelop.service.UserService;
 import com.aaa.commondevelop.util.TimeUtil;
@@ -91,6 +91,14 @@ public class TestCrudController {
         // param.put("name", "test001");
         param.put("email", "test001@qq.com");
         userMapper.selectByConditionV2(param);
+    }
+
+
+    @SysLog
+    @PostMapping("/selectByConditionV3")
+    public void selectByConditionV3() {
+        User user = new User();
+        userMapper.selectByConditionV3(user);
     }
 
     @ApiOperation(value = "分页测试", notes = "插件测试")

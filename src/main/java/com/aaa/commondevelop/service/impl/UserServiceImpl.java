@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.service.impl;
 
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.service.UserService;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

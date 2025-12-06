@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.service.impl;
 
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.service.User2Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;

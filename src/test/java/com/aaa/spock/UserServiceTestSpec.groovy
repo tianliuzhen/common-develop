@@ -1,7 +1,7 @@
 package com.aaa.spock
 
 import com.aaa.commondevelop.domain.entity.User
-import com.aaa.commondevelop.mapper.UserMapper
+import com.aaa.commondevelop.mapper.mp.UserMapper
 import com.aaa.commondevelop.service.impl.User2ServiceImpl
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.google.common.collect.Lists

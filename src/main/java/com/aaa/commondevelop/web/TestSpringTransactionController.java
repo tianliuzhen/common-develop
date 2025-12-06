@@ -3,7 +3,7 @@ package com.aaa.commondevelop.web;
 import com.aaa.commondevelop.config.MultiThreadTransactionManagerV2;
 import com.aaa.commondevelop.config.global.exceptions.BizException;
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.util.ThreadPoolUtil;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;

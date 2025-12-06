@@ -96,4 +96,8 @@ public class User {
         this.isDel = isDel;
         this.createTime = createTime;
     }
+
+    public boolean isValid(){
+        return true;
+    }
 }

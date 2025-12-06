@@ -1,8 +1,8 @@
 package com.aaa.commondevelop.config.redis;
 
-import com.aaa.commondevelop.redis.mq.RedisMessagePublisher;
-import com.aaa.commondevelop.redis.mq.RedisMessageSubscriber;
-import com.aaa.commondevelop.redis.mq2.MessageReceiver;
+import com.aaa.commondevelop.core.redis.mq.RedisMessagePublisher;
+import com.aaa.commondevelop.core.redis.mq.RedisMessageSubscriber;
+import com.aaa.commondevelop.core.redis.mq2.MessageReceiver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

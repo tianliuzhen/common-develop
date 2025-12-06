@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.web;
 
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.service.User2Service;
 import com.aaa.commondevelop.service.UserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;

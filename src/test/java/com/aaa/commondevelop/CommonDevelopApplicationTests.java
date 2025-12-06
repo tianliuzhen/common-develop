@@ -2,7 +2,7 @@ package com.aaa.commondevelop;
 
 import com.aaa.commondevelop.config.MybatisPlusConfig;
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

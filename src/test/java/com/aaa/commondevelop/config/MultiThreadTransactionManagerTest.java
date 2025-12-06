@@ -1,7 +1,7 @@
 package com.aaa.commondevelop.config;
 
 import com.aaa.commondevelop.domain.entity.User;
-import com.aaa.commondevelop.mapper.UserMapper;
+import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.service.UserService;
 import com.aaa.commondevelop.util.ThreadPoolUtil;
 import org.junit.jupiter.api.Test;

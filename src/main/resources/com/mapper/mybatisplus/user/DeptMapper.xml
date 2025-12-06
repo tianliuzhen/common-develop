@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.aaa.commondevelop.mapper.DeptMapper">
+<mapper namespace="com.aaa.commondevelop.mapper.mp.DeptMapper">
 
     <!--  keyProperty="id" useGeneratedKeys="true" 添加这俩个属性就能返回主键id   -->
     <insert id="insertDept" keyProperty="id" useGeneratedKeys="true">

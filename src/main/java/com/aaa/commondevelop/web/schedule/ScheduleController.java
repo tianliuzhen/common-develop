@@ -1,6 +1,6 @@
 package com.aaa.commondevelop.web.schedule;
 
-import com.aaa.commondevelop.schedule.ScheduleTask;
+import com.aaa.commondevelop.core.schedule.ScheduleTask;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

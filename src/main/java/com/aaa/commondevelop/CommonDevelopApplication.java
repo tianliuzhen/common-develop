@@ -16,9 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 // 原生的扫描
-@org.mybatis.spring.annotation.MapperScan("com.aaa.commondevelop.mapper")
+@org.mybatis.spring.annotation.MapperScan("com.aaa.commondevelop.mapper.mp")
 // tkMapper的扫描
-@tk.mybatis.spring.annotation.MapperScan("com.aaa.commondevelop.mapper2")
+@tk.mybatis.spring.annotation.MapperScan("com.aaa.commondevelop.mapper.tk")
 @ImportResource(locations = {"classpath:spring-common.xml"})
 // @EnableAsync(proxyTargetClass = true)
 @EnableScheduling

@@ -1,4 +1,5 @@
-# mybatis-plus
+# 支持tkMapper
+# 支持mybatis-plus
 ### 这里对接远程仓库
 https://github.com/tianliuzhen/dynamic_dataSource/tree/master/mybatis-plus <br/>
 延续子模块 mybatis-plus 继续完善 <br/>
@@ -31,6 +32,5 @@ https://github.com/tianliuzhen/dynamic_dataSource/tree/master/mybatis-plus <br/>
    ##  <b>测试部分</b>
 1、基于 CountDownLatch和Semaphore及线程池实现并发测试。
    ## httpclient 接口配置
-   ## 同时支持tkMapper
 
 ......
