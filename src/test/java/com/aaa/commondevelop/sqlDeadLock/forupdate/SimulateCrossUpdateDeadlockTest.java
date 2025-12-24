@@ -1,4 +1,4 @@
-package com.aaa.commondevelop.service.sqlDeadLock;
+package com.aaa.commondevelop.sqlDeadLock.forupdate;
 
 import com.aaa.commondevelop.domain.entity.Account;
 import com.aaa.commondevelop.mapper.tk.AccountMapper;
@@ -17,12 +17,12 @@ import java.util.List;
 
 /**
  * @author liuzhen.tian
- * @version 1.0 DeadLockTest.java  2025/12/6 20:55
+ * @version 1.0 SimulateCrossUpdateDeadlockTest.java  2025/12/6 20:55
  */
 @Slf4j
 @RunWith(SpringRunner.class)  // 👈 org.junit.Test 必须添加这个！
 @SpringBootTest
-public class DeadLockTest {
+public class SimulateCrossUpdateDeadlockTest {
 
     @Autowired
     private AccountMapper accountMapper;

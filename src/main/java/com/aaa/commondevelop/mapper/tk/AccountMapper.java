@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -24,6 +25,10 @@ public interface AccountMapper  extends Mapper<Account> {
     @Update("UPDATE account SET balance = #{balance}, version = version + 1 WHERE id = #{id}")
     int updateBalance(Account account);
 
+    // 更新账户余额
+    @Update("UPDATE account SET balance = #{balance} WHERE account_no = #{accountNo}")
+    int updateBalanceByAccount(@Param("accountNo") String accountNo, @Param("balance") BigDecimal balance);
+
     // 普通查询
     @Select("SELECT * FROM account WHERE account_no = #{accountNo}")
     Account selectByAccountNo(@Param("accountNo") String accountNo);
@@ -31,4 +36,15 @@ public interface AccountMapper  extends Mapper<Account> {
 
     @Select("SELECT * FROM account WHERE id BETWEEN #{start} AND #{end} FOR UPDATE")
     List<Account> selectRangeForUpdate(@Param("start") int start, @Param("end") int end);
+
+
+    /**
+     * 根据条件查询账户
+     * @param minAccountNo 最小账户号
+     * @param maxAccountNo 最大账户号
+     * @return 账户列表
+     */
+    @Select("SELECT * FROM account WHERE account_no > #{minAccountNo} AND account_no < #{maxAccountNo}")
+    List<Account> selectByCondition(@Param("minAccountNo") String minAccountNo,
+                                    @Param("maxAccountNo") String maxAccountNo);
 }
