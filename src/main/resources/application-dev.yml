@@ -14,7 +14,7 @@ spring:
           username: root
           password: 123456
           driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-          url: jdbc:p6spy:mysql://127.0.0.1:3301/master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+          url: jdbc:p6spy:mysql://127.0.0.1:3301/master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&useServerPrepStmts=true&cachePrepStmts=true
           hikari: # 以下参数针对每个库可以重新设置hikari参数
             max-pool-size:
             idle-timeout:
@@ -46,7 +46,7 @@ spring:
   redisson:
     host: 127.0.0.1
     port: 6379
-    password:
+    password: 123456
     #redisson 自定义 redisson 集群节点
     clusters: 47.98.253.2:7001,47.98.253.2:7002,47.98.253.2:7003,47.98.253.2:7004,47.98.253.2:7005,47.98.253.2:7006
     #sentinel/cluster/single

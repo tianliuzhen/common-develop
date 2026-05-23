@@ -9,6 +9,7 @@ import com.aaa.commondevelop.domain.enums.GenderEnum;
 import com.aaa.commondevelop.mapper.mp.DeptMapper;
 import com.aaa.commondevelop.mapper.mp.UserMapper;
 import com.aaa.commondevelop.service.UserService;
+import com.aaa.commondevelop.util.MybatisBatchUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.session.ExecutorType;
@@ -31,10 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +48,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping(value = "batch")
 public class TestCrudBatchController {
-    public static final int COUNT = 3 * 10;
+    public static final int COUNT = 1 * 10000;
     @Autowired
     private UserMapper userMapper;
 
@@ -76,6 +74,9 @@ public class TestCrudBatchController {
 
     @Autowired
     private DataSource dataSource;
+
+    @Autowired
+    private MybatisBatchUtils mybatisBatchUtils;
 
     /**
      * 批量更新：基于注解
@@ -143,24 +144,38 @@ public class TestCrudBatchController {
     @SysTimeLog
     @PostMapping("/batchAddUser2")
     public void batchAddUser2() {
+        StopWatch stopWatch = new StopWatch("batchAddUser3");
+        stopWatch.start();
+        SqlSession sqlSession = null;
         ArrayList<User> users = Lists.newArrayList(
                 new User("3", "aaa", GenderEnum.FEMALE, 11L, "123@qq.com", 0, 0, 1, LocalDateTime.now()),
                 new User("4", "bbb", GenderEnum.FEMALE, 12L, "123@qq.com", 0, 0, 1, LocalDateTime.now()));
-        List<User> userList = getUsers(10000 * 10);
+        List<User> userList = getUsers(COUNT);
         // Integer res = userMapper.batchAddUser2(userList);
         // 批量执行插入
         List<User> usersTemp = Lists.newArrayList();
         for (int i = 0; i < userList.size(); i++) {
             usersTemp.add(userList.get(i));
-            if (i % 5000 == 0 && i != 0) {
+            if (i % 200 == 0 && i != 0) {
                 // todo：  <foreach INSERT 比 <foreach VALUES 插入要慢
                 userMapper.batchAddUser(usersTemp);
                 usersTemp.clear();
             }
         }
+        // 插入剩余未满一批的数据
+        if (!usersTemp.isEmpty()) {
+            userMapper.batchAddUser(usersTemp);
+        }
+        stopWatch.stop();
+        double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
+        System.out.println("totalTimeSeconds = " + totalTimeSeconds);
+        System.out.println(stopWatch.prettyPrint());
     }
 
     /**
+     * 注意:************************* &rewriteBatchedStatements=true *************************
+     * 必须要加上面参数，不然无效
+     *
      * 批量新增：基于xml （批处理）
      * <p>
      * 设置ExecutorType.BATCH原理：把SQL语句发个数据库，数据库预编译好，
@@ -168,7 +183,9 @@ public class TestCrudBatchController {
      * ExecutorType.BATCH只打印一次SQL语句，多次设置参数步骤，
      * <p>
      * 也是官方针对批量数据插入优化的方法之一
-     * 部分参考：https://blog.csdn.net/qq_42093488/article/details/124956848
+     * 部分参考：
+     * https://blog.csdn.net/qq_42093488/article/details/124956848
+     * https://blog.csdn.net/weixin_43829708/article/details/157581610
      */
     @PostMapping("/batchAddUser3")
     public void batchAddUser3() {
@@ -176,7 +193,7 @@ public class TestCrudBatchController {
         stopWatch.start();
         SqlSession sqlSession = null;
         try {
-            sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);
+            sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH,false);
 
             // todo 注意：******* 这里必须要从 sqlSession.getMapper 获得 mapper
             // todo 否则，Executor不是BatchExecutor
@@ -185,7 +202,7 @@ public class TestCrudBatchController {
             List<User> users = getUsers(COUNT);
             for (int i = 0; i < users.size(); i++) {
                 mapper.insert(users.get(i));
-                if (i % 10 == 0 && i != 0) {
+                if (i % 200 == 0 && i != 0) {
                     /*  commit 核心执行逻辑
                      *  sqlSession.commit();
                      *  ||
@@ -201,6 +218,23 @@ public class TestCrudBatchController {
         } finally {
             sqlSession.close();
         }
+        stopWatch.stop();
+        double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
+        System.out.println("totalTimeSeconds = " + totalTimeSeconds);
+        System.out.println(stopWatch.prettyPrint());
+    }
+    @PostMapping("/batchAddUser3_1")
+    public void batchAddUser3_1() {
+        StopWatch stopWatch = new StopWatch("batchAddUser3_1");
+        stopWatch.start();
+        List<Dept> depts = new ArrayList<>();
+        for (long i = 0; i < 10; i++) {
+            depts.add(new Dept(null, "aaa", i));
+        }
+        mybatisBatchUtils.batchUpdateOrInsert(depts, DeptMapper.class, (po,mapper) -> {
+           return mapper.insert(po);
+        });
+
         stopWatch.stop();
         double totalTimeSeconds = stopWatch.getTotalTimeSeconds();
         System.out.println("totalTimeSeconds = " + totalTimeSeconds);
@@ -230,7 +264,7 @@ public class TestCrudBatchController {
             System.out.println("===== 开始插入数据 =====");
             long startTime = System.currentTimeMillis();
             String sqlInsert = "INSERT INTO user ( name, age) VALUES ( ?, ?)";
-            preparedStatement = connection.prepareStatement(sqlInsert);
+            preparedStatement = connection.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS );
 
             Random random = new Random();
             for (int i = 1; i <= 30; i++) {
@@ -272,6 +306,124 @@ public class TestCrudBatchController {
             }
         }
     }
+
+    public static void main(String[] args) {
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+
+        String databaseURL = "jdbc:mysql://localhost:3301/master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=false";
+        String user = "root";
+        String password = "123456";
+
+        try {
+            connection = DriverManager.getConnection(databaseURL, user, password);
+            // 关闭自动提交事务，改为手动提交
+            connection.setAutoCommit(false);
+            System.out.println("===== 开始插入数据 =====");
+
+            long startTime = System.currentTimeMillis();
+            String sqlInsert = "INSERT INTO dept (dept_name, dept_no, manager_id) VALUES (?, ?, ?)";
+
+            // 关键：设置 RETURN_GENERATED_KEYS
+            preparedStatement = connection.prepareStatement(sqlInsert, Statement.RETURN_GENERATED_KEYS);
+
+            // 保存 Dept 对象引用，用于后续回填 ID
+            List<Dept> depts = new ArrayList<>();
+            Random random = new Random();
+
+            for (int i = 1; i <= 30; i++) {
+                String deptName = "部门_" + i;
+                long deptNo = 1000L + i;
+                int managerId = random.nextInt(100) + 1; // 1-100的随机数
+
+                // 创建 Dept 对象并保存引用
+                Dept dept = new Dept(null, deptName, deptNo, managerId);
+                depts.add(dept);
+
+                preparedStatement.setString(1, deptName);
+                preparedStatement.setLong(2, deptNo);
+                preparedStatement.setInt(3, managerId);
+                // 添加到批处理中
+                preparedStatement.addBatch();
+
+                if (i % 10 == 0) {
+                    // 每10条数据提交一次
+                    int[] updateCounts = preparedStatement.executeBatch();
+                    System.out.println("执行批次，影响行数: " + updateCounts.length);
+
+                    // ========== 关键部分：获取自增ID ==========
+                    ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                    int index = i - 10;  // 当前批次的起始索引
+                    while (generatedKeys.next()) {
+                        long id = generatedKeys.getLong(1);
+                        depts.get(index).setId(id);  // 回填ID
+                        System.out.println("获取到自增ID: " + id + " -> " + depts.get(index));
+                        index++;
+                    }
+                    generatedKeys.close();
+
+                    connection.commit();
+                    System.out.println("成功插入并提交第 " + i + " 条数据");
+                }
+            }
+
+            // 处理剩余的数据（如果总数不是10的倍数）
+            if (depts.size() % 10 != 0) {
+                int[] updateCounts = preparedStatement.executeBatch();
+                System.out.println("执行剩余批次，影响行数: " + updateCounts.length);
+
+                // 获取最后一批的自增ID
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                int index = (depts.size() / 10) * 10;  // 最后一批的起始索引
+                while (generatedKeys.next()) {
+                    long id = generatedKeys.getLong(1);
+                    depts.get(index).setId(id);
+                    System.out.println("获取到自增ID: " + id + " -> " + depts.get(index));
+                    index++;
+                }
+                generatedKeys.close();
+
+                connection.commit();
+            }
+
+            long spendTime = System.currentTimeMillis() - startTime;
+            System.out.println("成功插入 " + depts.size() + " 条数据,耗时：" + spendTime + "毫秒");
+
+            // ========== 验证所有ID都已回填 ==========
+            System.out.println("\n===== 验证所有数据 =====");
+            for (int i = 0; i < depts.size(); i++) {
+                Dept dept = depts.get(i);
+                if (dept.getId() == null) {
+                    System.out.println("❌ 第" + (i+1) + "条数据ID为空: " + dept);
+                } else {
+                    System.out.println("✅ 第" + (i+1) + "条数据: id=" + dept.getId() +
+                            ", deptName=" + dept.getDeptName() +
+                            ", deptNo=" + dept.getDeptNo() +
+                            ", managerId=" + dept.getManagerId());
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+}
 
     private List<User> getUsers(int count) {
         List result = Lists.newArrayList();
@@ -316,7 +468,7 @@ public class TestCrudBatchController {
 
     @PostMapping("/returnInsertKey")
     public void returnInsertKey() {
-        for (int i = 0; i < 1; i++) {
+        for (long i = 0; i < 1; i++) {
             Dept aaa = new Dept(null, "aaa", i);
             deptMapper.insertDept(aaa);
             System.out.println(aaa);
@@ -326,7 +478,7 @@ public class TestCrudBatchController {
     @PostMapping("/batchReturnInsertKey")
     public void batchReturnInsertKey() {
         List<Dept> list = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (long i = 0; i < 2; i++) {
             list.add(new Dept(null, "aaa", i));
         }
         deptMapper.batchReturnInsertKey(list);
@@ -411,7 +563,7 @@ public class TestCrudBatchController {
     @GetMapping(value = "testTran3")
     public void testTranAsync() throws InterruptedException {
         ConnectionHolder resource = (ConnectionHolder) TransactionSynchronizationManager.getResource(dataSource);
-        deptMapper.insert(new Dept(1L, "部门1", 1));
+        deptMapper.insert(new Dept(1L, "部门1", 1L));
         // 要配置： @EnableAspectJAutoProxy(exposeProxy = true)
         TestCrudBatchController proxy = (TestCrudBatchController) AopContext.currentProxy();
         Thread thread = new Thread(() -> {
@@ -431,7 +583,7 @@ public class TestCrudBatchController {
 
     @Transactional(rollbackFor = Exception.class)
     public void testTranAsyncInner() {
-        deptMapper.insert(new Dept(2L, "部门2", 1));
+        deptMapper.insert(new Dept(2L, "部门2", 1L));
         throw new RuntimeException("我异常了");
     }
 }

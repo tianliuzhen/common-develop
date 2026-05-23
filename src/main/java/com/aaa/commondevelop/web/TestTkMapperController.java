@@ -104,6 +104,18 @@ public class TestTkMapperController {
         return userPageInfo;
     }
 
+    @PostMapping("/selectByExampleV2")
+    public Object selectByExampleV2() {
+        // 分页拦截
+        Example build = new Example.Builder(Emp.class)
+                .where( WeekendSqls.<Emp>custom().andNotEqualTo(Emp::getUserName,""))
+                .build();
+        List<Emp> emps = empTkMapper.selectByExample(build);
+
+        PageInfo<Emp> userPageInfo = new PageInfo<>(emps);
+        return userPageInfo;
+    }
+
     @PostMapping("/selectByExample2")
     public Object selectByExample2() {
         // 分页拦截

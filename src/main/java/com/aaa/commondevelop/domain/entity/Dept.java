@@ -3,7 +3,6 @@ package com.aaa.commondevelop.domain.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
@@ -17,7 +16,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @TableName("dept")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Dept {
 
     /**
@@ -26,6 +24,19 @@ public class Dept {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
     private String deptName;
-    private Integer deptNo;
+    private Long deptNo;
+    private Integer managerId;
 
+    public Dept(Long id, String deptName, Long deptNo) {
+        this.id = id;
+        this.deptName = deptName;
+        this.deptNo = deptNo;
+    }
+
+    public Dept(Long id, String deptName, Long deptNo, Integer managerId) {
+        this.id = id;
+        this.deptName = deptName;
+        this.deptNo = deptNo;
+        this.managerId = managerId;
+    }
 }
